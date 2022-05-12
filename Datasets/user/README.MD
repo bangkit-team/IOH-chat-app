@@ -1,7 +1,7 @@
 ## User Dummy Data
 
 <div style="text-align: justify"><p>
-<img src="/src/img1.png"/> 
+<img src="./src/img1.png"/> 
 </br>
 male = 500 orang
 female 500 orang
