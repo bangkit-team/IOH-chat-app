@@ -1,3 +1,3 @@
 # IOH Chat App
 
-Integrated Chat Application Indosat Ooredoo Hutchison bangkit 2022 Capstone project.
+Integrated Chat Application untuk Company Capstone Project dari Indosat dari Indosat Ooredoo Hutchison.
