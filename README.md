@@ -1,3 +1,3 @@
-# IOH Chat App ML
+# IOH Chat App
 
-Machine Learning Side in Integrated Chat Application Indosat Ooredoo Hutchison bangkit 2022 Capstone project.
+Integrated Chat Application Indosat Ooredoo Hutchison bangkit 2022 Capstone project.

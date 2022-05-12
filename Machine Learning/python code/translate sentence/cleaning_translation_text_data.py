@@ -3,7 +3,7 @@ import re
 
 
 def filterText():
-    fileDir = "D:/Programming/ML/Datasets/texts/ind-eng/ind.txt"
+    fileDir = "datasets/translate sentence/ind.txt"
     corpus = list(dict())
 
     with open(fileDir, encoding="utf8") as file:
@@ -24,7 +24,7 @@ def filterText():
 
 def convertToCSV(sentenceDict):
     columns = ["English", "Indonesia"]
-    fileDir = "D:/Programming/ML/IOH/Datasets/eng-ind.csv"
+    fileDir = "datasets/translate sentence/eng-ind.csv"
 
     try:
         with open(fileDir, "w", encoding='utf8', newline="") as file:

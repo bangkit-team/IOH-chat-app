@@ -1,14 +1,15 @@
-import json
 import argparse
+import json
+
 import numpy as np
 
 from module import GenerateData
 
 my_parser = argparse.ArgumentParser()
-my_parser.add_argument("--m", type=int,required=False)
-my_parser.add_argument("--lm", type=int,required=False)
-my_parser.add_argument("--f", type=int,required=False)
-my_parser.add_argument("--lf", type=int,required=False)
+my_parser.add_argument("--m", type=int, required=False)
+my_parser.add_argument("--lm", type=int, required=False)
+my_parser.add_argument("--f", type=int, required=False)
+my_parser.add_argument("--lf", type=int, required=False)
 my_parser.add_argument("--s", type=int, required=False)
 my_parser.add_argument("--o", type=str, required=False)
 
@@ -28,7 +29,7 @@ if args.lm:
     length_cowo = args.lm
 else:
     length_cowo = 1
-    
+
 if args.f:
     cewe = args.f
 else:
@@ -37,25 +38,25 @@ if args.lf:
     length_cewe = args.lf
 else:
     length_cewe = 1
-    
+
 if args.o:
     fname = args.o
 else:
-    fname = "output"
+    fname = "user"
 
 np.random.seed(seed)
 
-seed_cowo = np.random.choice(100000, cowo,replace=False)
-seed_cewe = np.random.choice(100000, cewe,replace=False) 
+seed_cowo = np.random.choice(100000, cowo, replace=False)
+seed_cewe = np.random.choice(100000, cewe, replace=False)
 
 data = []
 
 if cowo:
     for seed in seed_cowo:
-        d = GenerateData(seed,"cowo",np.random.randint(1,length_cowo+1))
+        d = GenerateData(seed, "cowo", np.random.randint(1, length_cowo+1))
         dictionary = {
             "name": d.name,
-            "username":d.username,
+            "username": d.username,
             "email": d.email,
             "phone_number": d.phone_number,
             "gender": d.gender,
@@ -71,7 +72,7 @@ if cowo:
                 "district": d.kabupaten,
                 "province": d.provinsi
             },
-            "ktp":{
+            "ktp": {
                 "nik": d.nik,
                 "valid_till": str(d.valid_till),
                 "card_create_date": str(d.date_making),
@@ -79,16 +80,16 @@ if cowo:
                 "religion": d.religion,
                 "status": d.status,
                 "occupation": d.occupation,
-                "blood_type": d.goldar,    
-            } 
+                "blood_type": d.goldar,
+            }
         }
         data.append(dictionary)
 if cewe:
     for seed in seed_cewe:
-        d = GenerateData(seed,"cewe",np.random.randint(1,length_cewe+1))
+        d = GenerateData(seed, "cewe", np.random.randint(1, length_cewe+1))
         dictionary = {
             "name": d.name,
-            "username":d.username,
+            "username": d.username,
             "email": d.email,
             "phone_number": d.phone_number,
             "gender": d.gender,
@@ -104,7 +105,7 @@ if cewe:
                 "district": d.kabupaten,
                 "province": d.provinsi
             },
-            "ktp":{
+            "ktp": {
                 "nik": d.nik,
                 "valid_till": str(d.valid_till),
                 "card_create_date": str(d.date_making),
@@ -112,10 +113,14 @@ if cewe:
                 "religion": d.religion,
                 "status": d.status,
                 "occupation": d.occupation,
-                "blood_type": d.goldar,    
-            } 
+                "blood_type": d.goldar,
+            }
         }
         data.append(dictionary)
 
-with open(f"./output/{fname}.json","w") as f:
-    json.dump(data,f, indent=6)
+with open(f"datasets/user/output/{fname}.json", "w") as f:
+    try:
+        json.dump(data, f, indent=6)
+        print("File berhasil dibuat")
+    except IOError:
+        print("I/O Error")
