@@ -5,7 +5,10 @@
 </br>
 male = 500 orang
 female 500 orang
+max length male name = 3
+max length female name = 3
 seed = 3650
+output name = user
 </br>
 Data yang tercover dalam dataset ini adalah:
 <ul>
