@@ -118,7 +118,7 @@ if cewe:
         }
         data.append(dictionary)
 
-with open(f"datasets/user/output/{fname}.json", "w") as f:
+with open(f"~/project/IOH-Chat-App-ML/Machine\ Learning/datasets/user/output{fname}.json", "w") as f:
     try:
         json.dump(data, f, indent=6)
         print("File berhasil dibuat")
