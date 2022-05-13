@@ -2,41 +2,49 @@ import csv
 import re
 
 
-def filterText():
-    fileDir = "datasets/translate sentence/ind.txt"
-    corpus = list(dict())
+class CleanData:
+    def __init__(self, filename, columns):
+        self._corpus = list(dict())
+        self._filename = filename
+        self._columns = columns
+        self._filterText(self._filename, self._columns)
 
-    with open(fileDir, encoding="utf8") as file:
-        for text in file.readlines():
-            result = re.findall(r"^.*CC-BY", text)
-            filtered_text = result[0].replace("\tCC-BY", "")
-            filtered_text = filtered_text.split("\t")
+    def _filterText(self, filename, columns):
+        fileDir = f"datasets/translate sentence/untidy/{filename}.txt"
+        with open(fileDir, encoding="utf8") as file:
+            for text in file.readlines():
+                result = re.findall(r"^.*CC-BY", text)
+                filtered_text = result[0].replace("\tCC-BY", "")
+                filtered_text = filtered_text.split("\t")
 
-            english_sentence = filtered_text[0]
-            indonesia_sentence = filtered_text[1]
+                language1_sentence = filtered_text[0]
+                language2_sentence = filtered_text[1]
 
-            diction = dict()
-            diction["English"] = english_sentence
-            diction["Indonesia"] = indonesia_sentence
-            corpus.append(diction)
-    return corpus
+                diction = dict()
+                diction[columns[0]] = language1_sentence
+                diction[columns[1]] = language2_sentence
+                self._corpus.append(diction)
 
+    def convertToCSV(self, filename):
+        fileDir = f"datasets/translate sentence/result/{filename}.csv"
 
-def convertToCSV(sentenceDict):
-    columns = ["English", "Indonesia"]
-    fileDir = "datasets/translate sentence/eng-ind.csv"
-
-    try:
-        with open(fileDir, "w", encoding='utf8', newline="") as file:
-            writer = csv.DictWriter(file, columns)
-            writer.writeheader()
-            for data in sentenceDict:
-                writer.writerow(data)
-            print("Data berhasil ditambahkan")
-    except IOError:
-        print("I/O Error")
+        try:
+            with open(fileDir, "w", encoding='utf8', newline="") as file:
+                writer = csv.DictWriter(file, self._columns)
+                writer.writeheader()
+                for data in self._corpus:
+                    writer.writerow(data)
+                print(f"File {filename} berhasil dibuat")
+        except IOError:
+            print(f"File {filename} gagal dibuat")
 
 
 if __name__ == "__main__":
-    filtered_sentence = filterText()
-    convertToCSV(filtered_sentence)
+    txtFileName = ["ind", "deu", "jpn"]
+    savedFileName = ["eng-ind", "eng-deu", "eng-jpn"]
+    columns = [["English", "Indonesia"], [
+        "English", "Deutch"], ["English", "Japan"]]
+
+    for txt, filename, column in zip(txtFileName, savedFileName, columns):
+        cleanData = CleanData(txt, column)
+        cleanData.convertToCSV(filename)
