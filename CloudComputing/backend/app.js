@@ -2,13 +2,15 @@ const user = require('./routes/userRoute')
 const login = require('./routes/loginRoute')
 const group = require('./routes/groupRoute')
 
-
 const express = require('express')
 const app = express()
-const port = 3000
+const port = process.env.PORT || 3000
 
-//connect to firestore
-// require('./utils/firestore')
+// connect to firestore
+require('./utils/firestore')
+
+//connect dotenv
+require("dotenv").config();
 
 app.use(express.json())
 app.use(express.static('public'));

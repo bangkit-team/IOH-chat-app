@@ -1,21 +1,39 @@
 const express = require('express')
 const router = express.Router()
 const db = require('../utils/firestore')
+const {loginValidation} = require('../validate')
+const bcrypt = require('bcrypt');
+// const getAuth = require('../utils/authentication')
 
-// router.post('/',(req, res) =>{
-//     res.send('This is login routes')
-// })
+const userRef = db.ref('/users');
 
-router.get('/',(req, res) =>{
-    // res.send('This is login routes')
-    const doc = db.collection('Users').doc('test2');
+router.post('/',(req, res) =>{
+    const {error} = loginValidation(req.body);
+    if(error) return res.status(400).send(error.details[0].message)
 
-    const observer = doc.onSnapshot(docSnapshot => {
-      console.log(`Received doc snapshot: ${docSnapshot}`);
-      // ...
-    }, err => {
-      console.log(`Encountered error: ${err}`);
-    });
+
+    // userRef.once(req.body.email, (snapshot) => {
+    //     console.log(snapshot.val());
+    // }, (errorObject) => {
+    //     console.log('The read failed: ' + errorObject.name);
+    // });
+    // getAuth()
+    // .getUserByEmail(req.body.email)
+    // .then((userRecord) => {
+    //     // See the UserRecord reference doc for the contents of userRecord.
+    //     console.log(`Successfully fetched user data: ${userRecord.toJSON()}`);
+    // })
+    // .catch((error) => {
+    //     console.log('Error fetching user data:', error);
+    // });
+
+    res.send('success');
+    //password is correct
+    // const validPass = await bcrypt.compare(req.body.password, user.password);
+
+
+
 })
+
 
 module.exports = router
