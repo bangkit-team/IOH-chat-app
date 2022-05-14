@@ -13,7 +13,6 @@ router.post('/',async(req,res) => {
 
   const salt = await bcrypt.genSalt(10);
   const hashPassword = await bcrypt.hash(req.body.password, salt);
-  const date = new Date();
 
   //taruk di cloud storage untuk profile pict 
   //terus ambil url imagenya
