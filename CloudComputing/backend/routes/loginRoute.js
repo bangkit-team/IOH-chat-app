@@ -34,8 +34,6 @@ router.post('/',(req, res) =>{
             })
         }
     })
-    //password is correct
-    // const validPass = await bcrypt.compare(req.body.password, user.password);
 })
 
 

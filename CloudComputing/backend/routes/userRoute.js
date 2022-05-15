@@ -3,7 +3,6 @@ const router = express.Router()
 const db = require('../utils/firestore')
 const {registerValidation} = require('../validate')
 const bcrypt = require('bcrypt');
-const { response } = require('express');
 
 const userRef = db.ref('/users');
 
@@ -53,11 +52,3 @@ router.patch('/:user_id', (req,res) =>{
 })
 
 module.exports = router
-
-// userRef.on('child_changed', snapshot => {
-//   console.log('test')
-// })
-
-// userRef.on('child_removed', snapshot => {
-//   console.log('test')
-// })
