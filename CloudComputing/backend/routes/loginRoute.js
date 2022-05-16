@@ -3,7 +3,6 @@ const router = express.Router()
 const db = require('../utils/firestore')
 const {loginValidation} = require('../validate')
 const bcrypt = require('bcrypt');
-// const getAuth = require('../utils/authentication')
 
 const userRef = db.ref('/users');
 

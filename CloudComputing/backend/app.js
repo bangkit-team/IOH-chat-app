@@ -2,6 +2,7 @@ const user = require('./routes/userRoute')
 const login = require('./routes/loginRoute')
 const group = require('./routes/groupRoute')
 const feedback = require('./routes/feedbackRoute')
+const chat = require('./routes/chatRoutes')
 
 const express = require('express')
 const app = express()
@@ -25,7 +26,8 @@ app.use(express.static('public'));
 app.use('/user', user)
 app.use('/login', login)
 app.use('/user/:user_id/group',group)
-app.use('/user/feedback',feedback)
+app.use('/user/:user_id/feedback',feedback)
+app.use('/user/:user_id/chat', chat)
 
 
 app.get('/', (req, res) => {

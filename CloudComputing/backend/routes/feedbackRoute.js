@@ -2,9 +2,10 @@ const express = require('express')
 const router = express.Router()
 const db = require('../utils/firestore')
 
-router.post('/:id_user', (req,res) =>{
-    const { id_user } = req.params;
-    const { feedback } = req.body.feedback;
+router.post('/', (req,res) =>{
+    const id_user= req.body.id_user;
+    const feedback = req.body.feedback;
+    
     if (!feedback) {
         res.status(400).send({ message: "Belum ada feedback" })
     }
