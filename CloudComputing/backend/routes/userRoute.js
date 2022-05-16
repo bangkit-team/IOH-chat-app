@@ -3,9 +3,11 @@ const router = express.Router()
 const db = require('../utils/firestore')
 const {registerValidation} = require('../validate')
 const bcrypt = require('bcrypt');
+const storage = require('../utils/cloudStorage')
 
 const userRef = db.ref('/users');
 
+//regis API
 router.post('/',async(req,res) => {
   const {error} = registerValidation(req.body);
   if(error) return res.status(400).json({message:error.details[0].message});
@@ -15,8 +17,9 @@ router.post('/',async(req,res) => {
 
   //taruk di cloud storage untuk profile pict 
   //terus ambil url imagenya
-  
-
+  // await storage.upload('../backend/test.txt',{
+  //   destination: 'test.txt'
+  // })
 
   try{
     const user_id = userRef.push().key;
@@ -25,15 +28,14 @@ router.post('/',async(req,res) => {
       name: req.body.name,
       email: req.body.email,
       password: hashPassword,
-      profile_pict: req.body.profile_pict,
+      // profile_pict: linkProfile,
       phone_number: req.body.phone_number,
       role: req.body.role
     })
+    res.status(200).json({message: "Register Berhasil"});
   }catch(error){
     res.status(500).json({message: "Error when store in database"})
   }
-
-  res.status(200).json({message: "Register Berhasil"});
 })
 
 router.get('/:user_id', (req,res) =>{
@@ -50,19 +52,25 @@ router.post('/:user_id', (req,res) =>{
   
   //Untuk FriendUser
   let friendId = ''
-  let namaUser = ''
-  let namaFriend = ''
+  let dataUser = {}
+  let dataFriend = {}
   userRef.once('value', (snapshot) =>{
     snapshot.forEach((data) => {
       if(data.val().email === req.body.email){
         friendId = data.key
-        namaFriend = data.val().name
+        dataFriend = {
+          nameFriend: data.val().name,
+          emailFriend: data.val().email
+        }
       }
       if(data.key === req.params.user_id){
-        namaUser = data.val().name
+        dataUser = {
+          nameUser: data.val().name,
+          emailUser: data.val().email
+        }
       }
     });
-      // console.log(emailUser);
+    // console.log(emailUser);
     const userFriendRef = db.ref('/users/'+friendId+'/contact')
 
     //Untuk Chat
@@ -74,17 +82,19 @@ router.post('/:user_id', (req,res) =>{
 
       //Untuk User
       userDataRef.child(id_chat).set({
-        email: namaFriend
+        nameFriend: dataFriend.nameFriend,
+        emailFriend: dataFriend.emailFriend
       })
 
       //Untuk FriendUser
       userFriendRef.child(id_chat).set({
-        email: namaUser
+        namaFriend: dataUser.nameUser,
+        emailFriend: dataUser.emailUser
       })
 
       //untuk Chat
       chatId.child(id_chat).set({
-        name: "new chat"
+        message: "Pesan belum ada"
       })
 
       res.status(200).json({message: "Register Berhasil"});

@@ -10,6 +10,9 @@ const port = process.env.PORT || 3000
 // connect to realtime database
 require('./utils/firestore')
 
+//connect to cloud storage
+require('./utils/cloudStorage')
+
 //connect dotenv
 require("dotenv").config();
 

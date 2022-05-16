@@ -1,4 +1,5 @@
 const admin = require('firebase-admin')
+
 // const { getStorage } = require('firebase-admin/storage');
 
 var serviceAccount = require("../bangkitproject-348609-firebase-adminsdk-kqvha-2d088eeeed.json");
