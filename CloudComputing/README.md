@@ -1,5 +1,5 @@
 # API Endpoint
-- Nanti pakai heroku untuk tahap development
+- Nanti pakai heroku untuk tahap development atau langsung pakai App engine
 
 # API List
 masih dalam tahap development (bisa berubah)
