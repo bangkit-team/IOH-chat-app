@@ -5,12 +5,14 @@ import string
 import time
 import zipfile
 
-import IPython.display as pds
 import pandas as pd
 from gtts import gTTS
 
+IDX = 0
+
 
 def loadWords(file_dir):
+    punctuation = "".join([i for i in string.punctuation if i != "-"])
     words = set()
 
     df = pd.read_csv(file_dir, sep=",")
@@ -19,8 +21,8 @@ def loadWords(file_dir):
     for sentence in sentences:
         sentence = sentence.split(" ")
         for word in sentence:
-            filtered_words = "".join(
-                (filter(lambda c: c not in string.punctuation, word))).lower()
+            filtered_words = " ".join(
+                (filter(lambda c: c not in punctuation, word))).lower()
             words.add(filtered_words)
 
     return words
@@ -43,7 +45,21 @@ def archiveAudioFile(file_dir, save_dir):
         os.makedirs(save_dir)
 
     end_dir_name = file_dir.split("/")[-1]
-    filename = os.path.join(save_dir + "/", f"{end_dir_name}.zip")
+    is_file_exsits = os.path.exists(os.path.join(
+        save_dir + "/", f"{end_dir_name}.zip"))
+
+    fixed_filename = os.path.join(save_dir + "/", f"{end_dir_name}.zip")
+    extended_filename = os.path.join(
+        save_dir + "/", f"{end_dir_name}{IDX}.zip")
+
+    filename = ""
+
+    if is_file_exsits:
+        IDX += 1
+        filename = extended_filename
+    else:
+        IDX = 0
+        filename = fixed_filename
 
     zf = zipfile.ZipFile(filename, "w")
 
