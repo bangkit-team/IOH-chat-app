@@ -3,12 +3,22 @@ const router = express.Router()
 const db = require('../utils/firestore')
 const {registerValidation} = require('../validate')
 const bcrypt = require('bcrypt');
-const storage = require('../utils/cloudStorage')
+const cstorage = require('../utils/cloudStorage')
+const multer = require('multer');
+const storage = multer.diskStorage({
+  destination: function(req, file, cb) {
+    cb(null, 'gambar/')
+  },
+  filename: function(req, file, cb) {
+    cb(null, Date.now() + file.originalname)
+  }
+})
+const upload = multer({storage:storage});
 
 const userRef = db.ref('/users');
 
 //regis API
-router.post('/',async(req,res) => {
+router.post('/', upload.single('productImage'),async(req,res) => {
   const {error} = registerValidation(req.body);
   if(error) return res.status(400).json({message:error.details[0].message});
 
@@ -16,10 +26,12 @@ router.post('/',async(req,res) => {
   const hashPassword = await bcrypt.hash(req.body.password, salt);
 
   //taruk di cloud storage untuk profile pict 
-  //terus ambil url imagenya
-  // await storage.upload('../backend/test.txt',{
-  //   destination: 'test.txt'
-  // })
+  async function uploadFile() {
+    await cstorage.upload(`../backend/gambar/${req.file.filename}`,{
+        destination: `${req.file.filename}`
+    });
+  }
+  uploadFile().catch(console.error);
 
   try{
     const user_id = userRef.push().key;
@@ -28,7 +40,7 @@ router.post('/',async(req,res) => {
       name: req.body.name,
       email: req.body.email,
       password: hashPassword,
-      // profile_pict: linkProfile,
+      profile_pict: `https://storage.googleapis.com/bangkit_chatapp_bucket/${req.file.filename}`,
       phone_number: req.body.phone_number,
       role: req.body.role
     })
