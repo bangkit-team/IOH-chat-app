@@ -2,6 +2,7 @@
 - Nanti pakai heroku untuk tahap development
 
 # API List
+masih dalam tahap development (bisa berubah)
 
 ## SignUp User
 - URL
@@ -147,6 +148,26 @@
     "message": "Add yusuf@gmail.com to RedTeam group success"
 }
 ```
+
+## Add feedback
+- URL
+  - /user/:user_id/feedback/
+- Method
+  - POST
+- Request body
+  - id_user (string)
+  - feedback (string)
+- Response
+```
+{
+    "message": "Feedback kamu: aplikasi ini lumayan bagus mungkin bisa ditambah performa di realtime chatnya"
+}
+```
+
+## Get Realtime Chat
+
+## Send Chat
+
 
 
 
