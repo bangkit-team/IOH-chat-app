@@ -39,10 +39,19 @@ router.post('/',async(req,res) => {
 })
 
 router.get('/:user_id', (req,res) =>{
-  userRef.on('value', snapshot => {
-    const newPost = snapshot.val();
-    console.log(newPost)
-  })
+  const userRefId = db.ref('/users/'+req.params.user_id)
+  try{
+    userRefId.once('value', snapshot => {
+      res.status(200).send({
+        message: "Success get friend and group",
+        snapshot 
+      });
+    })
+  }catch(error){
+    res.status(500).send({
+      message: "Failed get friend and group"
+    })
+  }
 })
 
 router.post('/:user_id', (req,res) =>{
@@ -97,7 +106,10 @@ router.post('/:user_id', (req,res) =>{
         message: "Pesan belum ada"
       })
 
-      res.status(200).json({message: "Register Berhasil"});
+      res.status(200).json({
+        message: "Register Berhasil",
+        id_chat: id_chat
+      });
     }catch(error){
       res.status(500).json({message: "Error when insert new contact friend"})
     }
@@ -109,9 +121,18 @@ router.patch('/:user_id', (req,res) =>{
     name: req.body.name,
     profile_pict: req.body.profile_pict
   }
-  userRef.child(req.params.user_id).update(updateUser);
 
-  res.send('success');
+  try{
+    userRef.child(req.params.user_id).update(updateUser);
+
+    res.status(200).send({
+      message: "Success Edit Profile User"
+    });
+  }catch(error){
+    res.status(500).send({
+      message: "Error when update user profile"
+    })
+  }
 })
 
 module.exports = router

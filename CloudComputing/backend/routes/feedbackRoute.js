@@ -14,12 +14,17 @@ router.post('/', (req,res) =>{
     const dateToday = date.getDate()+'-'+date.getMonth()+'-'+date.getFullYear()
 
     const feedbackRef = db.ref('/feedbacks');
-    feedbackRef.child(id_user).set({
-        feedback: req.body.feedback,
-        timestamp: dateToday
-    })
 
-    res.status(200).send({ message: `Feedback kamu: ${feedback}`});
+    try{
+        feedbackRef.child(id_user).set({
+            feedback: req.body.feedback,
+            timestamp: dateToday
+        })
+    
+        res.status(200).send({ message: `Feedback kamu: ${feedback}`});
+    }catch(error){
+        res.status(500).send({message: "Error when add feedback"})
+    }
 })
 
 module.exports = router
