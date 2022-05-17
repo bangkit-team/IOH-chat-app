@@ -87,4 +87,66 @@
 ```
 
 ## Add new friend in User Contact
-- 
+- URL
+  - /user/:user_id
+- Method
+  - POST
+- Request body
+  - email (string) --> email temen yang mau di accept
+- Response 
+```
+{
+    "message": "Register Berhasil",
+    "id_chat": "-N2FfiXoQXQF2uOs4-Hb"
+}
+```
+
+## Add new Group
+- URL
+  - /user/:user_id/group
+- Method
+  - POST
+- Request body
+  - id_user (string)
+  - email_user (string)
+  - name (string) --> nama group baru
+- Response
+```
+{
+    "message": "Add new group success",
+    "id_group": "-N2Fh7kmJ26graL3LPVd"
+}
+```
+
+## Edit Group
+- URL
+  - /user/:user_id/group/:group_id
+- Method
+  - POST
+- Request body
+  - name (string) --> nama group baru
+  - group_pict (string)
+- Response body
+```
+{
+    "message": "Success Edit Profile Group"
+}
+```
+
+## Add friend to Group
+- URL
+  - /user/:user_id/group/:group_id
+- Method
+  - POST
+- Request body
+  - nameGroup (string)
+  - emailFriend (string)
+- Response body
+```
+{
+    "message": "Add yusuf@gmail.com to RedTeam group success"
+}
+```
+
+
+
