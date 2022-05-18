@@ -7,7 +7,7 @@ def load_data(path):
     sentences = list()
 
     df = pd.read_csv(path)
-    sentences.append(df.English)
+    sentences.append(df.Indonesia)
 
     return sentences
 
