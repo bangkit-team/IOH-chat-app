@@ -21,7 +21,7 @@ def loadWords(file_dir):
     for sentence in sentences:
         sentence = sentence.split(" ")
         for word in sentence:
-            filtered_words = " ".join(
+            filtered_words = "".join(
                 (filter(lambda c: c not in punctuation, word))).lower()
             words.add(filtered_words)
 
@@ -48,19 +48,7 @@ def archiveAudioFile(file_dir, save_dir):
     is_file_exsits = os.path.exists(os.path.join(
         save_dir + "/", f"{end_dir_name}.zip"))
 
-    fixed_filename = os.path.join(save_dir + "/", f"{end_dir_name}.zip")
-    extended_filename = os.path.join(
-        save_dir + "/", f"{end_dir_name}{IDX}.zip")
-
-    filename = ""
-
-    if is_file_exsits:
-        IDX += 1
-        filename = extended_filename
-    else:
-        IDX = 0
-        filename = fixed_filename
-
+    filename = os.path.join(save_dir + "/", f"{end_dir_name}.zip")
     zf = zipfile.ZipFile(filename, "w")
 
     for file in os.listdir(file_dir):
@@ -79,7 +67,7 @@ def main():
     lang_id = "id"
     myWords = loadWords("datasets/translate sentence/result/eng-ind.csv")
 
-    convertTextToSpeech(myWords, lang_id, AUDIO_DIR)
+    # convertTextToSpeech(myWords, lang_id, AUDIO_DIR)
     archiveAudioFile(AUDIO_DIR, SPEECH_DIR)
 
 
