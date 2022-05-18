@@ -34,10 +34,13 @@ router.post('/',(req,res)=>{
       })
   
       chatRef.child(id_chat).set({
-        message: "Pesan Grup belum ada"
+        message: `Pesan Grup ${req.body.name} belum ada`
       })
     
-      res.status(200).json({message: "Add new group success"});
+      res.status(200).json({
+        message: "Add new group success",
+        id_group: group_id
+      });
     }catch(error){
       res.status(500).json({message: "Error when make a group"})
     }
@@ -73,7 +76,7 @@ router.post('/:group_id', (req,res)=>{
         nameGroup: req.body.nameGroup
       })
 
-      res.status(200).json({message: "Add member group success"});
+      res.status(200).json({message: `Add ${req.body.emailFriend} to ${req.body.nameGroup} group success`});
     }catch(error){
       res.status(500).json({message: "Error when add member to group"});
     }
@@ -81,12 +84,19 @@ router.post('/:group_id', (req,res)=>{
 })
 
 router.patch('/:group_id', (req,res)=>{
+
+  try{
     const updateGroup = {
-        name: req.body.name,
-        group_pict: req.body.group_pict
+      name: req.body.name,
+      group_pict: req.body.group_pict
     }
     groupRef.child(req.params.group_id).update(updateGroup);
-    res.send('success');
+    res.status(200).send({
+      message: "Success Edit Profile Group"
+    });
+  }catch(error){
+    res.status(500).send({message: "Error when edit group profile"})
+  }
 })
 
 
