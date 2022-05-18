@@ -7,13 +7,21 @@ const cstorage = require('../utils/cloudStorage')
 const multer = require('multer');
 const storage = multer.diskStorage({
   destination: function(req, file, cb) {
-    cb(null, 'gambar/')
+    cb(null, 'files/')
   },
   filename: function(req, file, cb) {
     cb(null, Date.now() + file.originalname)
   }
 })
-const upload = multer({storage:storage});
+const fileFilter = (req, file, cb) => {
+  if(file.mimetype === 'image/jpeg' || file.mimetype === 'image/png')
+    cb(null, true);
+  else
+    cb(null, false);
+};
+const upload = multer({storage:storage, fileFilter:fileFilter});
+const fs = require('fs');
+const path = require("path");
 
 const userRef = db.ref('/users');
 
@@ -27,9 +35,13 @@ router.post('/', upload.single('productImage'),async(req,res) => {
 
   //taruk di cloud storage untuk profile pict 
   async function uploadFile() {
-    await cstorage.upload(`../backend/gambar/${req.file.filename}`,{
-        destination: `${req.file.filename}`
+    await cstorage.upload(`../backend/files/${req.file.filename}`,{
+        destination: `Users/${req.file.filename}`
     });
+    //ngehapus filenya
+    const filepath = path.resolve(`./files/${req.file.filename}`);
+    console.log('File path ::', filepath);
+    fs.unlinkSync(filepath);
   }
   uploadFile().catch(console.error);
 
@@ -40,7 +52,7 @@ router.post('/', upload.single('productImage'),async(req,res) => {
       name: req.body.name,
       email: req.body.email,
       password: hashPassword,
-      profile_pict: `https://storage.googleapis.com/bangkit_chatapp_bucket/${req.file.filename}`,
+      profile_pict: `https://storage.googleapis.com/bangkit_chatapp_bucket/Users/${req.file.filename}`,
       phone_number: req.body.phone_number,
       role: req.body.role
     })
