@@ -1,0 +1,9 @@
+aku adalah anak gendut
+
+  //taruk di cloud storage untuk profile pict 
+  //terus ambil url imagenya
+  // const linkProfile = await storage.upload('../backend/test.txt',{
+  //   destination: 'test.txt'
+  // })
+
+  // const storage = require('../utils/cloudStorage')
