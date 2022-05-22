@@ -2,6 +2,10 @@ const express = require('express')
 const router = express.Router()
 const db = require('../utils/firestore')
 const {updateGroupValidation} = require('../validate')
+const cstorage = require('../utils/cloudStorage')
+const { uploadGambar, uploadApaaja } = require('../utils/multerLibrary')
+const fs = require('fs');
+const path = require("path");
 const groupRef = db.ref('/groups');
 
 //tambah grup baru
@@ -141,14 +145,26 @@ router.post('/:group_id', (req,res)=>{
 })
 
 //edit profile group
-router.patch('/:group_id', (req,res)=>{
+router.patch('/:group_id', uploadGambar.single('group_pict'), (req,res)=>{
   const {error} = updateGroupValidation(req.body);
   if(error) return res.status(400).json({message:error.details[0].message});
+  
+  //taruk di cloud storage untuk profile pict 
+  async function uploadFile() {
+    await cstorage.upload(`../backend/files/${req.file.filename}`,{
+        destination: `GroupPict/${req.file.filename}`
+    });
+    //ngehapus filenya
+    const filepath = path.resolve(`./files/${req.file.filename}`);
+    console.log('File path ::', filepath);
+    fs.unlinkSync(filepath);
+  }
+  uploadFile().catch(console.error);
   
   try{
     const updateGroup = {
       name: req.body.name,
-      // group_pict: req.body.group_pict,
+      group_pict: `https://storage.googleapis.com/bangkit_chatapp_bucket/GroupPict/${req.file.filename}`,
       deskripsi: req.body.deskripsi
     }
     groupRef.child(req.params.group_id).update(updateGroup);
@@ -176,19 +192,33 @@ router.delete('/:group_id', (req,res)=>{
 })
 
 //realtime chat group by id
-router.post('/:group_id/chat', (req,res)=>{
+router.post('/:group_id/chat', uploadApaaja.single('file'), (req,res)=>{
   const chatGroupRef = db.ref('/groups/'+req.params.group_id+'/chat')
   const chatGroupId = chatGroupRef.push().key;
 
   const date = new Date();
   const timeToday = date.getHours()+'-'+date.getMinutes()+'-'+date.getSeconds()
 
+  //taruk di cloud storage untuk profile pict 
+  async function uploadFile() {
+    await cstorage.upload(`../backend/files/${req.file.filename}`,{
+        destination: `RoomFile/Group/${req.params.group_id}/${req.file.filename}`
+    });
+    //ngehapus filenya
+    const filepath = path.resolve(`./files/${req.file.filename}`);
+    console.log('File path ::', filepath);
+    console.log(req.file);
+    fs.unlinkSync(filepath);
+  }
+  uploadFile().catch(console.error);
+
   try{
-    //tambah user baru ke grup
+    //tambah chat baru ke grup
     chatGroupRef.child(chatGroupId).set({
       message:req.body.message,
       timestamp:timeToday,
-      sender: req.body.sender
+      sender: req.body.sender,
+      file: `https://storage.googleapis.com/bangkit_chatapp_bucket/RoomFile/Group/${req.params.group_id}/${req.file.filename}`
     })
 
     res.status(200).send({

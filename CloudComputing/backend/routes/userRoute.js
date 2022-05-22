@@ -4,29 +4,14 @@ const db = require('../utils/firestore')
 const {registerValidation, updateUserValidation} = require('../validate')
 const bcrypt = require('bcrypt');
 const cstorage = require('../utils/cloudStorage')
-const multer = require('multer');
-const storage = multer.diskStorage({
-  destination: function(req, file, cb) {
-    cb(null, 'files/')
-  },
-  filename: function(req, file, cb) {
-    cb(null, Date.now() + file.originalname)
-  }
-})
-const fileFilter = (req, file, cb) => {
-  if(file.mimetype === 'image/jpeg' || file.mimetype === 'image/png')
-    cb(null, true);
-  else
-    cb(null, false);
-};
-const upload = multer({storage:storage, fileFilter:fileFilter});
+const { uploadGambar } = require('../utils/multerLibrary')
 const fs = require('fs');
 const path = require("path");
 
 const userRef = db.ref('/users');
 
 //regis API
-router.post('/', upload.single('productImage'),async(req,res) => {
+router.post('/', uploadGambar.single('profile_pict'),async(req,res) => {
   const {error} = registerValidation(req.body);
   if(error) return res.status(400).json({message:error.details[0].message});
 
@@ -46,7 +31,7 @@ router.post('/', upload.single('productImage'),async(req,res) => {
       //taruk di cloud storage untuk profile pict 
       async function uploadFile() {
         await cstorage.upload(`../backend/files/${req.file.filename}`,{
-            destination: `Users/${req.file.filename}`
+            destination: `UserPict/${req.file.filename}`
         });
         //ngehapus filenya
         const filepath = path.resolve(`./files/${req.file.filename}`);
@@ -65,7 +50,7 @@ router.post('/', upload.single('productImage'),async(req,res) => {
           divisi_kerja: req.body.divisi_kerja,
           email: req.body.email,
           password: hashPassword,
-          profile_pict: `https://storage.googleapis.com/bangkit_chatapp_bucket/Users/${req.file.filename}`,
+          profile_pict: `https://storage.googleapis.com/bangkit_chatapp_bucket/UserPict/${req.file.filename}`,
           phone_number: req.body.phone_number,
           about: "Available"
         })
