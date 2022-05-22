@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router()
 const db = require('../utils/firestore')
-const {registerValidation} = require('../validate')
+const {registerValidation, updateUserValidation} = require('../validate')
 const bcrypt = require('bcrypt');
 const cstorage = require('../utils/cloudStorage')
 const multer = require('multer');
@@ -33,35 +33,51 @@ router.post('/', upload.single('productImage'),async(req,res) => {
   const salt = await bcrypt.genSalt(10);
   const hashPassword = await bcrypt.hash(req.body.password, salt);
 
-  //taruk di cloud storage untuk profile pict 
-  async function uploadFile() {
-    await cstorage.upload(`../backend/files/${req.file.filename}`,{
-        destination: `Users/${req.file.filename}`
-    });
-    //ngehapus filenya
-    const filepath = path.resolve(`./files/${req.file.filename}`);
-    console.log('File path ::', filepath);
-    fs.unlinkSync(filepath);
-  }
-  uploadFile().catch(console.error);
-
-  try{
-    const user_id = userRef.push().key;
-
-    userRef.child(user_id).set({
-      name: req.body.name,
-      email: req.body.email,
-      password: hashPassword,
-      profile_pict: `https://storage.googleapis.com/bangkit_chatapp_bucket/Users/${req.file.filename}`,
-      phone_number: req.body.phone_number,
-      role: req.body.role
+  var success = 0;
+  userRef.once('value', (snapshot) => {
+    snapshot.forEach((data) => {
+      if(data.val().email === req.body.email){
+        success = success + 1;
+      }
     })
-    res.status(200).json({message: "Register Berhasil"});
-  }catch(error){
-    res.status(500).json({message: "Error when store in database"})
-  }
+    if(success != 0){
+      res.status(400).json({message:"Email Sudah Terdaftar!"})
+    }else{
+      //taruk di cloud storage untuk profile pict 
+      async function uploadFile() {
+        await cstorage.upload(`../backend/files/${req.file.filename}`,{
+            destination: `Users/${req.file.filename}`
+        });
+        //ngehapus filenya
+        const filepath = path.resolve(`./files/${req.file.filename}`);
+        console.log('File path ::', filepath);
+        fs.unlinkSync(filepath);
+      }
+      uploadFile().catch(console.error);
+
+      try{
+        const user_id = userRef.push().key;
+
+        userRef.child(user_id).set({
+          name: req.body.name,
+          tanggal_lahir: req.body.tanggal_lahir,
+          posisi: req.body.posisi,
+          divisi_kerja: req.body.divisi_kerja,
+          email: req.body.email,
+          password: hashPassword,
+          profile_pict: `https://storage.googleapis.com/bangkit_chatapp_bucket/Users/${req.file.filename}`,
+          phone_number: req.body.phone_number,
+          about: "Available"
+        })
+        res.status(200).json({message: "Register Berhasil"});
+      }catch(error){
+        res.status(500).json({message: "Error when store in database"})
+      }
+    }
+  });
 })
 
+//ambil semua data untuk specific user
 router.get('/:user_id', (req,res) =>{
   const userRefId = db.ref('/users/'+req.params.user_id)
   try{
@@ -78,18 +94,21 @@ router.get('/:user_id', (req,res) =>{
   }
 })
 
+//tambah teman private chat
 router.post('/:user_id', (req,res) =>{
   //untuk User
   const userDataRef = db.ref('/users/'+req.params.user_id+'/contact')
   // const emailUser = db.ref('/users/'+req.params.user_id).email
   
   //Untuk FriendUser
+  var success = 0;
   let friendId = ''
   let dataUser = {}
   let dataFriend = {}
   userRef.once('value', (snapshot) =>{
     snapshot.forEach((data) => {
       if(data.val().email === req.body.email){
+        success = success + 1;
         friendId = data.key
         dataFriend = {
           nameFriend: data.val().name,
@@ -103,47 +122,65 @@ router.post('/:user_id', (req,res) =>{
         }
       }
     });
-    // console.log(emailUser);
-    const userFriendRef = db.ref('/users/'+friendId+'/contact')
+    if(success == 0){
+      res.status(400).send({message:"Email yang Dicari Tidak Ada!"})
+    }else{
+      // console.log(emailUser);
+      const userFriendRef = db.ref('/users/'+friendId+'/contact')
 
-    //Untuk Chat
-    const chatId = db.ref('/chats')
+      const date = new Date()
+      const timeToday = date.getHours()+'-'+date.getMinutes()+'-'+date.getSeconds()
 
+      try{
+        const id_chat = userDataRef.push().key+dataUser.nameUser+'-'+dataFriend.nameFriend+'PC';
+        const chatIdRef = db.ref('/chats/'+id_chat);
+        const id_per_chat = chatIdRef.push().key;
 
-    try{
-      const id_chat = userDataRef.push().key;
+        //Untuk User
+        userDataRef.child(id_chat).set({
+          id_chat: id_chat,
+          nameFriend: dataFriend.nameFriend,
+          emailFriend: dataFriend.emailFriend
+        })
 
-      //Untuk User
-      userDataRef.child(id_chat).set({
-        nameFriend: dataFriend.nameFriend,
-        emailFriend: dataFriend.emailFriend
-      })
+        //Untuk FriendUser
+        userFriendRef.child(id_chat).set({
+          id_chat: id_chat,
+          namaFriend: dataUser.nameUser,
+          emailFriend: dataUser.emailUser
+        })
 
-      //Untuk FriendUser
-      userFriendRef.child(id_chat).set({
-        namaFriend: dataUser.nameUser,
-        emailFriend: dataUser.emailUser
-      })
+        //untuk Chat
+        chatIdRef.child(id_per_chat).set({
+          message: "Pesan belum ada",
+          timestamp: timeToday
+        })
 
-      //untuk Chat
-      chatId.child(id_chat).set({
-        message: "Pesan belum ada"
-      })
-
-      res.status(200).json({
-        message: "Register Berhasil",
-        id_chat: id_chat
-      });
-    }catch(error){
-      res.status(500).json({message: "Error when insert new contact friend"})
+        res.status(200).json({
+          message: "Register Berhasil",
+          id_chat: id_chat
+        });
+      }catch(error){
+        res.status(500).json({message: "Error when insert new contact friend"})
+      }
     }
   })
 })
 
+// edit user
 router.patch('/:user_id', (req,res) =>{
+  const {error} = updateUserValidation(req.body);
+  if(error) return res.status(400).json({message:error.details[0].message});
+
+  //profile_pict diambil bukan dari body
   const updateUser = {
     name: req.body.name,
-    profile_pict: req.body.profile_pict
+    phone_number: req.body.phone_number,
+    tanggal_lahir: req.body.tanggal_lahir,
+    posisi: req.body.posisi,
+    divisi_kerja: req.body.divisi_kerja,
+    // profile_pict: req.body.profile_pict,
+    about: req.body.about
   }
 
   try{
@@ -158,5 +195,30 @@ router.patch('/:user_id', (req,res) =>{
     })
   }
 })
+
+//realtime chat PC
+router.post('/:user_id/chat/:chat_id', (req,res) =>{
+  const chatPCRef = db.ref('/chats/'+req.params.chat_id)
+  const chatPCId = chatPCRef.push().key;
+
+  const date = new Date();
+  const timeToday = date.getHours()+'-'+date.getMinutes()+'-'+date.getSeconds()
+
+  try{
+    //tambah user baru ke grup
+    chatPCRef.child(chatPCId).set({
+      message:req.body.message,
+      timestamp:timeToday,
+      sender: req.body.sender
+    })
+
+    res.status(200).send({
+      message: "Success send chat"
+    });
+  }catch(error){
+    res.status(500).send({message: "Error when send chat"})
+  }
+})
+
 
 module.exports = router
