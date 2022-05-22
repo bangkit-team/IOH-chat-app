@@ -1,8 +1,9 @@
 # API Endpoint
-- Nanti pakai heroku untuk tahap development atau langsung pakai App engine
+- heroku:
+  - http://redteam-chatapp.herokuapp.com/  
 
 # API List
-masih dalam tahap development (bisa berubah)
+ada beberapa perubahan yang blm diubah
 
 ## SignUp User
 - URL
