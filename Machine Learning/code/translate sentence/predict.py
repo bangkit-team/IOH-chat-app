@@ -7,5 +7,9 @@ input_text = tf.constant([
 ])
 result = translate.tf_translate(input_text)
 
+hasil = list()
+
 for i in result['text']:
-  print(i.numpy().decode())
+  hasil.append(i.numpy().decode())
+
+print(hasil)
