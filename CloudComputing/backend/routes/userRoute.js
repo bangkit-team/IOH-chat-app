@@ -4,7 +4,7 @@ const db = require('../utils/firestore')
 const {registerValidation, updateUserValidation} = require('../validate')
 const bcrypt = require('bcrypt');
 const cstorage = require('../utils/cloudStorage')
-const { uploadGambar } = require('../utils/multerLibrary')
+const { uploadGambar, uploadApaaja } = require('../utils/multerLibrary')
 const fs = require('fs');
 const path = require("path");
 
@@ -80,7 +80,7 @@ router.get('/:user_id', (req,res) =>{
 })
 
 //tambah teman private chat
-router.post('/:user_id', (req,res) =>{
+router.post('/:user_id', uploadApaaja.single('file'), (req,res) =>{
   //untuk User
   const userDataRef = db.ref('/users/'+req.params.user_id+'/contact')
   // const emailUser = db.ref('/users/'+req.params.user_id).email
@@ -103,7 +103,8 @@ router.post('/:user_id', (req,res) =>{
       if(data.key === req.params.user_id){
         dataUser = {
           nameUser: data.val().name,
-          emailUser: data.val().email
+          emailUser: data.val().email,
+          posisiUser: data.val().posisi
         }
       }
     });
@@ -121,6 +122,19 @@ router.post('/:user_id', (req,res) =>{
         const chatIdRef = db.ref('/chats/'+id_chat);
         const id_per_chat = chatIdRef.push().key;
 
+        //taruk di cloud storage untuk profile pict 
+        async function uploadFile() {
+          await cstorage.upload(`../backend/files/${req.file.filename}`,{
+            destination: `RoomFile/PersonalChat/${id_chat}/${req.file.filename}`
+          });
+          //ngehapus filenya
+          const filepath = path.resolve(`./files/${req.file.filename}`);
+          console.log('File path ::', filepath);
+          console.log(req.file);
+          fs.unlinkSync(filepath);
+        }
+        uploadFile().catch(console.error);
+
         //Untuk User
         userDataRef.child(id_chat).set({
           id_chat: id_chat,
@@ -137,8 +151,10 @@ router.post('/:user_id', (req,res) =>{
 
         //untuk Chat
         chatIdRef.child(id_per_chat).set({
-          message: "Pesan belum ada",
-          timestamp: timeToday
+          message: req.body.message,
+          timestamp: timeToday,
+          sender: dataUser.emailUser,
+          file: `https://storage.googleapis.com/bangkit_chatapp_bucket/RoomFile/PersonalChat/${id_chat}/${req.file.filename}`
         })
 
         res.status(200).json({
