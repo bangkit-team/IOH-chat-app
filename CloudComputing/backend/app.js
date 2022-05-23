@@ -2,6 +2,7 @@ const user = require('./routes/userRoute')
 const login = require('./routes/loginRoute')
 const group = require('./routes/groupRoute')
 const feedback = require('./routes/feedbackRoute')
+const admin = require('./routes/adminRoute')
 
 const express = require('express')
 const app = express()
@@ -27,7 +28,7 @@ app.use(express.static('public'));
 const cors=require("cors");
 const { response } = require('express')
 const corsOptions ={
-    origin:'*', 
+    origin:true, 
     credentials:true,            //access-control-allow-credentials:true
     optionSuccessStatus:200,
 }
@@ -37,6 +38,9 @@ app.use('/user', user)
 app.use('/login', login)
 app.use('/user/:user_id/group',group)
 app.use('/user/:user_id/feedback',feedback)
+
+//khusus admin
+app.use('/admin', admin);
 
 
 app.get('/', (req, res) => {
