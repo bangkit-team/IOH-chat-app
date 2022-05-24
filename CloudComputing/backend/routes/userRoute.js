@@ -4,7 +4,7 @@ const db = require('../utils/firestore')
 const {registerValidation, updateUserValidation} = require('../validate')
 const bcrypt = require('bcrypt');
 const cstorage = require('../utils/cloudStorage')
-const { uploadGambar } = require('../utils/multerLibrary')
+const { uploadGambar, uploadApaaja } = require('../utils/multerLibrary')
 const fs = require('fs');
 const path = require("path");
 
@@ -80,7 +80,7 @@ router.get('/:user_id', (req,res) =>{
 })
 
 //tambah teman private chat
-router.post('/:user_id', (req,res) =>{
+router.post('/:user_id', uploadApaaja.single('file'), (req,res) =>{
   //untuk User
   const userDataRef = db.ref('/users/'+req.params.user_id+'/contact')
   // const emailUser = db.ref('/users/'+req.params.user_id).email
@@ -136,10 +136,33 @@ router.post('/:user_id', (req,res) =>{
         })
 
         //untuk Chat
-        chatIdRef.child(id_per_chat).set({
-          message: "Pesan belum ada",
-          timestamp: timeToday
-        })
+        try{
+          console.log(req.file.filename)
+          //taruk di cloud storage untuk profile pict 
+          async function uploadFile() {
+            await cstorage.upload(`../backend/files/${req.file.filename}`,{
+              destination: `RoomFile/PersonalChat/${req.params.chat_id}/${req.file.filename}`
+            });
+            //ngehapus filenya
+            const filepath = path.resolve(`./files/${req.file.filename}`);
+            console.log('File path ::', filepath);
+            console.log(req.file);
+            fs.unlinkSync(filepath);
+          }
+          uploadFile().catch(console.error);
+          chatIdRef.child(id_per_chat).set({
+            message: req.body.message,
+            timestamp: timeToday,
+            sender: dataUser.emailUser,
+            file: `https://storage.googleapis.com/bangkit_chatapp_bucket/RoomFile/PersonalChat/${id_chat}/${req.file.filename}`
+          })
+        } catch(error) {
+          chatIdRef.child(id_per_chat).set({
+            message: req.body.message,
+            timestamp: timeToday,
+            sender: dataUser.emailUser
+          })
+        }
 
         res.status(200).json({
           message: "Register Berhasil",
@@ -182,7 +205,7 @@ router.patch('/:user_id', (req,res) =>{
 })
 
 //realtime chat PC
-router.post('/:user_id/chat/:chat_id', (req,res) =>{
+router.post('/:user_id/chat/:chat_id', uploadApaaja.single('file'), (req,res) =>{
   const chatPCRef = db.ref('/chats/'+req.params.chat_id)
   const chatPCId = chatPCRef.push().key;
 
@@ -190,18 +213,41 @@ router.post('/:user_id/chat/:chat_id', (req,res) =>{
   const timeToday = date.getHours()+'-'+date.getMinutes()+'-'+date.getSeconds()
 
   try{
-    //tambah user baru ke grup
-    chatPCRef.child(chatPCId).set({
-      message:req.body.message,
-      timestamp:timeToday,
-      sender: req.body.sender
-    })
+    try{
+      console.log(req.file.filename)
+      //taruk di cloud storage untuk profile pict 
+      async function uploadFile() {
+        await cstorage.upload(`../backend/files/${req.file.filename}`,{
+          destination: `RoomFile/PersonalChat/${req.params.chat_id}/${req.file.filename}`
+        });
+        //ngehapus filenya
+        const filepath = path.resolve(`./files/${req.file.filename}`);
+        console.log('File path ::', filepath);
+        console.log(req.file);
+        fs.unlinkSync(filepath);
+      }
+      uploadFile().catch(console.error);
+      chatPCRef.child(chatPCId).set({
+        message:req.body.message,
+        timestamp:timeToday,
+        sender: req.body.sender,
+        file: `https://storage.googleapis.com/bangkit_chatapp_bucket/RoomFile/PersonalChat/${req.params.chat_id}/${req.file.filename}`
+      })
+    } catch(error){
+      chatPCRef.child(chatPCId).set({
+        message:req.body.message,
+        timestamp:timeToday,
+        sender: req.body.sender
+      })
+    }
 
     res.status(200).send({
-      message: "Success send chat"
+      message: "Success send chat",
     });
-  }catch(error){
-    res.status(500).send({message: "Error when send chat"})
+  } catch(error){
+    res.status(500).send({
+      message: "Error when send chat",
+    })
   }
 })
 
