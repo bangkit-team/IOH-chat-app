@@ -199,27 +199,35 @@ router.post('/:group_id/chat', uploadApaaja.single('file'), (req,res)=>{
   const date = new Date();
   const timeToday = date.getHours()+'-'+date.getMinutes()+'-'+date.getSeconds()
 
-  //taruk di cloud storage untuk profile pict 
-  async function uploadFile() {
-    await cstorage.upload(`../backend/files/${req.file.filename}`,{
-        destination: `RoomFile/Group/${req.params.group_id}/${req.file.filename}`
-    });
-    //ngehapus filenya
-    const filepath = path.resolve(`./files/${req.file.filename}`);
-    console.log('File path ::', filepath);
-    console.log(req.file);
-    fs.unlinkSync(filepath);
-  }
-  uploadFile().catch(console.error);
-
   try{
     //tambah chat baru ke grup
-    chatGroupRef.child(chatGroupId).set({
-      message:req.body.message,
-      timestamp:timeToday,
-      sender: req.body.sender,
-      file: `https://storage.googleapis.com/bangkit_chatapp_bucket/RoomFile/Group/${req.params.group_id}/${req.file.filename}`
-    })
+    try{
+      console.log(req.file.filename)
+      //taruk di cloud storage untuk profile pict 
+      async function uploadFile() {
+        await cstorage.upload(`../backend/files/${req.file.filename}`,{
+            destination: `RoomFile/Group/${req.params.group_id}/${req.file.filename}`
+        });
+        //ngehapus filenya
+        const filepath = path.resolve(`./files/${req.file.filename}`);
+        console.log('File path ::', filepath);
+        console.log(req.file);
+        fs.unlinkSync(filepath);
+      }
+      uploadFile().catch(console.error);
+      chatGroupRef.child(chatGroupId).set({
+        message:req.body.message,
+        timestamp:timeToday,
+        sender: req.body.sender,
+        file: `https://storage.googleapis.com/bangkit_chatapp_bucket/RoomFile/Group/${req.params.group_id}/${req.file.filename}`
+      })
+    } catch(error){
+      chatGroupRef.child(chatGroupId).set({
+        message:req.body.message,
+        timestamp:timeToday,
+        sender: req.body.sender
+      })
+    }
 
     res.status(200).send({
       message: "Success send chat"
@@ -229,7 +237,6 @@ router.post('/:group_id/chat', uploadApaaja.single('file'), (req,res)=>{
   }
 
 })
-
 
 
 module.exports = router

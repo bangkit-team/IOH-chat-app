@@ -103,8 +103,7 @@ router.post('/:user_id', uploadApaaja.single('file'), (req,res) =>{
       if(data.key === req.params.user_id){
         dataUser = {
           nameUser: data.val().name,
-          emailUser: data.val().email,
-          posisiUser: data.val().posisi
+          emailUser: data.val().email
         }
       }
     });
@@ -122,19 +121,6 @@ router.post('/:user_id', uploadApaaja.single('file'), (req,res) =>{
         const chatIdRef = db.ref('/chats/'+id_chat);
         const id_per_chat = chatIdRef.push().key;
 
-        //taruk di cloud storage untuk profile pict 
-        async function uploadFile() {
-          await cstorage.upload(`../backend/files/${req.file.filename}`,{
-            destination: `RoomFile/PersonalChat/${id_chat}/${req.file.filename}`
-          });
-          //ngehapus filenya
-          const filepath = path.resolve(`./files/${req.file.filename}`);
-          console.log('File path ::', filepath);
-          console.log(req.file);
-          fs.unlinkSync(filepath);
-        }
-        uploadFile().catch(console.error);
-
         //Untuk User
         userDataRef.child(id_chat).set({
           id_chat: id_chat,
@@ -150,12 +136,33 @@ router.post('/:user_id', uploadApaaja.single('file'), (req,res) =>{
         })
 
         //untuk Chat
-        chatIdRef.child(id_per_chat).set({
-          message: req.body.message,
-          timestamp: timeToday,
-          sender: dataUser.emailUser,
-          file: `https://storage.googleapis.com/bangkit_chatapp_bucket/RoomFile/PersonalChat/${id_chat}/${req.file.filename}`
-        })
+        try{
+          console.log(req.file.filename)
+          //taruk di cloud storage untuk profile pict 
+          async function uploadFile() {
+            await cstorage.upload(`../backend/files/${req.file.filename}`,{
+              destination: `RoomFile/PersonalChat/${req.params.chat_id}/${req.file.filename}`
+            });
+            //ngehapus filenya
+            const filepath = path.resolve(`./files/${req.file.filename}`);
+            console.log('File path ::', filepath);
+            console.log(req.file);
+            fs.unlinkSync(filepath);
+          }
+          uploadFile().catch(console.error);
+          chatIdRef.child(id_per_chat).set({
+            message: req.body.message,
+            timestamp: timeToday,
+            sender: dataUser.emailUser,
+            file: `https://storage.googleapis.com/bangkit_chatapp_bucket/RoomFile/PersonalChat/${id_chat}/${req.file.filename}`
+          })
+        } catch(error) {
+          chatIdRef.child(id_per_chat).set({
+            message: req.body.message,
+            timestamp: timeToday,
+            sender: dataUser.emailUser
+          })
+        }
 
         res.status(200).json({
           message: "Register Berhasil",
@@ -198,7 +205,7 @@ router.patch('/:user_id', (req,res) =>{
 })
 
 //realtime chat PC
-router.post('/:user_id/chat/:chat_id', (req,res) =>{
+router.post('/:user_id/chat/:chat_id', uploadApaaja.single('file'), (req,res) =>{
   const chatPCRef = db.ref('/chats/'+req.params.chat_id)
   const chatPCId = chatPCRef.push().key;
 
@@ -206,18 +213,41 @@ router.post('/:user_id/chat/:chat_id', (req,res) =>{
   const timeToday = date.getHours()+'-'+date.getMinutes()+'-'+date.getSeconds()
 
   try{
-    //tambah user baru ke grup
-    chatPCRef.child(chatPCId).set({
-      message:req.body.message,
-      timestamp:timeToday,
-      sender: req.body.sender
-    })
+    try{
+      console.log(req.file.filename)
+      //taruk di cloud storage untuk profile pict 
+      async function uploadFile() {
+        await cstorage.upload(`../backend/files/${req.file.filename}`,{
+          destination: `RoomFile/PersonalChat/${req.params.chat_id}/${req.file.filename}`
+        });
+        //ngehapus filenya
+        const filepath = path.resolve(`./files/${req.file.filename}`);
+        console.log('File path ::', filepath);
+        console.log(req.file);
+        fs.unlinkSync(filepath);
+      }
+      uploadFile().catch(console.error);
+      chatPCRef.child(chatPCId).set({
+        message:req.body.message,
+        timestamp:timeToday,
+        sender: req.body.sender,
+        file: `https://storage.googleapis.com/bangkit_chatapp_bucket/RoomFile/PersonalChat/${req.params.chat_id}/${req.file.filename}`
+      })
+    } catch(error){
+      chatPCRef.child(chatPCId).set({
+        message:req.body.message,
+        timestamp:timeToday,
+        sender: req.body.sender
+      })
+    }
 
     res.status(200).send({
-      message: "Success send chat"
+      message: "Success send chat",
     });
-  }catch(error){
-    res.status(500).send({message: "Error when send chat"})
+  } catch(error){
+    res.status(500).send({
+      message: "Error when send chat",
+    })
   }
 })
 
