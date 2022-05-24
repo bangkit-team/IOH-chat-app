@@ -3,6 +3,8 @@ const router = express.Router()
 const db = require('../utils/firestore')
 const {loginAdminValidation} = require('../validate')
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken')
+const verify = require('./verifyToken');
 
 const adminRef = db.ref('/admin')
 
@@ -12,31 +14,42 @@ router.post('/', async(req,res) =>{
     if(error) return res.status(400).send(error.details[0].message)
 
     var success = 0;
+    var id_admin = '';
     adminRef.once('value', (snapshot) => {
         snapshot.forEach((data) => {
             if(data.val().username === req.body.username && bcrypt.compareSync( req.body.password, data.val().password)){
                 success = success + 1;
+                id_admin = data.key;
             }
         });
 
         if(success == 0) return res.status(400).json({message: "Email atau Password Salah"})
         
+        const token = jwt.sign({_id: id_admin, exp:Math.floor(Date.now()/1000)+(60*60)}, process.env.TOKEN_SECRET);
+
         return res.status(200).json({
-            message: "Login berhasil"
+            message: "Login berhasil",
+            _id: id_admin,
+            token: token,
         })
     });
 
 })
 
 //get all user
-router.get('/users', (req,res)=>{
+router.get('/users',verify, (req,res)=>{
     const userRef = db.ref('/users')
 
+    let user = []
+    var arr1 = 0
     try{
         userRef.once('value', snapshot => {
+            snapshot.forEach((data) => {
+                user.push([data.val().name,data.val().email])
+            })
             res.status(200).send({
                 message: "Success get All Users",
-                snapshot
+                snapshot: user 
             })
         })
     }catch(error){
@@ -44,7 +57,7 @@ router.get('/users', (req,res)=>{
     }
 })
 
-router.get('/groups', (req,res)=>{
+router.get('/groups',verify, (req,res)=>{
     const groupRef = db.ref('/groups')
 
     try{

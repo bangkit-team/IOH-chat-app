@@ -1,5 +1,4 @@
 import { useRef, useState, useEffect, useContext } from 'react';
-import AuthContext from "../../context/AuthProvider";
 
 import "./login.css"
 import logo from "../../IoHLogo.png";
@@ -8,7 +7,6 @@ import axios from '../../api/axios';
 const LOGIN_URL = '/admin';
 
 const Login = () => {
-    const { setAuth } = useContext(AuthContext);
     const userRef = useRef();
     const errRef = useRef();
 
@@ -36,14 +34,13 @@ const Login = () => {
                     withCredentials: true
                 }
             );
-            // console.log(JSON.stringify(response?.data));
-            //console.log(JSON.stringify(response));
-            // const accessToken = response?.data?.accessToken;
-            // const roles = response?.data?.roles;
-            // setAuth({ user, pwd, roles, accessToken });
-            // setUser('');
-            // setPwd('');
-            setSuccess(true);
+            if(response?.data?.token){
+                localStorage.setItem("token", JSON.stringify(response.data.token))
+                localStorage.setItem("_id", JSON.stringify(response.data._id))
+            }
+            setUser('');
+            setPwd('');
+            window.location.href = "/home";
         } catch (err) {
             if (!err?.response) {
                 setErrMsg('No Server Response');
