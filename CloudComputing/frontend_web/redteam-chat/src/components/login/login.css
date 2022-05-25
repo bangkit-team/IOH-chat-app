@@ -32,10 +32,6 @@ form {
     padding-bottom: 1rem;
 }
 
-a, a:visited {
-    color: #fff;
-}
-
 input[type="text"],
 input[type="password"],
 button,
