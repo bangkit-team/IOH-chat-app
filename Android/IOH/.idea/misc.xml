@@ -3,6 +3,14 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Kuliah/Kotlin/Capstone/IOH-Chat-App/Android/IOH/app/src/main/res/drawable/custom_edttext.xml" value="0.1255" />
+        <entry key="..\:/Kuliah/Kotlin/Capstone/IOH-Chat-App/Android/IOH/app/src/main/res/drawable/custome_edt_active.xml" value="0.1" />
+        <entry key="..\:/Kuliah/Kotlin/Capstone/IOH-Chat-App/Android/IOH/app/src/main/res/drawable/custome_edt_unactive.xml" value="0.1" />
+        <entry key="..\:/Kuliah/Kotlin/Capstone/IOH-Chat-App/Android/IOH/app/src/main/res/drawable/ic_hide_password.xml" value="0.1" />
+        <entry key="..\:/Kuliah/Kotlin/Capstone/IOH-Chat-App/Android/IOH/app/src/main/res/drawable/ic_show_password.xml" value="0.1" />
+        <entry key="..\:/Kuliah/Kotlin/Capstone/IOH-Chat-App/Android/IOH/app/src/main/res/layout/activity_login.xml" value="0.2" />
+        <entry key="..\:/Kuliah/Kotlin/Capstone/IOH-Chat-App/Android/IOH/app/src/main/res/layout/activity_register.xml" value="0.22" />
+        <entry key="..\:/Kuliah/Kotlin/Capstone/IOH-Chat-App/Android/IOH/app/src/main/res/layout/activity_splash_screen.xml" value="0.18981481481481483" />
         <entry key="..\:/Kuliah/Kotlin/Capstone/IOH-Chat-App/Android/IOH/app/src/main/res/layout/fragment_dashboard.xml" value="0.20416666666666666" />
         <entry key="..\:/Kuliah/Kotlin/Capstone/IOH-Chat-App/Android/IOH/app/src/main/res/layout/fragment_home.xml" value="0.18981481481481483" />
         <entry key="..\:/Kuliah/Kotlin/Capstone/IOH-Chat-App/Android/IOH/app/src/main/res/layout/fragment_notifications.xml" value="0.20416666666666666" />

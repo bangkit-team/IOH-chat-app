@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="LargeTextP">
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:letterSpacing">-0.01</item>
+        <item name="android:fontFamily">@font/poppins_medium</item>
+    </style>
+
+    <style name="Title1MediumP">
+        <item name="android:textSize">22sp</item>
+        <item name="android:fontFamily">@font/poppins_medium</item>
+    </style>
+
+    <style name="Title1LightP">
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:letterSpacing">0.02</item>
+        <item name="android:fontFamily">@font/poppins_light</item>
+    </style>
+
+    <style name="Title2MediumP">
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:fontFamily">@font/poppins_medium</item>
+    </style>
+
+    <style name="Title3BoldR">
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@font/roboto_bold</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:lineSpacingExtra">4sp</item>
+    </style>
+
+    <style name="Title3SemiBoldP">
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:letterSpacing">0.01</item>
+        <item name="android:fontFamily">@font/poppins_semibold</item>
+    </style>
+
+    <style name="Title3MediumP">
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:lineSpacingExtra">10sp</item>
+        <item name="android:fontFamily">@font/poppins_medium</item>
+    </style>
+
+    <style name="Title3RegularR">
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:lineSpacingExtra">12sp</item>
+    </style>
+
+    <style name="NormalTextBoldR">
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">@font/roboto_bold</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">0.02</item>
+        <item name="android:lineSpacingExtra">6sp</item>
+    </style>
+
+    <style name="Title6MediumP">
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@font/poppins_medium</item>
+    </style>
+
+    <style name="Title5RegularR">
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+    </style>
+
+    <style name="Title4SemiBoldP">
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@font/poppins_semibold</item>
+    </style>
+
+    <style name="Title4MediumP">
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@font/poppins_medium</item>
+    </style>
+
+    <style name="NormalTextMediumR">
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">@font/roboto_medium</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="NormalTextRegularR">
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:lineSpacingExtra">8sp</item>
+    </style>
+
+    <style name="ParagraphSemiBoldP">
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">@font/poppins_semibold</item>
+    </style>
+
+    <style name="ParagraphMediumP">
+        <item name="android:textSize">14sp</item>
+        <item name="android:lineSpacingExtra">2sp</item>
+        <item name="android:fontFamily">@font/poppins_medium</item>
+    </style>
+
+    <style name="ParagraphMediumR">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:fontFamily">@font/roboto_medium</item>
+    </style>
+
+    <style name="ParagraphRegularR">
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="SmallTextMediumP">
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">@font/poppins_medium</item>
+    </style>
+
+    <style name="SmallTextRegularR">
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="SmallTextBoldR">
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">@font/roboto_bold</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="ExtraSmallTextR">
+        <item name="android:textSize">10sp</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <!--local-->
+    <style name="ExtraSmallMediumR">
+        <item name="android:textSize">10sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="SmallTextMediumR">
+        <item name="android:textSize">10sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+</resources>

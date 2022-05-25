@@ -1,5 +1,7 @@
 package com.example.ioh.ui
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
@@ -9,6 +11,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.ioh.R
 import com.example.ioh.databinding.ActivityMainBinding
+import com.example.ioh.ui.register.RegisterActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -32,5 +35,13 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+    }
+
+    companion object {
+        fun start(context: Context) {
+            Intent(context, MainActivity::class.java).apply {
+                context.startActivity(this)
+            }
+        }
     }
 }
