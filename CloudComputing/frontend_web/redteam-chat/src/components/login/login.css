@@ -14,14 +14,22 @@ section {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    padding: 1rem;
-    background-color: rgba(0,0,0,0.2);
+    padding: 3rem;
+    box-shadow: 1px 1px 40px 10px lightgrey;
+    border-radius: 2%;
+    background-color: white;
 }
 
-h1{
-    text-align: center; 
+.kotak-atas{
+    background-image: linear-gradient(to right, red , yellow);
+    height: 20px;
+}
+
+.sign-h1{
+    text-align: left; 
     margin-top:0;
     padding-top:0;
+    padding-bottom: 12px;
 }
 
 form {
@@ -51,7 +59,8 @@ img{
 }
 
 label{
-    font-size: 20px;
+    font-size: 18px;
+    padding-bottom: 10px;
 }
 
 label,
@@ -60,6 +69,8 @@ button {
 }
 
 button {
+  font-size: 18px;
+  margin-top: 25px;
   padding: 0.5rem;
   background-color: lightblue;
 }

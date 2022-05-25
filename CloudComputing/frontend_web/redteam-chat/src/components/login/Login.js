@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect, useContext } from 'react';
+import { useRef, useState, useEffect} from 'react';
 
 import "./login.css"
 import logo from "../../IoHLogo.png";
@@ -13,7 +13,6 @@ const Login = () => {
     const [username, setUser] = useState('');
     const [password, setPwd] = useState('');
     const [errMsg, setErrMsg] = useState('');
-    const [success, setSuccess] = useState(false);
 
     useEffect(() => {
         userRef.current.focus();
@@ -57,30 +56,24 @@ const Login = () => {
 
     return (
         <>
-        <div className="Login">
-            {success ? (
-                <section>
-                    <h1>You are logged in!</h1>
-                    <br />
-                    <p>
-                        <a href="#">Go to Home</a>
-                    </p>
-                </section>
-            ) : (
-                <section>
-                    <img src={logo}/>
-                    <h1>Login</h1>
-                    <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
-                    <form onSubmit={handleSubmit}>
-                        <label htmlFor="username">Username:</label>
-                        <input type="text" id="username" ref={userRef} autoComplete="off" onChange={(e) => setUser(e.target.value)} value={username} required/>
+        <div>
+            <div className="kotak-atas"></div>
+            <div className="Login">
+            <section>
+                <img src={logo} alt="logo"/>
+                <h1 className="sign-h1">Sign In</h1>
+                <hr></hr>
+                <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
+                <form onSubmit={handleSubmit}>
+                    <label htmlFor="username">Username:</label>
+                    <input type="text" id="username" ref={userRef} autoComplete="off" onChange={(e) => setUser(e.target.value)} value={username} required/>
 
-                        <label htmlFor="password">Password:</label>
-                        <input type="password" id="password" onChange={(e) => setPwd(e.target.value)} value={password} required/>
-                        <button>Login</button>
-                    </form>
-                </section>
-            )}
+                    <label htmlFor="password">Password:</label>
+                    <input type="password" id="password" onChange={(e) => setPwd(e.target.value)} value={password} required/>
+                    <button>Sign In</button>
+                </form>
+            </section>
+            </div>
         </div>
         </>
     )

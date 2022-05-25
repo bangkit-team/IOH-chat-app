@@ -41,11 +41,10 @@ router.get('/users',verify, (req,res)=>{
     const userRef = db.ref('/users')
 
     let user = []
-    var arr1 = 0
     try{
         userRef.once('value', snapshot => {
             snapshot.forEach((data) => {
-                user.push([data.val().name,data.val().email])
+                user.push([data.val().name,data.val().email,data.val().profile_pict])
             })
             res.status(200).send({
                 message: "Success get All Users",

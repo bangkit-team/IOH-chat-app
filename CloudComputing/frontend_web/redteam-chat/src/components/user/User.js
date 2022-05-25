@@ -1,6 +1,8 @@
 import React,{useState,useEffect} from 'react';
 import "./user.css";
 
+import card from "../../card.jpg";
+
 import authHeader from "../../context/authHeader";
 import axios from "../../api/axios";
 
@@ -21,7 +23,7 @@ const User = () => {
     }
 
     useEffect(()=>{
-        if(authHeader().token == undefined){
+        if(authHeader().token === undefined){
             window.location.href="/";
         }
         getAllUsers()
@@ -29,7 +31,20 @@ const User = () => {
 
     return(
         <div>
-            <h1>{data[0][1]}</h1>
+            <div className="kotak-atas"></div>
+            <h1>IoH - Users Chat </h1>
+            <div class="row justify-content-center">
+                <div class="col-md-2 mb-3">
+                    <div class="card" data-aos="flip-right">
+                        <img src={data[3][2]} class="card-img-top" alt="project1"/>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">ger</li>
+                            <li class="list-group-item">A second item</li>
+                            <li class="list-group-item">A third item</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
     )
 };
