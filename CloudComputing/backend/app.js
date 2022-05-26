@@ -3,6 +3,7 @@ const login = require('./routes/loginRoute')
 const group = require('./routes/groupRoute')
 const feedback = require('./routes/feedbackRoute')
 const admin = require('./routes/adminRoute')
+const announcement = require('./routes/announcementRoute')
 
 const express = require('express')
 const app = express()
@@ -38,6 +39,7 @@ app.use('/user', user)
 app.use('/login', login)
 app.use('/user/:user_id/group',group)
 app.use('/user/:user_id/feedback',feedback)
+app.use('/user',announcement)
 
 //khusus admin
 app.use('/admin', admin);
