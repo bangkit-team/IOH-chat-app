@@ -44,6 +44,14 @@ router.post('/', uploadGambar.single('profile_pict'),async(req,res) => {
       try{
         const user_id = userRef.push().key;
 
+        //today date
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        var yyyy = today.getFullYear();
+
+        today = mm + '/' + dd + '/' + yyyy;
+
         userRef.child(user_id).set({
           name: req.body.name,
           tanggal_lahir: req.body.tanggal_lahir,
@@ -51,8 +59,11 @@ router.post('/', uploadGambar.single('profile_pict'),async(req,res) => {
           divisi_kerja: req.body.divisi_kerja,
           email: req.body.email,
           password: hashPassword,
-          profile_pict: `https://storage.googleapis.com/bangkit_chatapp_bucket/UserPict/${req.file.filename}`,
+          profile_pict: "",
+          // profile_pict: `https://storage.googleapis.com/bangkit_chatapp_bucket/UserPict/${req.file.filename}`,
           phone_number: req.body.phone_number,
+          timestamp: today,
+          approve: false,
           about: "Available"
         })
         res.status(200).json({message: "Register Berhasil"});

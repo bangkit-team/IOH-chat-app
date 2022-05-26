@@ -44,7 +44,13 @@ router.get('/users',verify, (req,res)=>{
     try{
         userRef.once('value', snapshot => {
             snapshot.forEach((data) => {
-                user.push([data.val().name,data.val().email,data.val().profile_pict])
+                user = [...user,{
+                    name: data.val().name,
+                    email: data.val().email,
+                    posisi: data.val().posisi,
+                    divisi_kerja: data.val().divisi_kerja,
+                    profile_pict: data.val().profile_pict,
+                }]
             })
             res.status(200).send({
                 message: "Success get All Users",
@@ -59,11 +65,20 @@ router.get('/users',verify, (req,res)=>{
 router.get('/groups',verify, (req,res)=>{
     const groupRef = db.ref('/groups')
 
+    let group = []
     try{
         groupRef.once('value', snapshot =>{
+            snapshot.forEach((data) => {
+                group = [...group,{
+                    name: data.val().name,
+                    created_at: data.val().created_at,
+                    profile_pict: data.val().profile_pict,
+                }]
+            })
+
             res.status(200).send({
                 message: "Success get All Groups",
-                snapshot
+                snapshot: group
             })
         })
     }catch(error){
@@ -71,7 +86,43 @@ router.get('/groups',verify, (req,res)=>{
     }
 })
 
+router.get('/user/approve', verify, (req,res) =>{
+    const userRef = db.ref('/users')
 
+    let approve = []    
+    try{
+        userRef.once('value', snapshot =>{
+            snapshot.forEach((data) => {
+                if(data.val().approve === false){
+                    approve = [...approve,{
+                        name: data.val().name,
+                        email: data.val().email,
+                        timestamp: data.val().timestamp,
+                        profile_pict: data.val().profile_pict,
+                        posisi: data.val().posisi,
+                        divisi_kerja: data.val().divisi_kerja
+                    }]
+                }
+            })
+            res.status(200).send({
+                message: "Success Approve User",
+                approve: approve
+            })
+        })
+    }catch(error){
+        res.status(500).json({message: "Error when get approve user"})
+    }
+})
+
+router.post('/user/approval', verify, (req,res) =>{
+    const userRef = db.ref('/users')
+
+    try{
+
+    }catch(error){
+
+    }
+})
 //get all group
 
 

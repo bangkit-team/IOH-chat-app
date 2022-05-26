@@ -31,8 +31,13 @@ router.post('/',(req,res)=>{
       const userRef = db.ref('/users/'+req.body.id_user+'/contact');
       const groupAddRef = db.ref('/groups/'+group_id+'/users')
   
-      const date = new Date();
-      const dateToday = date.getDate()+'-'+date.getMonth()+'-'+date.getFullYear()
+      //today date
+      var today = new Date();
+      var dd = String(today.getDate()).padStart(2, '0');
+      var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+      var yyyy = today.getFullYear();
+
+      today = mm + '/' + dd + '/' + yyyy;
       const timeToday = date.getHours()+'-'+date.getMinutes()+'-'+date.getSeconds()
   
   
@@ -41,7 +46,7 @@ router.post('/',(req,res)=>{
         groupRef.child(group_id).set({
           name: req.body.name,
           deskripsi: "Available",
-          created_at: dateToday
+          created_at: today
         })
   
         //tambah data user yang buat group ke group

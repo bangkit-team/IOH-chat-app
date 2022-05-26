@@ -16,9 +16,13 @@ router.post('/',(req, res) =>{
     userRef.once('value', (snapshot) => {
         snapshot.forEach((data) => {
             if(data.val().email === req.body.email && bcrypt.compareSync( req.body.password, data.val().password)){
-                success = success + 1;
-                dataUser = {
-                    id_user: data.key
+                if(data.val().approve === false){
+                    success = -1;
+                }else{
+                    success = success + 1;
+                    dataUser = {
+                        id_user: data.key
+                    }
                 }
             }
         });
@@ -30,6 +34,10 @@ router.post('/',(req, res) =>{
         }else if(success === 0){
             res.status(400).send({
                 message: 'Email atau Password salah'
+            })
+        }else if(success === -1){
+            res.status(400).send({
+                message: 'Akun belum diapprove oleh Admin'
             })
         }
     })

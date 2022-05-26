@@ -61,7 +61,7 @@ const Login = () => {
             <div className="Login">
             <section>
                 <img src={logo} alt="logo"/>
-                <h1 className="sign-h1">Sign In</h1>
+                <h3 className="sign-h1">Sign In</h3>
                 <hr></hr>
                 <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
                 <form onSubmit={handleSubmit}>
