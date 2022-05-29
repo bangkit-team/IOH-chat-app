@@ -5,7 +5,7 @@ const storage = multer.diskStorage({
   },
   filename: function(req, file, cb) {
     const date = new Date();
-    const isinamafile = date.getFullYear()+'-'+date.getMonth()+'-'+date.getDate()+'-'+ date.getTime()+file.originalname;
+    const isinamafile = date.getFullYear()+'-'+date.getMonth()+'-'+date.getDate()+'-'+ date.getTime()+file.originalname.replace(/ /g, "");
     cb(null, isinamafile)
   }
 })
