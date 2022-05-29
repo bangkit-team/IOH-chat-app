@@ -63,7 +63,7 @@ const Home = () => {
                         <h2>Announcement</h2>
                         <p>This is for add announcement regarding to specific role</p>
                         <div className="body-a">
-                            <a href="/login">Next</a>
+                            <a href="/home/announcement">Next</a>
                         </div>
                     </div>
                 </div>
