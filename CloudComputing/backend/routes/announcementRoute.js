@@ -177,8 +177,6 @@ function sebarChat(divKerja,message,timestamp){
 
 //Menambahkan divisi kerja
 router.post('/:user_id/announcement', (req,res)=>{
-    const date = new Date();
-    const dateToday = date.getDate()+'-'+date.getMonth()+'-'+date.getFullYear()
 
     const userDataRef = db.ref('/users/'+req.params.user_id)
     userDataRef.once('value',(snapshot)=>{
@@ -221,7 +219,7 @@ router.post('/:user_id/announcement/:div_id', uploadApaaja.single('file'), (req,
     var dd = String(date.getDate()).padStart(2, '0');
     var mm = String(date.getMonth() + 1).padStart(2, '0'); //January is 0!
     var yyyy = date.getFullYear();
-    const today = mm + '/' + dd + '/' + yyyy;
+    const today = mm + '/' + dd + '/' + yyyy
 
     const annChatRef = db.ref('/announcements/'+req.params.div_id+'/chat')
     const annChatId = annChatRef.push().key;
@@ -251,11 +249,11 @@ router.post('/:user_id/announcement/:div_id', uploadApaaja.single('file'), (req,
                 message: filenya,
                 timestamp: today
             })
-            sebarChat(divKerjaUser,filenya,timeToday)
+            sebarChat(divKerjaUser,filenya,today)
 
             res.status(200).json({message: "Pesan berhasil terkirim"});
         } catch(error){
-            res.status(500).json({message: "Error when send a Announcement"})
+            res.status(500).json({message: "Error when send a chat"})
         }
     })
 })

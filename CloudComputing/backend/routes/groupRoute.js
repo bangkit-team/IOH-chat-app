@@ -11,6 +11,7 @@ const groupRef = db.ref('/groups');
 //tambah grup baru
 router.post('/', uploadGambar.single('group_pict'), (req,res)=>{
 
+
   var success = 0;
   groupRef.once('value', (snapshot) =>{
     snapshot.forEach((data) => {
@@ -21,7 +22,7 @@ router.post('/', uploadGambar.single('group_pict'), (req,res)=>{
     if(success != 0){
       res.status(400).send({message: "Nama Grup sudah ada"})
     }else{
-      const group_id = groupRef.push().key+req.body.name+'Group';
+      const group_id = groupRef.push().key+req.body.name.replace(/ /g, "")+'Group';
 
       const groupChatRef = db.ref('/groups/'+group_id+'/chat');
       const groupChatId = groupChatRef.push().key;
@@ -227,11 +228,15 @@ router.post('/:group_id/chat', uploadApaaja.single('file'), (req,res)=>{
         destination: `RoomFile/Group/${req.params.group_id}/${req.file.filename}`
       });
 
+      let userEmail = []
       const groupChatRef = db.ref('/groups/'+req.params.group_id+"/users")
-      groupChatRef.once('value',async (snapshot) =>{
-        await snapshot.forEach((data) =>{
-          cstorage.file(`RoomFile/Group/${req.params.group_id}/${req.file.filename}`).acl.readers.addUser(data.val().emailUser);
+      groupChatRef.once('value', async (snapshot) =>{
+        snapshot.forEach((data) =>{
+          userEmail.push(data.val().emailUser)
         })
+        for(let i=0; i < userEmail.length; i++){
+          await cstorage.file(`RoomFile/Group/${req.params.group_id}/${req.file.filename}`).acl.readers.addUser(userEmail[i]);
+        }
       })
 
       //ngehapus filenya

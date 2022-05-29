@@ -34,6 +34,14 @@ const updateUserValidation = (data) =>{
     return schema.validate(data);
 };
 
+const addGroupValidation = (data) =>{
+    const schema = Joi.object({
+        name: Joi.string().required(),
+        deskripsi: Joi.string().required(),
+    })
+    return schema.validate(data);
+}
+
 const updateGroupValidation = (data) =>{
     const schema = Joi.object({
         name: Joi.string().required(),
