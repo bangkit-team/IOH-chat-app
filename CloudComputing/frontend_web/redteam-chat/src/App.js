@@ -4,6 +4,7 @@ import Notfound from './components/notFound/Notfound';
 import User from './components/user/User';
 import Group from './components/group/Group';
 import Approval from './components/approval/Approval';
+import Announcement from './components/announcement/Announcement';
 
 import React from 'react'
 
@@ -27,6 +28,8 @@ function App(){
                 <Route path="/home/group" element={<Group/>}/>
 
                 <Route path="/home/approval" element={<Approval/>}/>
+
+                <Route path="/home/announcement" element={<Announcement/>}/>
 
                 <Route path="*" element={<Notfound/>}/>
             </Routes>

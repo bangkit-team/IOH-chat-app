@@ -17,7 +17,30 @@ const Approval = () => {
 
     const fetchData = async () =>{
         const results = await axios.get(API_URL, { headers: authHeader() })
-        setData(results.data.snapshot)
+        setData(results.data.approve)
+    }
+
+    const handleApprove = async (e) => {
+        e.preventDefault();
+
+        try {
+            const approve=true
+            const id = e.target.id.value
+            await axios.post(API_URL,
+                JSON.stringify({approve, id}),
+                {
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'token': authHeader().token,
+                        '_id': authHeader()._id
+                    },
+                    withCredentials: true
+                }
+            );
+            window.location.href = "/home/approval";
+        } catch (err) {
+            console.log(err)
+        }
     }
 
     const listCard = data.map((data) => {
@@ -31,6 +54,10 @@ const Approval = () => {
                 <li className="list-group-item">{data.divisi_kerja}</li>
                 <li className="list-group-item">{data.posisi}</li>
                 <li className="list-group-item">{data.timestamp}</li>
+                <form onSubmit={handleApprove}>
+                    <input type="hidden" name="id" id="id" value={data.id}/>
+                    <button className="btn btn-success">Approve</button>
+                </form>
             </ul>
             </div>
         </div>)
@@ -51,7 +78,7 @@ const Approval = () => {
                     </div>
                     <div className="container">
                         <div className="row">
-                            {listCard}   
+                            {listCard} 
                         </div>
                     </div>
                 </div>

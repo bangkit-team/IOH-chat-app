@@ -95,6 +95,7 @@ router.get('/user/approve', verify, (req,res) =>{
             snapshot.forEach((data) => {
                 if(data.val().approve === false){
                     approve = [...approve,{
+                        id: data.key,
                         name: data.val().name,
                         email: data.val().email,
                         timestamp: data.val().timestamp,
@@ -105,22 +106,31 @@ router.get('/user/approve', verify, (req,res) =>{
                 }
             })
             res.status(200).send({
-                message: "Success Approve User",
+                message: "Success Get Unapprove User",
                 approve: approve
             })
         })
     }catch(error){
-        res.status(500).json({message: "Error when get approve user"})
+        res.status(500).json({message: "Error when get Unapprove user"})
     }
 })
 
-router.post('/user/approval', verify, (req,res) =>{
+router.post('/user/approve', verify, (req,res) =>{
+
     const userRef = db.ref('/users')
 
     try{
+        userRef.child(req.body.id).update({
+            approve: req.body.approve
+        });
 
+        res.status(200).send({
+          message: "Success Approve User"
+        });
     }catch(error){
-
+        res.status(500).send({
+            message: "Failed approve User"
+        })
     }
 })
 //get all group

@@ -29,7 +29,7 @@ const updateUserValidation = (data) =>{
         tanggal_lahir: Joi.string().required(),
         posisi: Joi.string().required(),
         divisi_kerja: Joi.string().required(),
-        about: Joi.string().required().max(50)
+        about: Joi.string().required().max(50),
     })
     return schema.validate(data);
 };

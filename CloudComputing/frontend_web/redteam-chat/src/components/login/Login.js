@@ -2,6 +2,7 @@ import { useRef, useState, useEffect} from 'react';
 
 import "./login.css"
 import logo from "../../IoHLogo.png";
+import authHeader from '../../context/authHeader';
 
 import axios from '../../api/axios';
 const LOGIN_URL = '/admin';
@@ -54,29 +55,33 @@ const Login = () => {
         }
     }
 
-    return (
-        <>
-        <div>
-            <div className="kotak-atas"></div>
-            <div className="Login">
-            <section>
-                <img src={logo} alt="logo"/>
-                <h3 className="sign-h1">Sign In</h3>
-                <hr></hr>
-                <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
-                <form onSubmit={handleSubmit}>
-                    <label htmlFor="username">Username:</label>
-                    <input type="text" id="username" ref={userRef} autoComplete="off" onChange={(e) => setUser(e.target.value)} value={username} required/>
+    if(authHeader().token !== undefined){
+        window.location.href="/home";
+    }else{
+        return (
+            <>
+            <div>
+                <div className="kotak-atas"></div>
+                <div className="Login">
+                <section>
+                    <img src={logo} alt="logo"/>
+                    <h3 className="sign-h1">Sign In</h3>
+                    <hr></hr>
+                    <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
+                    <form onSubmit={handleSubmit}>
+                        <label htmlFor="username">Username:</label>
+                        <input type="text" id="username" ref={userRef} autoComplete="off" onChange={(e) => setUser(e.target.value)} value={username} required/>
 
-                    <label htmlFor="password">Password:</label>
-                    <input type="password" id="password" onChange={(e) => setPwd(e.target.value)} value={password} required/>
-                    <button>Sign In</button>
-                </form>
-            </section>
+                        <label htmlFor="password">Password:</label>
+                        <input type="password" id="password" onChange={(e) => setPwd(e.target.value)} value={password} required/>
+                        <button>Sign In</button>
+                    </form>
+                </section>
+                </div>
             </div>
-        </div>
-        </>
-    )
+            </>
+        )
+    }
 }
 
 export default Login

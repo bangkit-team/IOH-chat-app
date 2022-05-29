@@ -9,7 +9,7 @@ const path = require("path");
 const groupRef = db.ref('/groups');
 
 //tambah grup baru
-router.post('/',(req,res)=>{
+router.post('/', uploadGambar.single('group_pict'), (req,res)=>{
 
   var success = 0;
   groupRef.once('value', (snapshot) =>{
@@ -22,9 +22,7 @@ router.post('/',(req,res)=>{
       res.status(400).send({message: "Nama Grup sudah ada"})
     }else{
       const group_id = groupRef.push().key+req.body.name+'Group';
-      // const id_chat = chatRef.push().key+req.body.name+'Group';
-  
-      // const newChatRef = db.ref('/chats/'+id_chat);
+
       const groupChatRef = db.ref('/groups/'+group_id+'/chat');
       const groupChatId = groupChatRef.push().key;
   
@@ -32,27 +30,38 @@ router.post('/',(req,res)=>{
       const groupAddRef = db.ref('/groups/'+group_id+'/users')
   
       //today date
-      var today = new Date();
-      var dd = String(today.getDate()).padStart(2, '0');
-      var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-      var yyyy = today.getFullYear();
-
-      today = mm + '/' + dd + '/' + yyyy;
+      var date = new Date();
+      var dd = String(date.getDate()).padStart(2, '0');
+      var mm = String(date.getMonth() + 1).padStart(2, '0'); //January is 0!
+      var yyyy = date.getFullYear();
+      const today = mm + '/' + dd + '/' + yyyy;
       const timeToday = date.getHours()+'-'+date.getMinutes()+'-'+date.getSeconds()
   
+      // taruk di cloud storage untuk group pict 
+      async function uploadFile() {
+        await cstorage.upload(`../backend/files/${req.file.filename}`,{
+            destination: `GroupPict/${req.file.filename}`
+        });
+        await cstorage.file(`GroupPict/${req.file.filename}`).makePublic();
+        //ngehapus filenya
+        const filepath = path.resolve(`./files/${req.file.filename}`);
+        fs.unlinkSync(filepath);
+      }
+      uploadFile().catch(console.error);
   
       try{
         //tambah group
         groupRef.child(group_id).set({
           name: req.body.name,
           deskripsi: "Available",
-          created_at: today
+          created_at: today,
+          group_pict: `https://storage.googleapis.com/bangkit_chatapp_bucket/GroupPict/${req.file.filename}`
         })
   
         //tambah data user yang buat group ke group
         groupAddRef.child(req.body.id_user).set({
           emailUser: req.body.email_user,
-          join_timestamp:dateToday,
+          join_timestamp:today,
           group_role:"admin"
         })
     
@@ -64,7 +73,7 @@ router.post('/',(req,res)=>{
     
         //tambah message kosong ke grup
         groupChatRef.child(groupChatId).set({
-          message: "aku gila",
+          message: "Pesan Awal",
           timestamp: timeToday
         })
       
@@ -79,6 +88,7 @@ router.post('/',(req,res)=>{
   });
 })
 
+//ambil spesifik group
 router.get('/:group_id', (req,res) =>{
   const groupIdRef = db.ref('/groups/'+req.params.group_id)
 
@@ -124,14 +134,19 @@ router.post('/:group_id', (req,res)=>{
       if(success1 == 0) return res.status(400).json({message: "User Uknown!"})
 
       const friendRef = db.ref('/users/'+friendId+'/contact');
-      const date = new Date();
-      const dateToday = date.getDate()+'-'+date.getMonth()+'-'+date.getFullYear()
+
+      //today date
+      var date = new Date();
+      var dd = String(date.getDate()).padStart(2, '0');
+      var mm = String(date.getMonth() + 1).padStart(2, '0'); //January is 0!
+      var yyyy = date.getFullYear();
+      const today = mm + '/' + dd + '/' + yyyy
   
       try{
         //tambah user baru ke grup
         groupAddRef.child(friendId).set({
           emailUser:req.body.emailFriend,
-          join_timestamp:dateToday,
+          join_timestamp:today,
           group_role:"member"
         })
   
@@ -159,9 +174,10 @@ router.patch('/:group_id', uploadGambar.single('group_pict'), (req,res)=>{
     await cstorage.upload(`../backend/files/${req.file.filename}`,{
         destination: `GroupPict/${req.file.filename}`
     });
+
+    await cstorage.file(`GroupPict/${req.file.filename}`).makePublic();
     //ngehapus filenya
     const filepath = path.resolve(`./files/${req.file.filename}`);
-    console.log('File path ::', filepath);
     fs.unlinkSync(filepath);
   }
   uploadFile().catch(console.error);
@@ -205,42 +221,39 @@ router.post('/:group_id/chat', uploadApaaja.single('file'), (req,res)=>{
   const timeToday = date.getHours()+'-'+date.getMinutes()+'-'+date.getSeconds()
 
   try{
-    //tambah chat baru ke grup
-    try{
-      console.log(req.file.filename)
-      //taruk di cloud storage untuk profile pict 
-      async function uploadFile() {
-        await cstorage.upload(`../backend/files/${req.file.filename}`,{
-            destination: `RoomFile/Group/${req.params.group_id}/${req.file.filename}`
-        });
-        //ngehapus filenya
-        const filepath = path.resolve(`./files/${req.file.filename}`);
-        console.log('File path ::', filepath);
-        console.log(req.file);
-        fs.unlinkSync(filepath);
-      }
-      uploadFile().catch(console.error);
-      chatGroupRef.child(chatGroupId).set({
-        message:req.body.message,
-        timestamp:timeToday,
-        sender: req.body.sender,
-        file: `https://storage.googleapis.com/bangkit_chatapp_bucket/RoomFile/Group/${req.params.group_id}/${req.file.filename}`
+    //taruk di cloud storage untuk profile pict 
+    async function uploadFile() {
+      await cstorage.upload(`../backend/files/${req.file.filename}`,{
+        destination: `RoomFile/Group/${req.params.group_id}/${req.file.filename}`
+      });
+
+      const groupChatRef = db.ref('/groups/'+req.params.group_id+"/users")
+      groupChatRef.once('value',async (snapshot) =>{
+        await snapshot.forEach((data) =>{
+          cstorage.file(`RoomFile/Group/${req.params.group_id}/${req.file.filename}`).acl.readers.addUser(data.val().emailUser);
+        })
       })
-    } catch(error){
-      chatGroupRef.child(chatGroupId).set({
-        message:req.body.message,
-        timestamp:timeToday,
-        sender: req.body.sender
-      })
+
+      //ngehapus filenya
+      const filepath = path.resolve(`./files/${req.file.filename}`);
+      fs.unlinkSync(filepath);
     }
+    uploadFile().catch(console.error);
+
+    chatGroupRef.child(chatGroupId).set({
+      timestamp:timeToday,
+      sender: req.body.sender,
+      message: `https://storage.cloud.google.com/bangkit_chatapp_bucket/RoomFile/Group/${req.params.group_id}/${req.file.filename}`,
+    })
 
     res.status(200).send({
-      message: "Success send chat"
+      message: "Success send chat",
     });
   }catch(error){
-    res.status(500).send({message: "Error when send chat"})
+    res.status(500).send({
+      message: "Error when send file/picture",
+    })
   }
-
 })
 
 
