@@ -403,8 +403,12 @@ router.post('/:user_id/announcement', (req,res)=>{
 Request body : message, file
 */
 router.post('/:user_id/announcement/:div_id', uploadApaaja.single('file'), (req,res)=>{
-    const date = new Date();
-    const timeToday = date.getHours()+'-'+date.getMinutes()+'-'+date.getSeconds()
+    //today date
+    var date = new Date();
+    var dd = String(date.getDate()).padStart(2, '0');
+    var mm = String(date.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = date.getFullYear();
+    const today = mm + '/' + dd + '/' + yyyy;
 
     const annChatRef = db.ref('/announcements/'+req.params.div_id+'/chat')
     const annChatId = annChatRef.push().key;
@@ -413,36 +417,34 @@ router.post('/:user_id/announcement/:div_id', uploadApaaja.single('file'), (req,
     userDataRef.once('value',(snapshot)=>{
         var divKerjaUser = snapshot.child('divisi_kerja').val();
         try{
-            try{
-                console.log(req.file.filename) 
+            const filenya = ""
+            if(req.file.filename !== undefined){
                 async function uploadFile() {
                     await cstorage.upload(`../backend/files/${req.file.filename}`,{
                         destination: `Announcement/${divKerjaUser}/${req.file.filename}`
                     });
+
+                    //permission and security
+                    await cstorage.file(`Announcement/${divKerjaUser}/${req.file.filename}`).makePublic();
+
                     const filepath = path.resolve(`./files/${req.file.filename}`);
                     fs.unlinkSync(filepath);
                 }
                 uploadFile().catch(console.error);
-                const filenya = `https://storage.googleapis.com/bangkit_chatapp_bucket/Announcement/${divKerjaUser}/${req.file.filename}`
-                annChatRef.child(annChatId).set({
-                    message: req.body.message,
-                    timestamp: timeToday,
-                    sender: divKerjaUser,
-                    file: filenya
-                })
-                sebarChatFile(req.params.div_id,divKerjaUser,req.body.message,timeToday,filenya)
-            } catch(error){
-                annChatRef.child(annChatId).set({
-                    message: req.body.message,
-                    timestamp: timeToday,
-                    sender: divKerjaUser
-                })
-                sebarChatTanpaFile(req.params.div_id,divKerjaUser,req.body.message,timeToday)
+                filenya = `https://storage.googleapis.com/bangkit_chatapp_bucket/Announcement/${divKerjaUser}/${req.file.filename}`
+            }else{
+                filenya = req.body.message
             }
 
-            res.status(200).json({message: "Pesan berhasil terkirim"});
+            annChatRef.child(annChatId).set({
+                message: filenya,
+                timestamp: today,
+            })
+            sebarChatFile(req.params.div_id,divKerjaUser,today,filenya)
+            
+            res.status(200).json({message: "Announcement berhasil disebar"});
         } catch(error){
-            res.status(500).json({message: "Error when send a chat"})
+            res.status(500).json({message: "Error when send a Announcement"})
         }
     })
 })
