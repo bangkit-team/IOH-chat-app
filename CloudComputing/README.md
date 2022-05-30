@@ -3,7 +3,6 @@
   - http://redteam-chatapp.herokuapp.com/  
 
 # API List
-yg blm kurang GET utk PC, Group, Announcement
 
 ## Login User
 - URL
@@ -45,6 +44,7 @@ yg blm kurang GET utk PC, Group, Announcement
 }
 ```
 
+# User API
 ## Get User Information
 - URL
   - /user/:user_id
@@ -118,7 +118,7 @@ yg blm kurang GET utk PC, Group, Announcement
 }
 ```
 
-## Realtime Chat PC
+## Realtime Chat PC (Khusus gambar atau file)
 - URL
   - /user/:user_id/chat/:chat_id
 - Method
@@ -132,6 +132,7 @@ yg blm kurang GET utk PC, Group, Announcement
 }
 ```
 
+# Group API
 ## Add new Group
 - URL
   - /user/:user_id/group
@@ -193,7 +194,7 @@ yg blm kurang GET utk PC, Group, Announcement
 }
 ```
 
-## Add friend to Group
+## Add friend to Group (Untuk sementara cuman bisa tambah satu satu temannya)
 - URL
   - /user/:user_id/group/:group_id
 - Method
@@ -253,6 +254,7 @@ yg blm kurang GET utk PC, Group, Announcement
 }
 ```
 
+# Feedback API
 ## Add feedback
 - URL
   - /user/:user_id/feedback/
@@ -268,6 +270,7 @@ yg blm kurang GET utk PC, Group, Announcement
 }
 ```
 
+# Announcement API
 ## Add Announcement
 - URL
   - /user/:user_id/announcement
@@ -293,5 +296,109 @@ yg blm kurang GET utk PC, Group, Announcement
 ```
 {
     "message": "Pesan berhasil terkirim"
+}
+```
+
+# Admin
+## Login Website (Khusus Admin)
+- URL
+  - /admin
+- Method
+  - POST
+- Request body
+  - username (string) --> email
+  - password (string)
+- Response
+```
+{
+    "message": "Login Berhasil",
+    "_id": id_admin,
+    "token": token
+}
+```
+
+## Get All Users
+- URL
+  - /admin/users
+- Method
+  - GET
+- Request header
+  - token
+  - _id
+- Response
+```
+{
+    "message": "Success get All Users",
+    "snapshot": [
+        {
+            "name": "Richard Pratama",
+            "email": "richardalvinpratama8@gmail.com",
+            "posisi": "Admin",
+            "divisi_kerja": "Contact Center",
+            "profile_pict": "https://storage.googleapis.com/bangkit_chatapp_bucket/UserPict/2022-4-29-1653833890257pngtree-kue-nastar-kartun-png-image_4508325.png"
+        },
+        {
+            "name": "Galih",
+            "email": "galih8.4.2001@gmail.com",
+            "posisi": "admin",
+            "divisi_kerja": "Customer Experience Excellence",
+            "profile_pict": "https://storage.googleapis.com/bangkit_chatapp_bucket/UserPict/2022-4-29-1653833194595broom-11530982283e4sv4cfwin.png"
+        }
+    ]
+}
+```
+
+## Get All Groups
+- URL
+  - /admin/groups
+- Method
+  - GET
+- Request header
+  - token
+  - _id
+- Response
+```
+{
+    "message": "Success get All Groups",
+    "snapshot": [
+        {
+            "name": "Red Team",
+            "created_at": "05/29/2022",
+            "group_pict": "https://storage.googleapis.com/bangkit_chatapp_bucket/GroupPict/2022-4-29-1653833583174color-house-3-icon@2x.png"
+        }
+    ]
+}
+```
+
+## Get Unapprove New User
+- URL
+  - /admin/user/approve
+- Method
+  - GET
+- Request header
+  - token
+  - _id
+- Response
+```
+{
+    "message": "Success Get Unapprove Groups",
+    "approve": unapproveUser
+}
+```
+
+## Approve New User
+- URL
+  - /admin/user/approve
+- Method
+  - POST
+- Request header
+  - token
+  - _id
+- Request body
+  - approve (boolean) 
+- Response
+```
+{
+    "message": "Success Approve User",
 }
 ```
