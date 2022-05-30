@@ -201,10 +201,10 @@ router.patch('/:group_id', uploadGambar.single('group_pict'), (req,res)=>{
 //Specific User out from group
 router.delete('/:group_id', (req,res)=>{
   try{
-    const groupUserRef = db.ref('/groups/'+req.params.group_id+'/users/'+req.body.id_agent)
+    const groupUserRef = db.ref('/groups/'+req.params.group_id+'/users/'+req.body.user_id)
     groupUserRef.remove();
   
-    const userRef = db.ref('/users/'+req.body.id_agent+'/contact/'+req.params.group_id)
+    const userRef = db.ref('/users/'+req.body.user_id+'/contact/'+req.params.group_id)
     userRef.remove();
 
     return res.status(200).json({message: "Success Delete User from Group"})

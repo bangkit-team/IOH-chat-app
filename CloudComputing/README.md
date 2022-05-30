@@ -3,7 +3,7 @@
   - http://redteam-chatapp.herokuapp.com/  
 
 # API List
-ada beberapa perubahan yang blm diubah
+yg blm kurang GET utk PC, Group, Announcement
 
 ## Login User
 - URL

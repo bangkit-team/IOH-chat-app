@@ -213,7 +213,7 @@ router.post('/:user_id/announcement', (req,res)=>{
 /*
 Request body : message/file
 */
-router.post('/:user_id/announcement/:div_id', uploadApaaja.single('file'), (req,res)=>{
+router.post('/:user_id/announcement/:div_id', uploadApaaja.single('message'), (req,res)=>{
     //today date
     var date = new Date();
     var dd = String(date.getDate()).padStart(2, '0');
