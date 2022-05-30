@@ -5,25 +5,6 @@
 # API List
 ada beberapa perubahan yang blm diubah
 
-## SignUp User
-- URL
-  - /user
-- Method
-  - POST
-- Request body
-  - name (string)
-  - email (string)
-  - password (string)
-  - fpassword (string)
-  - phone_number (string)
-  - role (string)
-- Response 
-```
-{
-  "message": "Register Berhasil"
-}
-```
-
 ## Login User
 - URL
   - /login
@@ -42,22 +23,29 @@ ada beberapa perubahan yang blm diubah
 }
 ```
 
-## Edit Profile User
+## SignUp User
 - URL
-  - /user/:user_id
+  - /user
 - Method
-  - PATCH
+  - POST
 - Request body
-  - name_user (string)
-  - profile_pict (string)
-- Response
+  - name (string)
+  - tanggal_lahir (string)
+  - posisi (string)
+  - divisi_kerja (string)
+  - email (string)
+  - password (string)
+  - fpassword (string)
+  - phone_number (string)
+  - profile_pict (image)
+- Response 
 ```
 {
-    "message": "Success Edit Profile User"
+  "message": "Register Berhasil"
 }
 ```
 
-## Get All User Friend and Group Contact
+## Get User Information
 - URL
   - /user/:user_id
 - Method
@@ -69,26 +57,33 @@ ada beberapa perubahan yang blm diubah
 {
     "message": "Success get friend and group",
     "snapshot": {
+        "about": "Available",
+        "approve": true,
         "contact": {
-            "-N2BFGPSRgj72G_GICYD": {
-                "emailFriend": "yusuf@gmail.com",
-                "nameFriend": "yusuf"
+            "-N3F8Cly2dNVPB15qaXvRichard Alvin-GalihPC": {
+                "emailFriend": "richardalvinpratama8@gmail.com",
+                "id_chat": "-N3F8Cly2dNVPB15qaXvRichard-GalihPC",
+                "namaFriend": "Richard Alvin"
             },
-            "-N2BIgpoSCy6PSVhazPH": {
-                "nameGroup": "RedTeam"
+            "-N3F9Rr3nZoH1iR2ohqARed TeamGroup": {
+                "id_group": "-N3F9Rr3nZoH1iR2ohqARed TeamGroup",
+                "nameGroup": "Red Team"
             }
         },
-        "email": "richard@gmail.com",
-        "name": "richard",
-        "password": "$2b0$x9flA79G77QpgfU2IKPbUeIVwO7JN0mXQ9bz/CzddYb6U0NKvgJT.",
-        "phone_number": "342525345",
-        "profile_pict": "aarhga",
-        "role": "accounting"
+        "divisi_kerja": "Customer Experience Excellence",
+        "email": "galih8.4.2001@gmail.com",
+        "name": "Galih",
+        "password": "$2b$10$UmOkmyo5V4XQ8I2EDRYvSuoVJzqQMJJDYw1c6vqQ4VLc7/iy4/L9m",
+        "phone_number": "64564436",
+        "posisi": "admin",
+        "profile_pict": "link storage",
+        "tanggal_lahir": "9 november 2004",
+        "timestamp": "05/29/2022"
     }
 }
 ```
 
-## Add new friend in User Contact
+## Add new friend as PC
 - URL
   - /user/:user_id
 - Method
@@ -98,8 +93,42 @@ ada beberapa perubahan yang blm diubah
 - Response 
 ```
 {
-    "message": "Register Berhasil",
-    "id_chat": "-N2FfiXoQXQF2uOs4-Hb"
+    "message": "Add Friend Success",
+    "id_chat": "-N3F8Cly2dNVPB15qaXvRichard-GalihPC"
+}
+```
+
+## Edit Profile User
+- URL
+  - /user/:user_id
+- Method
+  - PATCH
+- Request body
+  - name_user (string)
+  - phone_number (string)
+  - tanggal_lahir (string)
+  - posisi (string)
+  - divisi_kerja (string)
+  - about (string)
+  - profile_pict (file)
+- Response
+```
+{
+    "message": "Success Edit Profile User"
+}
+```
+
+## Realtime Chat PC
+- URL
+  - /user/:user_id/chat/:chat_id
+- Method
+  - POST
+- Request body
+  - file (file)
+- Response
+```
+{
+    "message": "Success send chat"
 }
 ```
 
@@ -109,29 +138,58 @@ ada beberapa perubahan yang blm diubah
 - Method
   - POST
 - Request body
-  - id_user (string)
-  - email_user (string)
-  - name (string) --> nama group baru
+  - id_user (string) --> pembuat grup
+  - email_user (string) --> email pembuat grup
+  - name (string) --> nama grup baru, gk boleh ada symbol
+  - group_pict (image)
 - Response
 ```
 {
     "message": "Add new group success",
-    "id_group": "-N2Fh7kmJ26graL3LPVd"
+    "id_group": "-N3F9Rr3nZoH1iR2ohqARedTeamGroup"
 }
 ```
 
-## Edit Group
+## Get Group Specs
 - URL
   - /user/:user_id/group/:group_id
 - Method
-  - POST
+  - GET
 - Request body
-  - name (string) --> nama group baru
-  - group_pict (string)
-- Response body
+  - none
+- Response
 ```
 {
-    "message": "Success Edit Profile Group"
+    "message": "Success get specific group",
+    "snapshot": {
+        "chat": {
+            "-N3F9Rr3nZoH1iR2ohqB": {
+                "message": "Pesan Awal",
+                "timestamp": "21-13-3"
+            },
+            "-N3FD5fVGhKmUi8ZZvPj": {
+                "message": "link storage",
+                "sender": "richardalvinpratama8@gmail.com",
+                "timestamp": "21-29-0"
+            }
+        },
+        "created_at": "05/29/2022",
+        "deskripsi": "Available",
+        "group_pict": "link storage",
+        "name": "Red Team",
+        "users": {
+            "-N3F5BULD9ZP94-WJPpT": {
+                "emailUser": "richardalvinpratama8@gmail.com",
+                "group_role": "admin",
+                "join_timestamp": "05/29/2022"
+            },
+            "-N3F7y14enDV3gbUsPex": {
+                "emailUser": "galih8.4.2001@gmail.com",
+                "group_role": "member",
+                "join_timestamp": "05/29/2022"
+            }
+        }
+    }
 }
 ```
 
@@ -150,6 +208,51 @@ ada beberapa perubahan yang blm diubah
 }
 ```
 
+## Edit Group
+- URL
+  - /user/:user_id/group/:group_id
+- Method
+  - PATCH
+- Request body
+  - name (string) --> nama groupnya
+  - group_pict (image)
+  - deskripsi (string)
+- Response body
+```
+{
+    "message": "Success Edit Profile Group"
+}
+```
+
+## Out from group
+- URL
+  - /user/:user_id/group/:group_id
+- Method
+  - DELETE
+- Request body
+  - user_id (string)
+- Response
+```
+{
+    "message": "Success Delete User from Group"
+}
+```
+
+## Realtime Chat Group
+- URL
+  - /user/:user_id/group/:group_id/chat
+- Method
+  - POST
+- Request body
+  - file (file)
+  - sender (string)
+- Response
+```
+{
+    "message": "Success send chat"
+}
+```
+
 ## Add feedback
 - URL
   - /user/:user_id/feedback/
@@ -165,10 +268,30 @@ ada beberapa perubahan yang blm diubah
 }
 ```
 
-## Get Realtime Chat
+## Add Announcement
+- URL
+  - /user/:user_id/announcement
+- Method
+  - POST
+- Request body
+  - none --> utk divisinya udah dicek berdasarkan param user_id, dan kalo udah ada gk bakal buat lagi
+- Response
+```
+{
+    "message": "Berhasil menambahkan announcement Call Center"
+}
+```
 
-## Send Chat
-
-
-
-
+## Send Chat Announcement
+- URL
+  - /user/:user_id/announcement/:div_id
+- Method
+  - POST
+- Request body
+  - message (text/file)
+- Response
+```
+{
+    "message": "Pesan berhasil terkirim"
+}
+```
