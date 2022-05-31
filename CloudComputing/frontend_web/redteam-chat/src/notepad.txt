@@ -1,0 +1,69 @@
+import React,{useState,useEffect} from 'react';
+import "./user.css";
+
+// import card from "../../card.jpg";
+
+import authHeader from "../../context/authHeader";
+import axios from "../../api/axios";
+
+const API_URL = "/admin/users"
+
+const User = () => {
+    const [data,setData]=useState('');
+    const [success, setSuccess] = useState(false);
+
+    useEffect(()=>{
+        if(authHeader().token === undefined){
+            window.location.href="/";
+        }
+    });
+
+    const handleSubmit = async(e) => {
+        e.preventDefault();
+
+        try{
+            const response = await axios.get(API_URL, {headers: authHeader()})
+            setData(response.data.snapshot)
+            console.log(response.data.snapshot)
+            setSuccess(true);
+        }catch(error){
+            console.log(error)
+        }
+    }
+
+    return(
+        <>
+            {success ? (
+                <div>
+                    <div className="kotak-atas"></div>
+                    <h1>IoH - Users Chat </h1>
+                    <div className="row justify-content-center">
+                        <div className="col-md-2 mb-3">
+                            <div className="card" data-aos="flip-right">
+                                <img src={data[3][2]} class="card-img-top" alt="project1"/>
+                                <ul className="list-group list-group-flush">
+                                    <li className="list-group-item">{data[0].name}</li>
+                                    <li className="list-group-item"></li>
+                                    <li className="list-group-item"></li>
+                                    <li className="list-group-item"></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            ) : (
+                <div>
+                    <div className="kotak-atas"></div>
+                    <h1>IoH - Users Chat </h1>
+                    <div className="start-fetch-all-user">
+                        <form onSubmit={handleSubmit}>
+                            <button>Start</button>
+                        </form>
+                    </div>
+                </div>
+            )}
+        </>
+    )
+};
+
+export default User

@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">IOH</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_login">Login</string>
+    <string name="title_email">Email</string>
+    <string name="hint_email">Masukan email anda</string>
+    <string name="title_password">Sandi</string>
+    <string name="hint_pass">Masukkan password anda</string>
+    <string name="title_forget_password">Lupa kata sandi?</string>
+    <string name="title_no_account">Belum memiliki akun?</string>
+    <string name="title_create_account">Daftar</string>
+    <string name="title_register">Register</string>
+    <string name="title_have_account">Sudah punya akun?</string>
+    <string name="title_account">Masuk</string>
+</resources>
