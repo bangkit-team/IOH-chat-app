@@ -1,6 +1,7 @@
 # API Endpoint
-- heroku:
-  - http://redteam-chatapp.herokuapp.com/  
+- CE Backend:
+  - http://34.142.215.198  
+- CE Frontend:
 
 # API List
 
