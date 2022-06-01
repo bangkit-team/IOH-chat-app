@@ -34,6 +34,7 @@ router.post('/', uploadGambar.single('profile_pict'),async(req,res) => {
         await cstorage.upload(`../backend/files/${req.file.filename}`,{
             destination: `UserPict/${req.file.filename}`
         });
+
         await cstorage.file(`UserPict/${req.file.filename}`).makePublic();
         
         //ngehapus filenya

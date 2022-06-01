@@ -34,18 +34,17 @@ const updateUserValidation = (data) =>{
     return schema.validate(data);
 };
 
-const addGroupValidation = (data) =>{
+const updateGroupValidation = (data) =>{
     const schema = Joi.object({
-        name: Joi.string().required(),
-        deskripsi: Joi.string().required(),
+        name: Joi.string().alphanum().required(),
+        deskripsi: Joi.string().alphanum().required()
     })
     return schema.validate(data);
 }
 
-const updateGroupValidation = (data) =>{
+const feedbackValidation = (data) =>{
     const schema = Joi.object({
-        name: Joi.string().required(),
-        deskripsi: Joi.string().required()
+        feedback: Joi.string().alphanum().required()
     })
     return schema.validate(data);
 }
@@ -53,7 +52,7 @@ const updateGroupValidation = (data) =>{
 const loginAdminValidation = (data) =>{
     const schema = Joi.object({
         username: Joi.string().required().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }),
-        password: Joi.string().min(6).max(15)
+        password: Joi.string().alphanum().min(6).max(15)
     })
     return schema.validate(data);
 }
@@ -62,4 +61,5 @@ module.exports.registerValidation = registerValidation;
 module.exports.loginValidation = loginValidation;
 module.exports.updateUserValidation = updateUserValidation;
 module.exports.updateGroupValidation = updateGroupValidation;
+module.exports.feedbackValidation = feedbackValidation;
 module.exports.loginAdminValidation = loginAdminValidation;

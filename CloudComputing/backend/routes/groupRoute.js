@@ -10,7 +10,7 @@ const groupRef = db.ref('/groups');
 
 //tambah grup baru
 router.post('/', uploadGambar.single('group_pict'), (req,res)=>{
-
+  
 
   var success = 0;
   groupRef.once('value', (snapshot) =>{
