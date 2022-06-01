@@ -2,7 +2,6 @@ const user = require('./routes/userRoute')
 const login = require('./routes/loginRoute')
 const group = require('./routes/groupRoute')
 const feedback = require('./routes/feedbackRoute')
-const admin = require('./routes/adminRoute')
 const announcement = require('./routes/announcementRoute')
 
 const express = require('express')
@@ -18,9 +17,6 @@ require('./utils/firestore')
 
 //connect to cloud storage
 require('./utils/cloudStorage')
-
-//connect with flask
-const request = require('request');
 
 app.use(express.json())
 app.use(express.static('public'));
@@ -40,10 +36,6 @@ app.use('/login', login)
 app.use('/user/:user_id/group',group)
 app.use('/user/:user_id/feedback',feedback)
 app.use('/user',announcement)
-
-//khusus admin
-app.use('/admin', admin);
-
 
 app.get('/', (req, res) => {
   res.json('send')

@@ -49,17 +49,8 @@ const feedbackValidation = (data) =>{
     return schema.validate(data);
 }
 
-const loginAdminValidation = (data) =>{
-    const schema = Joi.object({
-        username: Joi.string().required().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }),
-        password: Joi.string().alphanum().min(6).max(15)
-    })
-    return schema.validate(data);
-}
-
 module.exports.registerValidation = registerValidation;
 module.exports.loginValidation = loginValidation;
 module.exports.updateUserValidation = updateUserValidation;
 module.exports.updateGroupValidation = updateGroupValidation;
 module.exports.feedbackValidation = feedbackValidation;
-module.exports.loginAdminValidation = loginAdminValidation;
