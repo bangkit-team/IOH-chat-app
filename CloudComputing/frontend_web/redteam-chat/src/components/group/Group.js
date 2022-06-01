@@ -18,6 +18,7 @@ const Group = () => {
     const fetchData = async () =>{
         const results = await axios.get(API_URL, { headers: authHeader() })
         setData(results.data.snapshot)
+        console.log(results.data.snapshot)
     }
 
     const listCard = data.map((data) => {
@@ -25,7 +26,7 @@ const Group = () => {
             <div className='col-4'>
             <div key={data.name} className="card" data-aos="flip-right">
             <ul className="list-group list-group-flush">
-                <img className='profile-picture' src={data?.group? data.group_pict : card } alt="profile-picture"></img>
+                <img className='profile-picture' src={data?.group_pict? data.group_pict : card } alt="profile-picture"></img>
                 <li className="list-group-item">{data.name}</li>
                 <li className="list-group-item">{data.created_at}</li>
             </ul>

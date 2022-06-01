@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "bangkitproject-348609",
+  "private_key_id": "03856079203d1813a1811aa4c37562b075675565",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCzQILGF+8Kqmyv\nb9ZFnSzTA70gaWq6wA8vvD/DURwxbu7FoJFXQRkjY7U+n5qlF7EZ5XQwEwfSDno7\nZ5a4H1TURIV8NfS3v1O76ZSEa4GH3uUpQVyg60HCBg8FLOh9Quy/ZBXPWJv+iOKE\nL3oJBs+0cGI3f6JDcPeAlwpmm/jFXMITgG0oH4/FrtzG8Lq9CBi6y0SjiB17LUMr\nxcAoZNhb6vM4OB3y7iI5FhkJujIFbrDqugsa5ALYpDmKsZ+zfWMZTBM4fN09st9x\nzJum6dIV30qtrlUaQlGMVH63yc9ma52K9wglPt/x40FeBmZ3a9JADuJ/myKZhjkP\nYY00HhnnAgMBAAECggEAOXe+NWoo7f9zds9hH9JjM4eoU8LYP+UhOUmeG61eX47U\nKDHxRssNFyZ5Tgl3V+R/l/DTTjJbuIGBuJfeX0tUM/V/4jGeMma5nq4lOksJLRlN\n2OsmmkSyQVUV7a/XHYmeQ0IAKAidgn46OOzLsCcp4gyBwI8/42VNREGoSPtKR2OL\nJ9t2AhkTCiGyXpL81TWw9mttY5fstk98hnLCc66+0wNhhpyHLGsWoW86jRLgZCwb\nw0gU5cz04orIptbandxpcyZ96EjrKQGdYprBrrUTBLsEu1gLiAQJJKTlknM6rCM0\nw7SmpDznFQytgvBuP9HskRr2zw5Iy9ZRT3zkryH38QKBgQDgaYa/tgLjvkEHFJtf\nNm8tT+FSIP42YvVcJGQk7EE/6GqMla4OrT1a3fN/2mwAt5EaJjy7F5JGJh0Rcuyc\numbTzK0I/7GTzi3l/3k+6EkBTqBgf7CbTavLiPb4cLNlv9+wVQlqy8ePOpK2tJbo\n5DhxwX9qzAnvcNNwVxOfiA1JvwKBgQDMe64vv3GFNT6UJ7LN9/OnBubtkBuiCERY\nK87pPolyx+kUgIVJPqtYEoHqKzTU8rjzwHVdyE0ipdYO9i8eCY+IJw7zO7IupMqB\nFuT7qxZ+LCqJjizRnksv8tfcxLIfuacZLAR3wC78ksPn745AyRa9Vjl/ZstIgQgb\ng2LrZLUp2QKBgBAdQ8HMbhSwerbpcea6X+1fCQz+tYJuRLQjINXN6TmPlOcXcHI5\nWmiF+5A4vPyoMdEw4beFj8ldv0SbfgYbFHss/VfiFHxKl90mJSyxPVzMqpODV8kv\nIKDy6tkYLqmlx4g/8vcqPuA4EoTwHs4GZU8119JxaF07OtOcTRptiJa9AoGATq1H\n2BdRFm/mJBsiMR22Ig4FzGImP7Humf5BHn1xZTiF9d19azExvDFiyzbUnRrHDwJ+\nJhdrlmk4c4lFl8kV8M0Wc4AEju3Y/NJSSIMLpIBZ3ZNWq1C8nTZS2B7Wal6EbKsD\nDRBlA8l0l0kU8thsZ21Fsj9a+Aqtk+h5pxiYnAECgYEAjlpgVGLvGb3OFmBY9ujM\nRGzYRBajH7p+jyhEPT0/D71VMmSuXrvOboWqsjAJs391WlCxlOQbneIOISi+ZGB7\n96WGnhqwNrhgqFPpB8U4GZFy7ddXmfWaYDtfll/J4+DOAQqevUTUNxdMUcNZZlVM\nabOFaF0J2Lyk+Fy9NFJG4xg=\n-----END PRIVATE KEY-----\n",
+  "client_email": "chatapp-cloudstorage@bangkitproject-348609.iam.gserviceaccount.com",
+  "client_id": "109790962023045534149",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/chatapp-cloudstorage%40bangkitproject-348609.iam.gserviceaccount.com"
+}
