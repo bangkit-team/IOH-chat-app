@@ -2,7 +2,11 @@ import React,{useEffect} from 'react';
 import authHeader from '../../context/authHeader';
 import "./home.css";
 
-import card from "../../card.jpg";
+import user from "../../user.jpg";
+import group from "../../group.jpg";
+import approve from "../../approval.png";
+import announcement from "../../announcement.png";
+
 
 const Home = () => {
     const logout = () =>{
@@ -21,7 +25,7 @@ const Home = () => {
             <div className="container-home">
                 <div className="card">
                     <div className="head-card">
-                        <img src={card} alt="card"/>
+                        <img src={user} alt="card"/>
                     </div>
                     <div className="body-card">
                         <h2>All Users</h2>
@@ -33,7 +37,7 @@ const Home = () => {
                 </div>
                 <div className="card">
                     <div className="head-card">
-                        <img src={card} alt="card"/>
+                        <img src={group} alt="card"/>
                     </div>
                     <div className="body-card">
                         <h2>All Groups</h2>
@@ -45,7 +49,7 @@ const Home = () => {
                 </div>
                 <div className="card">
                     <div className="head-card">
-                        <img src={card} alt="card"/>
+                        <img src={approve} alt="card"/>
                     </div>
                     <div className="body-card">
                         <h2>Approval User</h2>
@@ -57,7 +61,7 @@ const Home = () => {
                 </div>
                 <div className="card">
                     <div className="head-card">
-                        <img src={card} alt="card"/>
+                        <img src={announcement} alt="card"/>
                     </div>
                     <div className="body-card">
                         <h2>Announcement</h2>

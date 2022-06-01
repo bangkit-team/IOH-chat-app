@@ -15,24 +15,31 @@ router.post('/', async(req,res) =>{
 
     var success = 0;
     var id_admin = '';
-    adminRef.once('value', (snapshot) => {
-        snapshot.forEach((data) => {
-            if(data.val().username === req.body.username && bcrypt.compareSync( req.body.password, data.val().password)){
-                success = success + 1;
-                id_admin = data.key;
-            }
+
+    try{
+        adminRef.once('value', (snapshot) => {
+            snapshot.forEach((data) => {
+                if(data.val().username === req.body.username && bcrypt.compareSync( req.body.password, data.val().password)){
+                    success = success + 1;
+                    id_admin = data.key;
+                }
+            });
+    
+            if(success == 0) return res.status(401).json({message: "Email atau Password Salah"})
+            
+            const token = jwt.sign({_id: id_admin, exp:Math.floor(Date.now()/1000)+(60*60)}, process.env.TOKEN_SECRET);
+    
+            return res.status(200).json({
+                message: "Login berhasil",
+                _id: id_admin,
+                token: token,
+            })
         });
-
-        if(success == 0) return res.status(400).json({message: "Email atau Password Salah"})
-        
-        const token = jwt.sign({_id: id_admin, exp:Math.floor(Date.now()/1000)+(60*60)}, process.env.TOKEN_SECRET);
-
-        return res.status(200).json({
-            message: "Login berhasil",
-            _id: id_admin,
-            token: token,
+    }catch(error){
+        res.status(500).json({
+            message: "Server Error"
         })
-    });
+    }
 
 })
 
@@ -72,7 +79,7 @@ router.get('/groups',verify, (req,res)=>{
                 group = [...group,{
                     name: data.val().name,
                     created_at: data.val().created_at,
-                    profile_pict: data.val().profile_pict,
+                    group_pict: data.val().group_pict,
                 }]
             })
 
