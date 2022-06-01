@@ -35,7 +35,6 @@
   - POST
 - Request body
   - name (string)
-  - tanggal_lahir (string)
   - posisi (string)
   - divisi_kerja (string)
   - email (string)
@@ -83,7 +82,6 @@
         "phone_number": "64564436",
         "posisi": "admin",
         "profile_pict": "link storage",
-        "tanggal_lahir": "9 november 2004",
         "timestamp": "05/29/2022"
     }
 }
@@ -112,7 +110,6 @@
 - Request body
   - name_user (string)
   - phone_number (string)
-  - tanggal_lahir (string)
   - posisi (string)
   - divisi_kerja (string)
   - about (string)
