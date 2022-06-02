@@ -55,6 +55,9 @@
   - /user/:user_id
 - Method
   - GET
+- Request header
+  - token
+  - id
 - Request body
   - none
 - Response
@@ -92,6 +95,9 @@
   - /user/:user_id
 - Method
   - POST
+- Request header
+  - token
+  - id 
 - Request body
   - email (string) --> email temen yang mau di accept
 - Response 
@@ -107,6 +113,9 @@
   - /user/:user_id
 - Method
   - PATCH
+- Request header
+  - token
+  - id 
 - Request body
   - name_user (string)
   - phone_number (string)
@@ -126,6 +135,9 @@
   - /user/:user_id/chat/:chat_id
 - Method
   - POST
+- Request header
+  - token
+  - id 
 - Request body
   - file (file)
 - Response
@@ -141,6 +153,9 @@
   - /user/:user_id/group
 - Method
   - POST
+- Request header
+  - token
+  - id
 - Request body
   - id_user (string) --> pembuat grup
   - email_user (string) --> email pembuat grup
@@ -159,6 +174,9 @@
   - /user/:user_id/group/:group_id
 - Method
   - GET
+- Request header
+  - token
+  - id
 - Request body
   - none
 - Response
@@ -202,6 +220,9 @@
   - /user/:user_id/group/:group_id
 - Method
   - POST
+- Request header
+  - token
+  - id
 - Request body
   - nameGroup (string)
   - emailFriend (string)
@@ -217,6 +238,9 @@
   - /user/:user_id/group/:group_id
 - Method
   - PATCH
+- Request header
+  - token
+  - id
 - Request body
   - name (string) --> nama groupnya
   - group_pict (image)
@@ -233,6 +257,9 @@
   - /user/:user_id/group/:group_id
 - Method
   - DELETE
+- Request header
+  - token
+  - id
 - Request body
   - user_id (string)
 - Response
@@ -247,6 +274,9 @@
   - /user/:user_id/group/:group_id/chat
 - Method
   - POST
+- Request header
+  - token
+  - id
 - Request body
   - file (file)
   - sender (string)
@@ -260,11 +290,13 @@
 # Feedback API
 ## Add feedback
 - URL
-  - /user/:user_id/feedback/
+  - feedback/
 - Method
   - POST
+- Request header
+  - token
+  - id
 - Request body
-  - id_user (string)
   - feedback (string)
 - Response
 ```
@@ -279,6 +311,9 @@
   - /user/:user_id/announcement
 - Method
   - POST
+- Request header
+  - token
+  - id 
 - Request body
   - none --> utk divisinya udah dicek berdasarkan param user_id, dan kalo udah ada gk bakal buat lagi
 - Response
@@ -293,6 +328,9 @@
   - /user/:user_id/announcement/chat
 - Method
   - POST
+- Request header
+  - token
+  - id
 - Request body
   - message (text/file)
   - nama_divisi (string)
