@@ -290,11 +290,12 @@
 
 ## Send Chat Announcement
 - URL
-  - /user/:user_id/announcement/:div_id
+  - /user/:user_id/announcement/chat
 - Method
   - POST
 - Request body
   - message (text/file)
+  - nama_divisi (string)
 - Response
 ```
 {
