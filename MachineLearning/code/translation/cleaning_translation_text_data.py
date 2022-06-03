@@ -4,13 +4,13 @@ import re
 
 class CleanData:
     def __init__(self, filename, columns):
-        self._corpus = list(dict())
+        self._corpus = list()
         self._filename = filename
         self._columns = columns
-        self._filterText(self._filename, self._columns)
+        self._filterText()
 
-    def _filterText(self, filename, columns):
-        fileDir = f"datasets/translate sentence/untidy/{filename}.txt"
+    def _filterText(self):
+        fileDir = f"datasets/translation/untidy/{self._filename}.txt"
         with open(fileDir, encoding="utf8") as file:
             for text in file.readlines():
                 result = re.findall(r"^.*CC-BY", text)
@@ -21,12 +21,12 @@ class CleanData:
                 language2_sentence = filtered_text[1]
 
                 diction = dict()
-                diction[columns[0]] = language1_sentence
-                diction[columns[1]] = language2_sentence
+                diction[self._columns[0]] = language1_sentence
+                diction[self._columns[1]] = language2_sentence
                 self._corpus.append(diction)
 
     def convertToCSV(self, filename):
-        fileDir = f"datasets/translate sentence/result/{filename}.csv"
+        fileDir = f"datasets/translation/result/{filename}.csv"
 
         try:
             with open(fileDir, "w", encoding='utf8', newline="") as file:
