@@ -77,9 +77,17 @@ class Translator:
 
 
 if __name__ == "__main__":
+    input_wi = "/content/input_word_index.json"
+    target_iw = "/content/target_index_word.json"
+
+    translator = Translator(
+        saved_model_path,
+        input_wi,
+        target_iw,
+        input_maxlen,
+    )
     text_input = "what are you doing"
     lang_detector = translator.lang_detector(text_input)
-    lang_detector
 
     if lang_detector == "en":
         translate = translator.translate(text_input)
