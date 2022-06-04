@@ -1,1 +1,0 @@
-Link [model](https://drive.google.com/drive/folders/1-HUyppjZzDiPJ9czz8ZmEtqlKs3jZU0L?usp=sharing)

@@ -1,8 +1,12 @@
 const express = require('express')
 const router = express.Router()
 const db = require('../utils/firestore')
+const {feedbackValidation} = require('../validate')
 
 router.post('/', (req,res) =>{
+    const {error} = feedbackValidation(req.body);
+    if(error) return res.status(400).send(error.details[0].message)
+
     const id_user= req.body.id_user;
     const feedback = req.body.feedback;
     
