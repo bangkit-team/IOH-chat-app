@@ -1,11 +1,11 @@
 export default function authHeader(){
     const token = JSON.parse(localStorage.getItem("token"))
-    const _id = JSON.parse(localStorage.getItem("_id"))
+    const id = JSON.parse(localStorage.getItem("id"))
 
     if(token){
         return {
             "token": token,
-            "_id": _id
+            "id": id
         };
     }else{
         return {};
