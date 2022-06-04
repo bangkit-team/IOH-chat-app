@@ -10,7 +10,9 @@ const groupRef = db.ref('/groups');
 const verify = require('./verifyToken');
 
 //tambah grup baru
+
 router.post('/', verify, uploadGambar.single('group_pict'), (req,res)=>{
+
   var success = 0;
 
   try{
@@ -177,7 +179,7 @@ router.post('/:group_id', verify, (req,res)=>{
 router.patch('/:group_id', verify, uploadGambar.single('group_pict'), (req,res)=>{
   const {error} = updateGroupValidation(req.body);
   if(error) return res.status(400).json({message:error.details[0].message});
-  
+
   try{
     //taruk di cloud storage untuk profile pict 
     async function uploadFile() {
@@ -193,12 +195,18 @@ router.patch('/:group_id', verify, uploadGambar.single('group_pict'), (req,res)=
     uploadFile().catch(console.error);
 
     try{
-      const updateGroup = {
-        name: req.body.name,
-        group_pict: `https://storage.googleapis.com/bangkit_chatapp_bucket/GroupPict/${req.file.filename}`,
-        deskripsi: req.body.deskripsi
-      }
-      groupRef.child(req.params.group_id).update(updateGroup);
+     //delete pict lama dan update database
+      const groupIdRef = db.ref('/groups/'+req.params.group_id)
+      groupIdRef.once('value',(snapshot)=>{
+        console.log(snapshot.child('group_pict').val())
+        const pictLama = snapshot.child('group_pict').val().replace("https://storage.googleapis.com/bangkit_chatapp_bucket/GroupPict", "GroupPict")
+        async function deleteFile() {
+          await cstorage.file(pictLama).delete();
+          groupRef.child(req.params.group_id).update(updateGroup);
+        }
+        deleteFile().catch(console.error);
+      })
+
       res.status(200).send({
         message: "Success Edit Profile Group"
       });
@@ -213,10 +221,10 @@ router.patch('/:group_id', verify, uploadGambar.single('group_pict'), (req,res)=
 //Specific User out from group
 router.delete('/:group_id', verify, (req,res)=>{
   try{
-    const groupUserRef = db.ref('/groups/'+req.params.group_id+'/users/'+req.body.id_agent)
+    const groupUserRef = db.ref('/groups/'+req.params.group_id+'/users/'+req.body.user_id)
     groupUserRef.remove();
   
-    const userRef = db.ref('/users/'+req.body.id_agent+'/contact/'+req.params.group_id)
+    const userRef = db.ref('/users/'+req.body.user_id+'/contact/'+req.params.group_id)
     userRef.remove();
 
     return res.status(200).json({message: "Success Delete User from Group"})

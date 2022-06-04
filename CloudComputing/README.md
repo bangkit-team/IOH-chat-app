@@ -1,29 +1,15 @@
 # API Endpoint
-- heroku:
-  - http://redteam-chatapp.herokuapp.com/  
+- CE Backend-App:
+  - http://34.142.215.198 
+- App Engine Backend-Admin:
+  - https://bangkitproject-348609.et.r.appspot.com   
+- CE Frontend:
+  - https://redteam-chatapp.vercel.app/
+- CE ML-Flask:
+  - http://34.126.129.113/
+
 
 # API List
-ada beberapa perubahan yang blm diubah
-
-## SignUp User
-- URL
-  - /user
-- Method
-  - POST
-- Request body
-  - name (string)
-  - email (string)
-  - password (string)
-  - fpassword (string)
-  - phone_number (string)
-  - role (string)
-- Response 
-```
-{
-  "message": "Register Berhasil"
-}
-```
-
 ## Login User
 - URL
   - /login
@@ -42,26 +28,36 @@ ada beberapa perubahan yang blm diubah
 }
 ```
 
-## Edit Profile User
+## SignUp User
 - URL
-  - /user/:user_id
+  - /user
 - Method
-  - PATCH
+  - POST
 - Request body
-  - name_user (string)
-  - profile_pict (string)
-- Response
+  - name (string)
+  - posisi (string)
+  - divisi_kerja (string)
+  - email (string)
+  - password (string)
+  - fpassword (string)
+  - phone_number (string)
+  - profile_pict (image)
+- Response 
 ```
 {
-    "message": "Success Edit Profile User"
+  "message": "Register Berhasil"
 }
 ```
 
-## Get All User Friend and Group Contact
+# User API
+## Get User Information
 - URL
   - /user/:user_id
 - Method
   - GET
+- Request header
+  - token
+  - id
 - Request body
   - none
 - Response
@@ -69,77 +65,164 @@ ada beberapa perubahan yang blm diubah
 {
     "message": "Success get friend and group",
     "snapshot": {
+        "about": "Available",
+        "approve": true,
         "contact": {
-            "-N2BFGPSRgj72G_GICYD": {
-                "emailFriend": "yusuf@gmail.com",
-                "nameFriend": "yusuf"
+            "-N3F8Cly2dNVPB15qaXvRichard Alvin-GalihPC": {
+                "emailFriend": "richardalvinpratama8@gmail.com",
+                "id_chat": "-N3F8Cly2dNVPB15qaXvRichard-GalihPC",
+                "namaFriend": "Richard Alvin"
             },
-            "-N2BIgpoSCy6PSVhazPH": {
-                "nameGroup": "RedTeam"
+            "-N3F9Rr3nZoH1iR2ohqARed TeamGroup": {
+                "id_group": "-N3F9Rr3nZoH1iR2ohqARed TeamGroup",
+                "nameGroup": "Red Team"
             }
         },
-        "email": "richard@gmail.com",
-        "name": "richard",
-        "password": "$2b0$x9flA79G77QpgfU2IKPbUeIVwO7JN0mXQ9bz/CzddYb6U0NKvgJT.",
-        "phone_number": "342525345",
-        "profile_pict": "aarhga",
-        "role": "accounting"
+        "divisi_kerja": "Customer Experience Excellence",
+        "email": "galih8.4.2001@gmail.com",
+        "name": "Galih",
+        "password": "$2b$10$UmOkmyo5V4XQ8I2EDRYvSuoVJzqQMJJDYw1c6vqQ4VLc7/iy4/L9m",
+        "phone_number": "64564436",
+        "posisi": "admin",
+        "profile_pict": "link storage",
+        "timestamp": "05/29/2022"
     }
 }
 ```
 
-## Add new friend in User Contact
+## Add new friend as PC
 - URL
   - /user/:user_id
 - Method
   - POST
+- Request header
+  - token
+  - id 
 - Request body
   - email (string) --> email temen yang mau di accept
 - Response 
 ```
 {
-    "message": "Register Berhasil",
-    "id_chat": "-N2FfiXoQXQF2uOs4-Hb"
+    "message": "Add Friend Success",
+    "id_chat": "-N3F8Cly2dNVPB15qaXvRichard-GalihPC"
 }
 ```
 
+## Edit Profile User
+- URL
+  - /user/:user_id
+- Method
+  - PATCH
+- Request header
+  - token
+  - id 
+- Request body
+  - name_user (string)
+  - phone_number (string)
+  - posisi (string)
+  - divisi_kerja (string)
+  - about (string)
+  - profile_pict (file)
+- Response
+```
+{
+    "message": "Success Edit Profile User"
+}
+```
+
+## Realtime Chat PC (Khusus gambar atau file)
+- URL
+  - /user/:user_id/chat/:chat_id
+- Method
+  - POST
+- Request header
+  - token
+  - id 
+- Request body
+  - file (file)
+- Response
+```
+{
+    "message": "Success send chat"
+}
+```
+
+# Group API
 ## Add new Group
 - URL
   - /user/:user_id/group
 - Method
   - POST
+- Request header
+  - token
+  - id
 - Request body
-  - id_user (string)
-  - email_user (string)
-  - name (string) --> nama group baru
+  - id_user (string) --> pembuat grup
+  - email_user (string) --> email pembuat grup
+  - name (string) --> nama grup baru, gk boleh ada symbol
+  - group_pict (image)
 - Response
 ```
 {
     "message": "Add new group success",
-    "id_group": "-N2Fh7kmJ26graL3LPVd"
+    "id_group": "-N3F9Rr3nZoH1iR2ohqARedTeamGroup"
 }
 ```
 
-## Edit Group
+## Get Group Specs
 - URL
   - /user/:user_id/group/:group_id
 - Method
-  - POST
+  - GET
+- Request header
+  - token
+  - id
 - Request body
-  - name (string) --> nama group baru
-  - group_pict (string)
-- Response body
+  - none
+- Response
 ```
 {
-    "message": "Success Edit Profile Group"
+    "message": "Success get specific group",
+    "snapshot": {
+        "chat": {
+            "-N3F9Rr3nZoH1iR2ohqB": {
+                "message": "Pesan Awal",
+                "timestamp": "21-13-3"
+            },
+            "-N3FD5fVGhKmUi8ZZvPj": {
+                "message": "link storage",
+                "sender": "richardalvinpratama8@gmail.com",
+                "timestamp": "21-29-0"
+            }
+        },
+        "created_at": "05/29/2022",
+        "deskripsi": "Available",
+        "group_pict": "link storage",
+        "name": "Red Team",
+        "users": {
+            "-N3F5BULD9ZP94-WJPpT": {
+                "emailUser": "richardalvinpratama8@gmail.com",
+                "group_role": "admin",
+                "join_timestamp": "05/29/2022"
+            },
+            "-N3F7y14enDV3gbUsPex": {
+                "emailUser": "galih8.4.2001@gmail.com",
+                "group_role": "member",
+                "join_timestamp": "05/29/2022"
+            }
+        }
+    }
 }
 ```
 
-## Add friend to Group
+## Add friend to Group (Untuk sementara cuman bisa tambah satu satu temannya)
 - URL
   - /user/:user_id/group/:group_id
 - Method
   - POST
+- Request header
+  - token
+  - id
 - Request body
   - nameGroup (string)
   - emailFriend (string)
@@ -150,13 +233,70 @@ ada beberapa perubahan yang blm diubah
 }
 ```
 
-## Add feedback
+## Edit Group
 - URL
-  - /user/:user_id/feedback/
+  - /user/:user_id/group/:group_id
+- Method
+  - PATCH
+- Request header
+  - token
+  - id
+- Request body
+  - name (string) --> nama groupnya
+  - group_pict (image)
+  - deskripsi (string)
+- Response body
+```
+{
+    "message": "Success Edit Profile Group"
+}
+```
+
+## Out from group
+- URL
+  - /user/:user_id/group/:group_id
+- Method
+  - DELETE
+- Request header
+  - token
+  - id
+- Request body
+  - user_id (string)
+- Response
+```
+{
+    "message": "Success Delete User from Group"
+}
+```
+
+## Realtime Chat Group
+- URL
+  - /user/:user_id/group/:group_id/chat
 - Method
   - POST
+- Request header
+  - token
+  - id
 - Request body
-  - id_user (string)
+  - file (file)
+  - sender (string)
+- Response
+```
+{
+    "message": "Success send chat"
+}
+```
+
+# Feedback API
+## Add feedback
+- URL
+  - feedback/
+- Method
+  - POST
+- Request header
+  - token
+  - id
+- Request body
   - feedback (string)
 - Response
 ```
@@ -165,10 +305,142 @@ ada beberapa perubahan yang blm diubah
 }
 ```
 
-## Get Realtime Chat
+# Announcement API
+## Add Announcement
+- URL
+  - /user/:user_id/announcement
+- Method
+  - POST
+- Request header
+  - token
+  - id 
+- Request body
+  - none --> utk divisinya udah dicek berdasarkan param user_id, dan kalo udah ada gk bakal buat lagi
+- Response
+```
+{
+    "message": "Berhasil menambahkan announcement Call Center"
+}
+```
 
-## Send Chat
+## Send Chat Announcement
+- URL
+  - /user/:user_id/announcement/chat
+- Method
+  - POST
+- Request header
+  - token
+  - id
+- Request body
+  - message (text/file)
+  - nama_divisi (string)
+- Response
+```
+{
+    "message": "Pesan berhasil terkirim"
+}
+```
 
+# Admin
+## Login Website (Khusus Admin)
+- URL
+  - /admin
+- Method
+  - POST
+- Request body
+  - username (string) --> email
+  - password (string)
+- Response
+```
+{
+    "message": "Login Berhasil",
+    "_id": id_admin,
+    "token": token
+}
+```
 
+## Get All Users
+- URL
+  - /admin/users
+- Method
+  - GET
+- Request header
+  - token
+  - _id
+- Response
+```
+{
+    "message": "Success get All Users",
+    "snapshot": [
+        {
+            "name": "Richard Pratama",
+            "email": "richardalvinpratama8@gmail.com",
+            "posisi": "Admin",
+            "divisi_kerja": "Contact Center",
+            "profile_pict": "https://storage.googleapis.com/bangkit_chatapp_bucket/UserPict/2022-4-29-1653833890257pngtree-kue-nastar-kartun-png-image_4508325.png"
+        },
+        {
+            "name": "Galih",
+            "email": "galih8.4.2001@gmail.com",
+            "posisi": "admin",
+            "divisi_kerja": "Customer Experience Excellence",
+            "profile_pict": "https://storage.googleapis.com/bangkit_chatapp_bucket/UserPict/2022-4-29-1653833194595broom-11530982283e4sv4cfwin.png"
+        }
+    ]
+}
+```
 
+## Get All Groups
+- URL
+  - /admin/groups
+- Method
+  - GET
+- Request header
+  - token
+  - _id
+- Response
+```
+{
+    "message": "Success get All Groups",
+    "snapshot": [
+        {
+            "name": "Red Team",
+            "created_at": "05/29/2022",
+            "group_pict": "https://storage.googleapis.com/bangkit_chatapp_bucket/GroupPict/2022-4-29-1653833583174color-house-3-icon@2x.png"
+        }
+    ]
+}
+```
 
+## Get Unapprove New User
+- URL
+  - /admin/user/approve
+- Method
+  - GET
+- Request header
+  - token
+  - _id
+- Response
+```
+{
+    "message": "Success Get Unapprove Groups",
+    "approve": unapproveUser
+}
+```
+
+## Approve New User
+- URL
+  - /admin/user/approve
+- Method
+  - POST
+- Request header
+  - token
+  - _id
+- Request body
+  - approve (boolean) 
+- Response
+```
+{
+    "message": "Success Approve User",
+}
+```

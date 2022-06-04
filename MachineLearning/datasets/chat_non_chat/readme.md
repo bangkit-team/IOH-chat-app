@@ -1,0 +1,1 @@
+## This is my own dataset (i collect it from my whatsapp chat screenshot and from my personal gallery), so if you want to use it please reach me in Discord Amna#3650

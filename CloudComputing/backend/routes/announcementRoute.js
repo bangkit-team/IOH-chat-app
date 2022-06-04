@@ -128,7 +128,7 @@ function sebarChat(divKerja,message,timestamp){
                 if(data.val().nama_divisi === 'Call Center' || data.val().nama_divisi === 'Digital' || data.val().nama_divisi === 'Customer Relation' || data.val().nama_divisi === 'VIP Services'){
                     const dataRef = db.ref('/announcements/'+data.key+'/chat/')
                     const idnya = dataRef.push().key;
-                    dataRef.child(idnya).set({message: message,timestamp:timestamp})
+                    dataRef.child(idnya).set({message: message,timestamp:timestamp,sender:divKerja})
                 }
             })
         })
@@ -138,7 +138,7 @@ function sebarChat(divKerja,message,timestamp){
                 if(data.val().nama_divisi === 'Retail Customer Experience' || data.val().nama_divisi === 'Business Process & Training' || data.val().nama_divisi === 'Service Quality & Exp Assurance' || data.val().nama_divisi === 'Customer Journey'){
                     const dataRef = db.ref('/announcements/'+data.key+'/chat/')
                     const idnya = dataRef.push().key;
-                    dataRef.child(idnya).set({message: message,timestamp:timestamp})
+                    dataRef.child(idnya).set({message: message,timestamp:timestamp,sender:divKerja})
                 }
             })
         })
@@ -148,7 +148,7 @@ function sebarChat(divKerja,message,timestamp){
                 if(data.val().nama_divisi === 'Collection & Payment' || data.val().nama_divisi === 'Billing & Administration' || data.val().nama_divisi === 'Verification & Credit Monitoring'){
                     const dataRef = db.ref('/announcements/'+data.key+'/chat/')
                     const idnya = dataRef.push().key;
-                    dataRef.child(idnya).set({message: message,timestamp:timestamp})
+                    dataRef.child(idnya).set({message: message,timestamp:timestamp,sender:divKerja})
                 }
             })
         })
@@ -158,7 +158,7 @@ function sebarChat(divKerja,message,timestamp){
                 if(data.val().nama_divisi === 'Business Planning & Project Tracking' || data.val().nama_divisi === 'Infra Support & Tech Development'){
                     const dataRef = db.ref('/announcements/'+data.key+'/chat/')
                     const idnya = dataRef.push().key;
-                    dataRef.child(idnya).set({message: message,timestamp:timestamp})
+                    dataRef.child(idnya).set({message: message,timestamp:timestamp,sender:divKerja})
                 }
             })
         })
@@ -168,7 +168,7 @@ function sebarChat(divKerja,message,timestamp){
                 if(data.val().nama_divisi === 'CX Reporting Team'){
                     const dataRef = db.ref('/announcements/'+data.key+'/chat/')
                     const idnya = dataRef.push().key;
-                    dataRef.child(idnya).set({message: message,timestamp:timestamp})
+                    dataRef.child(idnya).set({message: message,timestamp:timestamp,sender:divKerja})
                 }
             })
         })
@@ -213,7 +213,7 @@ router.post('/:user_id/announcement', (req,res)=>{
 /*
 Request body : message/file
 */
-router.post('/:user_id/announcement/:div_id', uploadApaaja.single('file'), (req,res)=>{
+router.post('/:user_id/announcement/chat', uploadApaaja.single('message'), (req,res)=>{
     //today date
     var date = new Date();
     var dd = String(date.getDate()).padStart(2, '0');
@@ -221,40 +221,42 @@ router.post('/:user_id/announcement/:div_id', uploadApaaja.single('file'), (req,
     var yyyy = date.getFullYear();
     const today = mm + '/' + dd + '/' + yyyy
 
-    const annChatRef = db.ref('/announcements/'+req.params.div_id+'/chat')
-    const annChatId = annChatRef.push().key;
-
-    const userDataRef = db.ref('/users/'+req.params.user_id)
-    userDataRef.once('value',(snapshot)=>{
-        var divKerjaUser = snapshot.child('divisi_kerja').val();
-        try{
-            let filenya = ''
-            try{
-                console.log(req.file.filename)
-                async function uploadFile() {
-                    await cstorage.upload(`../backend/files/${req.file.filename}`,{
-                        destination: `Announcement/${divKerjaUser.replace(/ |&/gi, "")}/${req.file.filename}`
-                    });
-                    await cstorage.file(`Announcement/${divKerjaUser.replace(/ |&/gi, "")}/${req.file.filename}`).makePublic();
-                    const filepath = path.resolve(`./files/${req.file.filename}`);
-                    fs.unlinkSync(filepath);
+    annRef.once('value',(snapshot)=>{
+        snapshot.forEach((data)=>{
+            if(data.val().nama_divisi === req.body.nama_divisi){
+                const annChatRef = db.ref('/announcements/'+data.key+'/chat')
+                const annChatId = annChatRef.push().key;
+                try{
+                    let filenya = ''
+                    try{
+                        console.log(req.file.filename)
+                        async function uploadFile() {
+                            await cstorage.upload(`../backend/files/${req.file.filename}`,{
+                                destination: `Announcement/${req.body.nama_divisi.replace(/ |&/gi, "")}/${req.file.filename}`
+                            });
+                            await cstorage.file(`Announcement/${req.body.nama_divisi.replace(/ |&/gi, "")}/${req.file.filename}`).makePublic();
+                            const filepath = path.resolve(`./files/${req.file.filename}`);
+                            fs.unlinkSync(filepath);
+                        }
+                        uploadFile().catch(console.error);
+                        filenya = `https://storage.googleapis.com/bangkit_chatapp_bucket/Announcement/${req.body.nama_divisi.replace(/ |&/gi, "")}/${req.file.filename}`
+                    } catch(error){
+                        filenya = req.body.message
+                    }
+        
+                    annChatRef.child(annChatId).set({
+                        message: filenya,
+                        timestamp: today,
+                        sender: req.body.nama_divisi
+                    })
+                    sebarChat(req.body.nama_divisi,filenya,today)
+        
+                    res.status(200).json({message: "Pesan berhasil terkirim"});
+                } catch(error){
+                    res.status(500).json({message: "Error when send a chat"})
                 }
-                uploadFile().catch(console.error);
-                filenya = `https://storage.googleapis.com/bangkit_chatapp_bucket/Announcement/${divKerjaUser.replace(/ |&/gi, "")}/${req.file.filename}`
-            } catch(error){
-                filenya = req.body.message
             }
-
-            annChatRef.child(annChatId).set({
-                message: filenya,
-                timestamp: today
-            })
-            sebarChat(divKerjaUser,filenya,today)
-
-            res.status(200).json({message: "Pesan berhasil terkirim"});
-        } catch(error){
-            res.status(500).json({message: "Error when send a chat"})
-        }
+        })
     })
 })
 
