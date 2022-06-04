@@ -16,9 +16,8 @@ const Group = () => {
     const [data, setData] = useState([]);
 
     const fetchData = async () =>{
-        const results = await axios.get(API_URL, { headers: authHeader() })
+        const results = await axios.get(API_URL, {headers: authHeader() })
         setData(results.data.snapshot)
-        console.log(results.data.snapshot)
     }
 
     const listCard = data.map((data) => {

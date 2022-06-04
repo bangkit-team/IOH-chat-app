@@ -26,17 +26,15 @@ const Approval = () => {
         try {
             const approve=true
             const id = e.target.id.value
-            await axios.post(API_URL,
-                JSON.stringify({approve, id}),
-                {
-                    headers: { 
-                        'Content-Type': 'application/json',
-                        'token': authHeader().token,
-                        '_id': authHeader()._id
-                    },
-                    withCredentials: true
+            const response = await axios({
+                method: 'post',
+                url: API_URL,
+                headers: authHeader(),
+                data: {
+                    approve: approve,
+                    id: id,
                 }
-            );
+            })
             window.location.href = "/home/approval";
         } catch (err) {
             console.log(err)

@@ -4,6 +4,9 @@ const group = require('./routes/groupRoute')
 const feedback = require('./routes/feedbackRoute')
 const announcement = require('./routes/announcementRoute')
 
+var multer = require('multer');
+var upload = multer();
+
 const express = require('express')
 const app = express()
 
@@ -21,9 +24,12 @@ require('./utils/cloudStorage')
 app.use(express.json())
 app.use(express.static('public'));
 
+// for parsing multipart/form-data
+app.use(upload.array()); 
+app.use(express.static('public'));
+
 //cors
 const cors=require("cors");
-const { response } = require('express')
 const corsOptions ={
     origin:true, 
     credentials:true,            //access-control-allow-credentials:true
@@ -34,11 +40,11 @@ app.use(cors(corsOptions));
 app.use('/user', user)
 app.use('/login', login)
 app.use('/user/:user_id/group',group)
-app.use('/user/:user_id/feedback',feedback)
+app.use('/feedback',feedback)
 app.use('/user',announcement)
 
 app.get('/', (req, res) => {
-  res.json('send')
+  res.send('send')
 })
 
 app.listen(port, () => {

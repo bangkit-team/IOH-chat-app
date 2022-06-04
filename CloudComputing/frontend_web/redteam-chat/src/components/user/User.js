@@ -20,6 +20,28 @@ const User = () => {
         setData(results.data.snapshot)
     }
 
+    const handleDeleteUser = async (e) => {
+        e.preventDefault();
+
+        var answer = window.confirm("Are you sure want to delete this user?")
+        if(answer){
+            try {
+                const id = e.target.id.value
+                const response = await axios({
+                    method: 'delete',
+                    url: API_URL,
+                    headers: authHeader(),
+                    data: {
+                        id: id
+                    }
+                })
+                window.location.href = "/home/user";
+            } catch (err) {
+                console.log(err)
+            }
+        }
+    }
+
     const listCard = data.map((data) => {
         return (
             <div className='col-4'>
@@ -30,7 +52,12 @@ const User = () => {
                 <li className="list-group-item">{data.email}</li>
                 <li className="list-group-item">{data.divisi_kerja}</li>
                 <li className="list-group-item">{data.posisi}</li>
+                <li className="list-group-item">{data.approve.toString()}</li>
             </ul>
+            <form onSubmit={handleDeleteUser}>
+                <input type="hidden" name="id" id="id" value={data.id}/>
+                <button className="btn btn-danger">Delete User</button>
+            </form>
             </div>
         </div>)
         
