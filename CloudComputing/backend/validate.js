@@ -36,8 +36,8 @@ const updateUserValidation = (data) =>{
 
 const updateGroupValidation = (data) =>{
     const schema = Joi.object({
-        name: Joi.string().alphanum().required(),
-        deskripsi: Joi.string().alphanum().required()
+        name: Joi.string().regex(/^[a-zA-Z0-9 ]*$/).required(),
+        deskripsi: Joi.string().regex(/^[a-zA-Z0-9 ]*$/).required()
     })
     return schema.validate(data);
 }

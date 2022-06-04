@@ -186,7 +186,16 @@ router.patch('/:user_id', uploadGambar.single('profile_pict'), (req,res) =>{
   }
 
   try{
-    userRef.child(req.params.user_id).update(updateUser);
+    //delete pict lama dan update database
+    const userIdRef = db.ref('/users/'+req.params.user_id)
+    userIdRef.once('value',(snapshot)=>{
+      const pictLama = snapshot.child('profile_pict').val().replace("https://storage.googleapis.com/bangkit_chatapp_bucket/UserPict", "UserPict")
+      async function deleteFile() {
+        await cstorage.file(pictLama).delete();
+        userRef.child(req.params.user_id).update(updateUser);
+      }
+      deleteFile().catch(console.error);
+    })
 
     res.status(200).send({
       message: "Success Edit Profile User"

@@ -10,8 +10,6 @@ const groupRef = db.ref('/groups');
 
 //tambah grup baru
 router.post('/', uploadGambar.single('group_pict'), (req,res)=>{
-  
-
   var success = 0;
   groupRef.once('value', (snapshot) =>{
     snapshot.forEach((data) => {
@@ -175,7 +173,6 @@ router.patch('/:group_id', uploadGambar.single('group_pict'), (req,res)=>{
     await cstorage.upload(`../backend/files/${req.file.filename}`,{
         destination: `GroupPict/${req.file.filename}`
     });
-
     await cstorage.file(`GroupPict/${req.file.filename}`).makePublic();
     //ngehapus filenya
     const filepath = path.resolve(`./files/${req.file.filename}`);
@@ -189,7 +186,19 @@ router.patch('/:group_id', uploadGambar.single('group_pict'), (req,res)=>{
       group_pict: `https://storage.googleapis.com/bangkit_chatapp_bucket/GroupPict/${req.file.filename}`,
       deskripsi: req.body.deskripsi
     }
-    groupRef.child(req.params.group_id).update(updateGroup);
+
+    //delete pict lama dan update database
+    const groupIdRef = db.ref('/groups/'+req.params.group_id)
+    groupIdRef.once('value',(snapshot)=>{
+      console.log(snapshot.child('group_pict').val())
+      const pictLama = snapshot.child('group_pict').val().replace("https://storage.googleapis.com/bangkit_chatapp_bucket/GroupPict", "GroupPict")
+      async function deleteFile() {
+        await cstorage.file(pictLama).delete();
+        groupRef.child(req.params.group_id).update(updateGroup);
+      }
+      deleteFile().catch(console.error);
+    })
+    
     res.status(200).send({
       message: "Success Edit Profile Group"
     });
