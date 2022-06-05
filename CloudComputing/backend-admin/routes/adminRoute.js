@@ -5,6 +5,7 @@ const {loginAdminValidation} = require('../validate')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
 const verify = require('./verifyToken');
+const kirimEmail = require('../utils/nodemailer')
 
 const adminRef = db.ref('/admin')
 
@@ -147,6 +148,10 @@ router.post('/user/approve', verify, (req,res) =>{
         userRef.child(req.body.id).update({
             approve: req.body.approve
         });
+        
+        userRef.child(req.body.id).once('value',(snapshot)=>{
+            kirimEmail(snapshot.child('email').val())
+        })
 
         res.status(200).send({
           message: "Success Approve User"
