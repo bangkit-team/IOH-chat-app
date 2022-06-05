@@ -1,13 +1,17 @@
-import pycld2 as cld2
+import json
+
+import numpy as np
+import tensorflow as tf
 from langdetect import detect
+from tensorflow.keras.preprocessing.sequence import pad_sequences
 
 
-class Translator:
-    def __init__(self, model_path, input_word_index, target_index_word, maxlen):
-        self.input_word_index = input_word_index
-        self.target_index_word = target_index_word
-        self.maxlen = maxlen
+class Translator(tf.Module):
+    def __init__(self, model_path, inp_word_index, targ_index_word, maxlen):
         self.model_path = model_path
+        self.inp_word_index = inp_word_index
+        self.targ_index_word = targ_index_word
+        self.maxlen = maxlen
 
         self._load_model()
         self._load_vocab()
@@ -16,18 +20,20 @@ class Translator:
         self.model = tf.keras.models.load_model(self.model_path, compile=True)
 
     def _load_vocab(self):
-        with open(self.input_word_index) as f:
-            self.input_vocab = json.load(f)
+        inp_json = open(self.inp_word_index)
+        self.inp_vocab = json.load(inp_json)
+        inp_json.close()
 
-        with open(self.target_index_word) as f:
-            vocab = json.load(f)
-            self.target_vocab = {int(k): v for k, v in vocab.items()}
+        targ_json = open(self.targ_index_word)
+        vocab = json.load(targ_json)
+        self.targ_vocab = {int(k): v for k, v in vocab.items()}
+        targ_json.close()
 
     def _normalize_and_preprocess(self, text):
-        punctuation = '!"#$%&()*+,-./:;<=>?@[\\]^_`{|}~\t\n'
+        punctuation = '!"#$%&()*+,-./:;=?@[\\]^_`{|}~\t\n'
 
         text = text.lower().strip()
-        text = "".join((filter(lambda x: x not in punctuation, text)))
+        text = ''.join((filter(lambda x: x not in punctuation, text)))
 
         return text
 
@@ -36,8 +42,8 @@ class Translator:
         sequences = list()
 
         for word in words:
-            if word in self.input_vocab.keys():
-                token = self.input_vocab[word]
+            if word in self.inp_vocab.keys():
+                token = self.inp_vocab[word]
                 sequences.append(token)
 
         return sequences
@@ -46,8 +52,8 @@ class Translator:
         words = list()
 
         for token in sequences:
-            if token in self.target_vocab.keys():
-                word = self.target_vocab[token]
+            if token in self.targ_vocab.keys():
+                word = self.targ_vocab[token]
                 words.append(word)
 
         return words
@@ -55,10 +61,10 @@ class Translator:
     def lang_detector(self, sentence):
         return detect(sentence)
 
-    def translate(self, sentence):
+    def __call__(self, sentence):
         index_prediction = list()
-        normalize_sentence = self._normalize_and_preprocess(sentence)
 
+        normalize_sentence = self._normalize_and_preprocess(sentence)
         sequences = self._texts_to_sequences(normalize_sentence)
         sequences = pad_sequences(
             [sequences], maxlen=self.maxlen, padding="post", truncating="post")
@@ -68,29 +74,29 @@ class Translator:
         for i in predictions[0]:
             index_prediction.append(np.argmax(i))
 
-        marks = [start_mark, end_mark]
+        marks = ['<start>', '<end>']
         result = self._sequences_to_texts(index_prediction)
-
-        result = " ".join([word for word in result if word not in marks])
+        result = ' '.join([word for word in result if word not in marks])
 
         return result
 
 
 if __name__ == "__main__":
-    input_wi = "/content/input_word_index.json"
-    target_iw = "/content/target_index_word.json"
+    saved_model_path = "code/translation/resources/saved_model"
+    inp_vocab_path = 'code/translation/resources/inp_wi.json'
+    targ_vocab_path = 'code/translation/resources/targ_iw.json'
 
     translator = Translator(
         saved_model_path,
-        input_wi,
-        target_iw,
-        input_maxlen,
-    )
-    text_input = "what are you doing"
+        inp_vocab_path,
+        targ_vocab_path,
+        15)
+
+    text_input = 'how are you'
     lang_detector = translator.lang_detector(text_input)
 
-    if lang_detector == "en":
-        translate = translator.translate(text_input)
+    if lang_detector == 'en':
+        translate = translator(text_input)
         print(translate)
     else:
-        print("Bahasa tidak dikenali")
+        print('Bahasa tidak dikenali')
