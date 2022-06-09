@@ -6,7 +6,7 @@ module.exports = (req,res,next)=>{
     try{
         const verified = jwt.verify(token,process.env.TOKEN_SECRET);
         req.user  = verified;
-        if(req.user._id === req.headers._id){
+        if(req.user._id === req.headers.id){
             next();
         }else{
             res.status(401).send('Access Denied');

@@ -1,0 +1,1 @@
+Download english and indonesian language classification model [here](https://drive.google.com/file/d/1iN1WznAHAAQHL4htgJ9ipOoE09tp55jL/view?usp=sharing)

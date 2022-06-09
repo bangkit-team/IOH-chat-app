@@ -50,6 +50,37 @@
 ```
 
 # User API
+## Get User Contact Friend and Group for Home
+- URL
+  - /user/home/:id
+- Method
+  - GET
+- Request header
+  - token
+  - id
+- Request body
+  - none
+- Response
+```
+{
+    "message": "Success get friend and group",
+    "snapshot": [
+        {
+            "id_chat": "-N3xYYWcQOCilqAjkK78Galih-RichardPC",
+            "name": "Richard",
+            "pict": "https://storage.googleapis.com/bangkit_chatapp_bucket/UserPict/2022-5-7-1654594756193images.jpg"
+        },
+        {
+            "id_chat": "-N3xd5dmTkH77PRsi4ZICCTeamGroup/chat",
+            "name": "CC Team",
+            "pict": "https://storage.googleapis.com/bangkit_chatapp_bucket/GroupPict/2022-5-7-1654596594318masker.png"
+        }
+    ]
+}
+```
+
+
+
 ## Get User Information
 - URL
   - /user/:user_id

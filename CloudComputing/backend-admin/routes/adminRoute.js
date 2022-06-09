@@ -5,6 +5,7 @@ const {loginAdminValidation} = require('../validate')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
 const verify = require('./verifyToken');
+const kirimEmail = require('../utils/nodemailer')
 
 const adminRef = db.ref('/admin')
 
@@ -31,7 +32,7 @@ router.post('/', async(req,res) =>{
     
             return res.status(200).json({
                 message: "Login berhasil",
-                _id: id_admin,
+                id: id_admin,
                 token: token,
             })
         });
@@ -44,19 +45,20 @@ router.post('/', async(req,res) =>{
 })
 
 //get all user
-router.get('/users',verify, (req,res)=>{
+router.get('/users', verify, (req,res)=>{
     const userRef = db.ref('/users')
-
     let user = []
     try{
         userRef.once('value', snapshot => {
             snapshot.forEach((data) => {
                 user = [...user,{
+                    id: data.key,
                     name: data.val().name,
                     email: data.val().email,
                     posisi: data.val().posisi,
                     divisi_kerja: data.val().divisi_kerja,
                     profile_pict: data.val().profile_pict,
+                    approve: data.val().approve,
                 }]
             })
             res.status(200).send({
@@ -66,6 +68,22 @@ router.get('/users',verify, (req,res)=>{
         })
     }catch(error){
         res.status(500).json({message: "Error when get All Users"})
+    }
+})
+
+router.delete('/users',verify,(req,res) =>{
+    const userRef = db.ref('/users/'+req.body.id)
+
+    try{
+        userRef.remove();
+
+        res.status(200).send({
+          message: "Success Delete User"
+        });
+    }catch(error){
+        res.status(500).send({
+            message: "Failed Delete User"
+        })
     }
 })
 
@@ -130,6 +148,10 @@ router.post('/user/approve', verify, (req,res) =>{
         userRef.child(req.body.id).update({
             approve: req.body.approve
         });
+        
+        userRef.child(req.body.id).once('value',(snapshot)=>{
+            kirimEmail(snapshot.child('email').val())
+        })
 
         res.status(200).send({
           message: "Success Approve User"

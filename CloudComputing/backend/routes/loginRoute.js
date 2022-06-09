@@ -3,6 +3,7 @@ const router = express.Router()
 const db = require('../utils/firestore')
 const {loginValidation} = require('../validate')
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken')
 
 const userRef = db.ref('/users');
 
@@ -12,35 +13,42 @@ router.post('/',(req, res) =>{
     
     var success = 0;
     let dataUser = {};
-
-    userRef.once('value', (snapshot) => {
-        snapshot.forEach((data) => {
-            if(data.val().email === req.body.email && bcrypt.compareSync( req.body.password, data.val().password)){
-                if(data.val().approve === false){
-                    success = -1;
-                }else{
-                    success = success + 1;
-                    dataUser = {
-                        id_user: data.key
+    
+    try{
+        userRef.once('value', (snapshot) => {
+            snapshot.forEach((data) => {
+                if(data.val().email === req.body.email && bcrypt.compareSync( req.body.password, data.val().password)){
+                    if(data.val().approve === false){
+                        success = -1;
+                    }else{
+                        success = success + 1;
+                        dataUser = {
+                            id_user: data.key
+                        }
                     }
                 }
+            });
+            if(success === 1){
+                const token = jwt.sign({_id: dataUser.id_user}, process.env.TOKEN_SECRET);
+    
+                res.status(200).send({
+                    message: 'Login Berhasil',
+                    token: token,
+                    dataUser
+                })
+            }else if(success === 0){
+                res.status(400).send({
+                    message: 'Email atau Password salah'
+                })
+            }else if(success === -1){
+                res.status(400).send({
+                    message: 'Akun belum diapprove oleh Admin'
+                })
             }
-        });
-        if(success === 1){
-            res.status(200).send({
-                message: 'Login Berhasil',
-                dataUser
-            })
-        }else if(success === 0){
-            res.status(400).send({
-                message: 'Email atau Password salah'
-            })
-        }else if(success === -1){
-            res.status(400).send({
-                message: 'Akun belum diapprove oleh Admin'
-            })
-        }
-    })
+        })
+    }catch(error){
+        res.status(500).send({message: "Internal Server Error"})
+    }
 })
 
 
