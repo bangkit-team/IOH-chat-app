@@ -1,12 +1,12 @@
 # API Endpoint
 - CE Backend-App:
-  - http://34.142.215.198 
+  - https://mydomainappalvin.com
 - App Engine Backend-Admin:
   - https://bangkitproject-348609.et.r.appspot.com   
 - CE Frontend:
   - https://redteam-chatapp.vercel.app/
 - CE ML-Flask:
-  - http://34.126.129.113/
+  - https://ml.mydomainappalvin.com
 
 
 # API List
