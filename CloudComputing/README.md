@@ -22,11 +22,18 @@
 ```
 {
     "message": "Login Berhasil",
+    "code": 1,
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiItTjN4WEpwbzRiaC03aXEyYjNSOSIsImlhdCI6MTY1NDg1NDczMX0.qPY6kgCMyuDOqLWd2aUe7shtEAA169TQ_vJNgrH6MFA",
     "dataUser": {
         "id_user": "-N20lzx77Fj4_FEhgger"
     }
 }
 ```
+- Message Code
+  - 0 == Internal Server Error
+  - 1 == Login Berhasil
+  - 2 == Email atau Password Salah
+  - 3 == Akun belum diapprove oleh Admin
 
 ## SignUp User
 - URL
@@ -41,13 +48,19 @@
   - password (string)
   - fpassword (string)
   - phone_number (string)
-  - profile_pict (image)
 - Response 
 ```
 {
-  "message": "Register Berhasil"
+  "message": "Register Berhasil",
+  "code": 1
 }
 ```
+- Message Code
+  - 0 == Internal Server Error
+  - 1 == Register Berhasil
+  - 2 == Email sudah Terdaftar!
+  - 3 == Error when store in database
+
 
 # User API
 ## Get User Contact Friend and Group for Home
@@ -332,9 +345,15 @@
 - Response
 ```
 {
-    "message": "Feedback kamu: aplikasi ini lumayan bagus mungkin bisa ditambah performa di realtime chatnya"
+    "message": "Feedback kamu: aplikasi ini lumayan bagus mungkin bisa ditambah performa di realtime chatnya",
+    "code": 1
 }
 ```
+- Message
+  - 0 == Internal Servver Error
+  - 1 == Success Send Feedback
+  - 2 == Belum ada feedback  
+
 
 # Announcement API
 ## Add Announcement
