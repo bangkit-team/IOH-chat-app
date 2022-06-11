@@ -2,13 +2,11 @@ import json
 
 import keras
 import numpy as np
-import tensorflow as tf
 from keras.preprocessing.text import tokenizer_from_json
-from langdetect import detect
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 
 
-class Translator(tf.Module):
+class Translator():
     def __init__(self, model_path, input_tokenizer_json, target_tokenizer_json, maxlen):
         self.model_path = model_path
         self.input_tokenizer_json = input_tokenizer_json
@@ -21,7 +19,7 @@ class Translator(tf.Module):
         self._load_tokenizer()
 
     def _load_model(self):
-        self.model = tf.keras.models.load_model(self.model_path, compile=True)
+        self.model = keras.models.load_model(self.model_path, compile=True)
 
     def _load_tokenizer(self):
         with open(self.input_tokenizer_json) as f:
@@ -67,8 +65,8 @@ class Translator(tf.Module):
         return result
 
 
-if __name__ == "__main__":
-    saved_model_path = "code/translation/resources/saved_model"
+if __name__ == '__main__':
+    saved_model_path = 'code/translation/resources/saved_model'
     input_tokenizer_dir = 'code/translation/resources/input_tokenizer.json'
     target_tokenizer_dir = 'code/translation/resources/target_tokenizer.json'
 
@@ -76,7 +74,7 @@ if __name__ == "__main__":
         saved_model_path,
         input_tokenizer_dir,
         target_tokenizer_dir,
-        15
+        20
     )
 
     text_input = 'how are you'
