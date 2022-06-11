@@ -63,77 +63,6 @@
 
 
 # User API
-## Get User Contact Friend and Group for Home
-- URL
-  - /user/home/:id
-- Method
-  - GET
-- Request header
-  - token
-  - id
-- Request body
-  - none
-- Response
-```
-{
-    "message": "Success get friend and group",
-    "snapshot": [
-        {
-            "id_chat": "-N3xYYWcQOCilqAjkK78Galih-RichardPC",
-            "name": "Richard",
-            "pict": "https://storage.googleapis.com/bangkit_chatapp_bucket/UserPict/2022-5-7-1654594756193images.jpg"
-        },
-        {
-            "id_chat": "-N3xd5dmTkH77PRsi4ZICCTeamGroup/chat",
-            "name": "CC Team",
-            "pict": "https://storage.googleapis.com/bangkit_chatapp_bucket/GroupPict/2022-5-7-1654596594318masker.png"
-        }
-    ]
-}
-```
-
-
-
-## Get User Information
-- URL
-  - /user/:user_id
-- Method
-  - GET
-- Request header
-  - token
-  - id
-- Request body
-  - none
-- Response
-```
-{
-    "message": "Success get friend and group",
-    "snapshot": {
-        "about": "Available",
-        "approve": true,
-        "contact": {
-            "-N3F8Cly2dNVPB15qaXvRichard Alvin-GalihPC": {
-                "emailFriend": "richardalvinpratama8@gmail.com",
-                "id_chat": "-N3F8Cly2dNVPB15qaXvRichard-GalihPC",
-                "namaFriend": "Richard Alvin"
-            },
-            "-N3F9Rr3nZoH1iR2ohqARed TeamGroup": {
-                "id_group": "-N3F9Rr3nZoH1iR2ohqARed TeamGroup",
-                "nameGroup": "Red Team"
-            }
-        },
-        "divisi_kerja": "Customer Experience Excellence",
-        "email": "galih8.4.2001@gmail.com",
-        "name": "Galih",
-        "password": "$2b$10$UmOkmyo5V4XQ8I2EDRYvSuoVJzqQMJJDYw1c6vqQ4VLc7/iy4/L9m",
-        "phone_number": "64564436",
-        "posisi": "admin",
-        "profile_pict": "link storage",
-        "timestamp": "05/29/2022"
-    }
-}
-```
-
 ## Add new friend as PC
 - URL
   - /user/:user_id
@@ -148,9 +77,17 @@
 ```
 {
     "message": "Add Friend Success",
-    "id_chat": "-N3F8Cly2dNVPB15qaXvRichard-GalihPC"
+    "id_chat": "-N4IcjyO-AjUH1hY-qB6Richard-farouqPC",
+    "id_friend": "-N3gOIVFClT_n4DWgvVJ",
+    "nameFriend": "farouq",
+    "code": 1
 }
 ```
+- Message Code
+  - 0 == Internal Server Error
+  - 1 == Add Friend Success
+  - 2 == Email yang Dicari Tidak Ada!
+  - 3 == Error when insert new contact friend
 
 ## Edit Profile User
 - URL
