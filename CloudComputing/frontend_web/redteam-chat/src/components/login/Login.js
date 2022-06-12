@@ -2,7 +2,6 @@ import { useRef, useState, useEffect} from 'react';
 
 import "./login.css"
 import logo from "../../IoHLogo.png";
-import authHeader from '../../context/authHeader';
 
 import axios from '../../api/axios';
 const LOGIN_URL = '/admin';

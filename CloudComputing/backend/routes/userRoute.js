@@ -11,8 +11,10 @@ const verify = require('./verifyToken');
 
 const userRef = db.ref('/users');
 
+const hurufDict = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
+
 //regis API
-router.post('/', uploadGambar.single('profile_pict'),async(req,res) => {
+router.post('/',async(req,res) => {
   const {error} = registerValidation(req.body);
   if(error) return res.status(400).json({message:error.details[0].message});
 
@@ -28,21 +30,11 @@ router.post('/', uploadGambar.single('profile_pict'),async(req,res) => {
         }
       })
       if(success != 0){
-        res.status(400).json({message:"Email Sudah Terdaftar!"})
+        return res.status(400).json({
+          message:"Email Sudah Terdaftar!",
+          code: 2
+        })
       }else{
-        // taruk di cloud storage untuk profile pict 
-        async function uploadFile() {
-          await cstorage.upload(`../backend/files/${req.file.filename}`,{
-              destination: `UserPict/${req.file.filename}`
-          });
-  
-          await cstorage.file(`UserPict/${req.file.filename}`).makePublic();
-          
-          //ngehapus filenya
-          const filepath = path.resolve(`./files/${req.file.filename}`);
-          fs.unlinkSync(filepath);
-        }
-        uploadFile().catch(console.error);
   
         try{
           const user_id = userRef.push().key;
@@ -54,38 +46,78 @@ router.post('/', uploadGambar.single('profile_pict'),async(req,res) => {
           var yyyy = today.getFullYear();
   
           today = mm + '/' + dd + '/' + yyyy;
+
+          //pict depends on name
+          let huruf = req.body.name
+          huruf = huruf.toLocaleLowerCase()
+          ascii = huruf.charCodeAt(0) - 97
+          ascii = hurufDict[ascii]
   
           userRef.child(user_id).set({
-            name: req.body.name,
-            posisi: req.body.posisi,
+            about: "Available",
+            approve: false,
             divisi_kerja: req.body.divisi_kerja,
             email: req.body.email,
+            name: req.body.name,
             password: hashPassword,
-            profile_pict: `https://storage.googleapis.com/bangkit_chatapp_bucket/UserPict/${req.file.filename}`,
             phone_number: req.body.phone_number,
+            posisi: req.body.posisi,
+            profile_pict: `https://storage.googleapis.com/bangkit_chatapp_bucket/UserPict/default_pict/`+ascii+`.png`,
             timestamp: today,
-            approve: false,
-            about: "Available"
           })
-          res.status(200).json({message: "Register Berhasil"});
+          res.status(200).json({
+            message: "Register Berhasil",
+            code: 1
+          });
         }catch(error){
-          res.status(500).json({message: "Error when store in database"})
+          res.status(500).json({
+            message: "Error when store in database",
+            code: 3
+          })
         }
       }
     });
   }catch(e){
+    res.status(500).send({
+      message: "Internal Server Error",
+      code: 0
+    })
+  }
+})
+
+//ambil user profile for setting or profile page
+router.get('/:user_id', verify, (req,res)=>{
+  const userRef = db.ref('/users/'+req.params.user_id)
+  try{
+    userRef.once('value', snapshot =>{
+      console.log(snapshot);
+
+      res.status(200).send({
+        message: "Success get Profile User",
+        snapshot
+      })
+    })
+  }catch(error){
     res.status(500).send({message: "Internal Server Error"})
   }
 })
 
-//ambil semua data untuk specific user
-router.get('/:user_id', verify, (req,res) =>{
-  const userRefId = db.ref('/users/'+req.params.user_id)
+//ambil contact friend and group specific user
+router.get('/home/:user_id', verify, (req,res) =>{
+  const userRefId = db.ref('/users/'+req.params.user_id+'/contact')
   try{
+    let userContact = []
     userRefId.once('value', snapshot => {
+      snapshot.forEach((data) =>{
+        userContact = [...userContact,{
+            id_chat: data.val().id_chat,
+            name: data.val().name,
+            pict: data.val().pict
+        }]
+      })
       res.status(200).send({
         message: "Success get friend and group",
-        snapshot 
+        snapshot: userContact, 
       });
     })
   }catch(error){
@@ -99,8 +131,7 @@ router.get('/:user_id', verify, (req,res) =>{
 router.post('/:user_id',verify, (req,res) =>{
   //untuk User
   const userDataRef = db.ref('/users/'+req.params.user_id+'/contact')
-  // const emailUser = db.ref('/users/'+req.params.user_id).email
-  
+
   //Untuk FriendUser
   var success = 0;
   let friendId = ''
@@ -115,50 +146,65 @@ router.post('/:user_id',verify, (req,res) =>{
           friendId = data.key
           dataFriend = {
             nameFriend: data.val().name,
-            emailFriend: data.val().email
+            emailFriend: data.val().email,
+            pict: data.val().profile_pict
           }
         }
         if(data.key === req.params.user_id){
           dataUser = {
             nameUser: data.val().name,
-            emailUser: data.val().email
+            emailUser: data.val().email,
+            pict: data.val().profile_pict
           }
         }
       });
       if(success == 0){
-        res.status(400).send({message:"Email yang Dicari Tidak Ada!"})
+        return res.status(400).send({
+          message:"Email yang Dicari Tidak Ada!",
+          code: 2
+        })
       }else{
-        // console.log(emailUser);
         const userFriendRef = db.ref('/users/'+friendId+'/contact')
   
         try{
-          const id_chat = userDataRef.push().key+dataUser.nameUser+'-'+dataFriend.nameFriend+'PC';
+          const id_chat = userDataRef.push().key+dataUser.nameUser.replace(/ /g, "")+'-'+dataFriend.nameFriend.replace(/ /g, "")+'PC';
   
           //Untuk User
           userDataRef.child(id_chat).set({
             id_chat: id_chat,
-            nameFriend: dataFriend.nameFriend,
-            emailFriend: dataFriend.emailFriend
+            name: dataFriend.nameFriend,
+            id_friend: friendId,
+            pict: dataFriend.pict
           })
   
           //Untuk FriendUser
           userFriendRef.child(id_chat).set({
             id_chat: id_chat,
-            namaFriend: dataUser.nameUser,
-            emailFriend: dataUser.emailUser
+            name: dataUser.nameUser,
+            id_friend: req.params.user_id,
+            pict: dataUser.pict
           })
   
           res.status(200).json({
             message: "Add Friend Success",
-            id_chat: id_chat
+            id_chat: id_chat,
+            id_friend: friendId,
+            nameFriend: dataFriend.nameFriend,
+            code: 1
           });
         }catch(error){
-          res.status(500).json({message: "Error when insert new contact friend"})
+          res.status(500).json({
+            message: "Error when insert new contact friend",
+            code: 3
+          })
         }
       }
     })
   }catch(e){
-    res.status(500).send({message: "Internal Server Error"})
+    res.status(500).send({
+      message: "Internal Server Error",
+      code: 0
+    })
   }
 })
 
@@ -194,11 +240,13 @@ router.patch('/:user_id',verify, uploadGambar.single('profile_pict'), (req,res) 
       const userIdRef = db.ref('/users/'+req.params.user_id)
       userIdRef.once('value',(snapshot)=>{
         const pictLama = snapshot.child('profile_pict').val().replace("https://storage.googleapis.com/bangkit_chatapp_bucket/UserPict", "UserPict")
-        async function deleteFile() {
-          await cstorage.file(pictLama).delete();
-          userRef.child(req.params.user_id).update(updateUser);
+        if(!pictLama.includes('UserPict/default_pict')){
+          async function deleteFile() {
+            await cstorage.file(pictLama).delete();
+            userRef.child(req.params.user_id).update(updateUser);
+          }
+          deleteFile().catch(console.error); 
         }
-        deleteFile().catch(console.error);
       })
   
       res.status(200).send({
@@ -211,6 +259,23 @@ router.patch('/:user_id',verify, uploadGambar.single('profile_pict'), (req,res) 
     }
   }catch(e){
     res.status(500).send({message: "Internal Server Error"})
+  }
+})
+
+// delete user
+router.delete('/:user_id', verify, (req,res) =>{
+  const userRef = db.ref('/users/'+req.params.user_id)
+
+  try{
+      userRef.remove();
+
+      res.status(200).send({
+        message: "Success Delete User"
+      });
+  }catch(error){
+      res.status(500).send({
+          message: "Failed Delete User"
+      })
   }
 })
 

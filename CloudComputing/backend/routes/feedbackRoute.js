@@ -26,7 +26,10 @@ router.post('/', verify, async(req,res) =>{
     const feedback = req.body.feedback;
     
     if (!feedback) {
-        return res.status(400).send({ message: "Belum ada feedback" })
+        return res.status(400).send({
+            message: "Belum ada feedback",
+            code: 2
+        })
     }
     
     try{
@@ -38,21 +41,41 @@ router.post('/', verify, async(req,res) =>{
         const today = mm + '/' + dd + '/' + yyyy;
 
         //add feedback to firebase realtime database
-        const feedbackRef = db.ref('/feedbacks');
-        const feedbackKey = feedbackRef.push().key;
-
-        feedbackRef.child(feedbackKey).set({
-            feedback: req.body.feedback,
-            timestamp: today
-        })
+        // const feedbackRef = db.ref('/feedbacks');
+        // const feedbackKey = feedbackRef.push().key;
 
         //axios to flask ML
         const predict_feedback = await feedbackML(req.body.feedback)
         console.log(predict_feedback.data.result)
 
-        res.status(200).send({ message: `Success Send Feedback`});
+        //masukin ke realtime database hasil predict
+        if(predict_feedback.data.result < 0.5){
+            const feedbackRef = db.ref('/feedbacks/negative');
+            const feedbackKey = feedbackRef.push().key;
+
+            feedbackRef.child(feedbackKey).set({
+                feedback: req.body.feedback,
+                timestamp: today
+            })
+        }else{
+            const feedbackRef = db.ref('/feedbacks/positive');
+            const feedbackKey = feedbackRef.push().key;
+
+            feedbackRef.child(feedbackKey).set({
+                feedback: req.body.feedback,
+                timestamp: today
+            })
+        }
+
+        res.status(200).send({
+            message: `Success Send Feedback`,
+            code: 1
+        });
     }catch(e){
-        res.status(500).send({message: "Internal Server Error"});
+        res.status(500).send({
+            message: "Internal Server Error",
+            code: 0
+        });
     }
 })
 

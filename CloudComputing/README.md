@@ -1,16 +1,18 @@
 # API Endpoint
+
 - CE Backend-App:
   - https://mydomainappalvin.com
 - App Engine Backend-Admin:
-  - https://bangkitproject-348609.et.r.appspot.com   
+  - https://bangkitproject-348609.et.r.appspot.com
 - CE Frontend:
   - https://redteam-chatapp.vercel.app/
 - CE ML-Flask:
   - https://ml.mydomainappalvin.com
 
-
 # API List
+
 ## Login User
+
 - URL
   - /login
 - Method
@@ -19,6 +21,7 @@
   - email (string)
   - password (string)
 - Response
+
 ```
 {
     "message": "Login Berhasil",
@@ -29,6 +32,7 @@
     }
 }
 ```
+
 - Message Code
   - 0 == Internal Server Error
   - 1 == Login Berhasil
@@ -36,6 +40,7 @@
   - 3 == Akun belum diapprove oleh Admin
 
 ## SignUp User
+
 - URL
   - /user
 - Method
@@ -48,32 +53,36 @@
   - password (string)
   - fpassword (string)
   - phone_number (string)
-- Response 
+- Response
+
 ```
 {
   "message": "Register Berhasil",
   "code": 1
 }
 ```
+
 - Message Code
   - 0 == Internal Server Error
   - 1 == Register Berhasil
   - 2 == Email sudah Terdaftar!
   - 3 == Error when store in database
 
-
 # User API
+
 ## Add new friend as PC
+
 - URL
   - /user/:user_id
 - Method
   - POST
 - Request header
   - token
-  - id 
+  - id
 - Request body
   - email (string) --> email temen yang mau di accept
-- Response 
+- Response
+
 ```
 {
     "message": "Add Friend Success",
@@ -83,6 +92,7 @@
     "code": 1
 }
 ```
+
 - Message Code
   - 0 == Internal Server Error
   - 1 == Add Friend Success
@@ -90,13 +100,14 @@
   - 3 == Error when insert new contact friend
 
 ## Edit Profile User
+
 - URL
   - /user/:user_id
 - Method
   - PATCH
 - Request header
   - token
-  - id 
+  - id
 - Request body
   - name_user (string)
   - phone_number (string)
@@ -105,6 +116,7 @@
   - about (string)
   - profile_pict (file)
 - Response
+
 ```
 {
     "message": "Success Edit Profile User"
@@ -112,16 +124,18 @@
 ```
 
 ## Realtime Chat PC (Khusus gambar atau file)
+
 - URL
   - /user/:user_id/chat/:chat_id
 - Method
   - POST
 - Request header
   - token
-  - id 
+  - id
 - Request body
   - file (file)
 - Response
+
 ```
 {
     "message": "Success send chat"
@@ -129,7 +143,9 @@
 ```
 
 # Group API
+
 ## Add new Group
+
 - URL
   - /user/:user_id/group
 - Method
@@ -143,6 +159,7 @@
   - name (string) --> nama grup baru, gk boleh ada symbol
   - group_pict (image)
 - Response
+
 ```
 {
     "message": "Add new group success",
@@ -151,6 +168,7 @@
 ```
 
 ## Get Group Specs
+
 - URL
   - /user/:user_id/group/:group_id
 - Method
@@ -161,6 +179,7 @@
 - Request body
   - none
 - Response
+
 ```
 {
     "message": "Success get specific group",
@@ -197,6 +216,7 @@
 ```
 
 ## Add friend to Group (Untuk sementara cuman bisa tambah satu satu temannya)
+
 - URL
   - /user/:user_id/group/:group_id
 - Method
@@ -208,6 +228,7 @@
   - nameGroup (string)
   - emailFriend (string)
 - Response body
+
 ```
 {
     "message": "Add yusuf@gmail.com to RedTeam group success"
@@ -215,6 +236,7 @@
 ```
 
 ## Edit Group
+
 - URL
   - /user/:user_id/group/:group_id
 - Method
@@ -227,6 +249,7 @@
   - group_pict (image)
   - deskripsi (string)
 - Response body
+
 ```
 {
     "message": "Success Edit Profile Group"
@@ -234,6 +257,7 @@
 ```
 
 ## Out from group
+
 - URL
   - /user/:user_id/group/:group_id
 - Method
@@ -244,6 +268,7 @@
 - Request body
   - user_id (string)
 - Response
+
 ```
 {
     "message": "Success Delete User from Group"
@@ -251,6 +276,7 @@
 ```
 
 ## Realtime Chat Group
+
 - URL
   - /user/:user_id/group/:group_id/chat
 - Method
@@ -262,6 +288,7 @@
   - file (file)
   - sender (string)
 - Response
+
 ```
 {
     "message": "Success send chat"
@@ -269,7 +296,9 @@
 ```
 
 # Feedback API
+
 ## Add feedback
+
 - URL
   - feedback/
 - Method
@@ -280,30 +309,34 @@
 - Request body
   - feedback (string)
 - Response
+
 ```
 {
     "message": "Feedback kamu: aplikasi ini lumayan bagus mungkin bisa ditambah performa di realtime chatnya",
     "code": 1
 }
 ```
+
 - Message
   - 0 == Internal Servver Error
   - 1 == Success Send Feedback
-  - 2 == Belum ada feedback  
-
+  - 2 == Belum ada feedback
 
 # Announcement API
+
 ## Add Announcement
+
 - URL
   - /user/:user_id/announcement
 - Method
   - POST
 - Request header
   - token
-  - id 
+  - id
 - Request body
   - none --> utk divisinya udah dicek berdasarkan param user_id, dan kalo udah ada gk bakal buat lagi
 - Response
+
 ```
 {
     "message": "Berhasil menambahkan announcement Call Center"
@@ -311,6 +344,7 @@
 ```
 
 ## Send Chat Announcement
+
 - URL
   - /user/:user_id/announcement/chat
 - Method
@@ -322,6 +356,7 @@
   - message (text/file)
   - nama_divisi (string)
 - Response
+
 ```
 {
     "message": "Pesan berhasil terkirim"
@@ -329,7 +364,9 @@
 ```
 
 # Admin
+
 ## Login Website (Khusus Admin)
+
 - URL
   - /admin
 - Method
@@ -338,6 +375,7 @@
   - username (string) --> email
   - password (string)
 - Response
+
 ```
 {
     "message": "Login Berhasil",
@@ -347,14 +385,16 @@
 ```
 
 ## Get All Users
+
 - URL
   - /admin/users
 - Method
   - GET
 - Request header
   - token
-  - _id
+  - \_id
 - Response
+
 ```
 {
     "message": "Success get All Users",
@@ -378,14 +418,16 @@
 ```
 
 ## Get All Groups
+
 - URL
   - /admin/groups
 - Method
   - GET
 - Request header
   - token
-  - _id
+  - \_id
 - Response
+
 ```
 {
     "message": "Success get All Groups",
@@ -400,14 +442,16 @@
 ```
 
 ## Get Unapprove New User
+
 - URL
   - /admin/user/approve
 - Method
   - GET
 - Request header
   - token
-  - _id
+  - \_id
 - Response
+
 ```
 {
     "message": "Success Get Unapprove Groups",
@@ -416,16 +460,18 @@
 ```
 
 ## Approve New User
+
 - URL
   - /admin/user/approve
 - Method
   - POST
 - Request header
   - token
-  - _id
+  - \_id
 - Request body
-  - approve (boolean) 
+  - approve (boolean)
 - Response
+
 ```
 {
     "message": "Success Approve User",

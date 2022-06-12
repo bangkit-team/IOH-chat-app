@@ -5,6 +5,7 @@ import User from './components/user/User';
 import Group from './components/group/Group';
 import Approval from './components/approval/Approval';
 import Announcement from './components/announcement/Announcement';
+import Feedback from './components/feedback/Feedback';
 
 import React from 'react'
 
@@ -30,6 +31,8 @@ function App(){
                 <Route path="/home/approval" element={<Approval/>}/>
 
                 <Route path="/home/announcement" element={<Announcement/>}/>
+
+                <Route path="/home/feedback" element={<Feedback/>}/>
 
                 <Route path="*" element={<Notfound/>}/>
             </Routes>

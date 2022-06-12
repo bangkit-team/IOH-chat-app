@@ -4,8 +4,8 @@ const group = require('./routes/groupRoute')
 const feedback = require('./routes/feedbackRoute')
 const announcement = require('./routes/announcementRoute')
 
-var multer = require('multer');
-var upload = multer();
+// var multer = require('multer');
+// var upload = multer();
 
 const express = require('express')
 const app = express()
@@ -25,8 +25,10 @@ app.use(express.json())
 app.use(express.static('public'));
 
 // for parsing multipart/form-data
-app.use(upload.array()); 
-app.use(express.static('public'));
+// app.use(upload.array()); 
+
+// for parsing x-www-..
+app.use(express.urlencoded({ extended: true }));
 
 //cors
 const cors=require("cors");
@@ -39,7 +41,7 @@ app.use(cors(corsOptions));
 
 app.use('/user', user)
 app.use('/login', login)
-app.use('/user/:user_id/group',group)
+app.use('/user',group)
 app.use('/feedback',feedback)
 app.use('/user',announcement)
 

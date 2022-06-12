@@ -33,21 +33,27 @@ router.post('/',(req, res) =>{
     
                 res.status(200).send({
                     message: 'Login Berhasil',
+                    code: 1,
                     token: token,
                     dataUser
                 })
             }else if(success === 0){
                 res.status(400).send({
-                    message: 'Email atau Password salah'
+                    message: 'Email atau Password salah',
+                    code: 2
                 })
             }else if(success === -1){
                 res.status(400).send({
-                    message: 'Akun belum diapprove oleh Admin'
+                    message: 'Akun belum diapprove oleh Admin',
+                    code: 3
                 })
             }
         })
     }catch(error){
-        res.status(500).send({message: "Internal Server Error"})
+        res.status(500).send({
+            message: "Internal Server Error",
+            code: 0
+        })
     }
 })
 

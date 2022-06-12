@@ -16,8 +16,14 @@ const User = () => {
     const [data, setData] = useState([]);
  
     const fetchData = async () =>{
-        const results = await axios.get(API_URL, { headers: authHeader() })
-        setData(results.data.snapshot)
+        try{
+            const results = await axios.get(API_URL, { headers: authHeader() })
+            setData(results.data.snapshot)
+        }catch(error){
+            localStorage.removeItem("token");
+            localStorage.removeItem("_id");
+            window.location.href = "/";
+        }
     }
 
     const handleDeleteUser = async (e) => {
@@ -37,7 +43,9 @@ const User = () => {
                 })
                 window.location.href = "/home/user";
             } catch (err) {
-                console.log(err)
+                localStorage.removeItem("token");
+                localStorage.removeItem("_id");
+                window.location.href = "/";
             }
         }
     }

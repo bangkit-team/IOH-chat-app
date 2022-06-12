@@ -1,7 +1,11 @@
 import React,{useState,useEffect} from 'react';
 import "./approval.css";
+import database from '../../utils/firebase';
+import { ref, onValue } from "firebase/database";
+
 
 import card from "../../card.jpg";
+
 
 import authHeader from "../../context/authHeader";
 import axios from "../../api/axios";
@@ -14,11 +18,6 @@ const Approval = () => {
     }
 
     const [data, setData] = useState([]);
-
-    const fetchData = async () =>{
-        const results = await axios.get(API_URL, { headers: authHeader() })
-        setData(results.data.approve)
-    }
 
     const handleApprove = async (e) => {
         e.preventDefault();
@@ -37,7 +36,9 @@ const Approval = () => {
             })
             window.location.href = "/home/approval";
         } catch (err) {
-            console.log(err)
+            localStorage.removeItem("token");
+            localStorage.removeItem("_id");
+            window.location.href = "/";
         }
     }
 
@@ -58,29 +59,44 @@ const Approval = () => {
                 </form>
             </ul>
             </div>
-        </div>)
-        
+        </div>)  
     })
 
     useEffect(()=>{
-        
-        fetchData()
+        const approveRef = ref(database, 'users');
+        onValue(approveRef, (snapshot) =>{
+            let approve = [];
+            snapshot.forEach((data) => {
+                if(data.val().approve === false){
+                    approve = [...approve,{
+                        id: data.key,
+                        name: data.val().name,
+                        email: data.val().email,
+                        timestamp: data.val().timestamp,
+                        profile_pict: data.val().profile_pict,
+                        posisi: data.val().posisi,
+                        divisi_kerja: data.val().divisi_kerja
+                    }]
+                }
+            })
+            setData(approve);
+        })
     }, []);
 
     return(
-                <div>
-                    <div className="kotak-atas"></div>
-                    <div className="header-user container">
-                        <a href="/home">Back</a>
-                        <h1>IoH - Approve New User </h1>
-                    </div>
-                    <div className="container">
-                        <div className="row">
-                            {listCard} 
-                        </div>
-                    </div>
+        <div>
+            <div className="kotak-atas"></div>
+            <div className="header-user container">
+                <a href="/home">Back</a>
+                <h1>IoH - Approve New User </h1>
+            </div>
+            <div className="container">
+                <div className="row">
+                    {listCard} 
                 </div>
-            )
+            </div>
+        </div>
+    )
 }
 
 export default Approval
