@@ -6,11 +6,7 @@ from keras.preprocessing.text import tokenizer_from_json
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 
 
-<<<<<<< HEAD
-class Translator:
-=======
 class Translator():
->>>>>>> 11fe56a93ecd50f4c0092eed63ede58751936882
     def __init__(self, model_path, input_tokenizer_json, target_tokenizer_json, maxlen):
         self.model_path = model_path
         self.input_tokenizer_json = input_tokenizer_json
