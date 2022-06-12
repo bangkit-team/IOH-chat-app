@@ -2,13 +2,15 @@ import json
 
 import keras
 import numpy as np
-import tensorflow as tf
 from keras.preprocessing.text import tokenizer_from_json
-from langdetect import detect
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 
 
-class Translator(tf.Module):
+<<<<<<< HEAD
+class Translator:
+=======
+class Translator():
+>>>>>>> 11fe56a93ecd50f4c0092eed63ede58751936882
     def __init__(self, model_path, input_tokenizer_json, target_tokenizer_json, maxlen):
         self.model_path = model_path
         self.input_tokenizer_json = input_tokenizer_json
@@ -21,7 +23,7 @@ class Translator(tf.Module):
         self._load_tokenizer()
 
     def _load_model(self):
-        self.model = tf.keras.models.load_model(self.model_path, compile=True)
+        self.model = keras.models.load_model(self.model_path, compile=True)
 
     def _load_tokenizer(self):
         with open(self.input_tokenizer_json) as f:
@@ -50,7 +52,7 @@ class Translator(tf.Module):
         sequences = self.input_tokenizer.texts_to_sequences(
             [normalize_sentence])
         sequences = pad_sequences(
-            sequences, maxlen=self.maxlen, padding="post", truncating="post")
+            sequences, maxlen=self.maxlen, padding='post', truncating='post')
 
         predictions = self.model(sequences)
 
@@ -67,8 +69,8 @@ class Translator(tf.Module):
         return result
 
 
-if __name__ == "__main__":
-    saved_model_path = "code/translation/resources/saved_model"
+if __name__ == '__main__':
+    saved_model_path = 'code/translation/resources/saved_model'
     input_tokenizer_dir = 'code/translation/resources/input_tokenizer.json'
     target_tokenizer_dir = 'code/translation/resources/target_tokenizer.json'
 
@@ -76,10 +78,10 @@ if __name__ == "__main__":
         saved_model_path,
         input_tokenizer_dir,
         target_tokenizer_dir,
-        15
+        20
     )
 
-    text_input = 'how are you'
+    text_input = 'i like apple'
     translate = translator(text_input)
 
     print(translate)
