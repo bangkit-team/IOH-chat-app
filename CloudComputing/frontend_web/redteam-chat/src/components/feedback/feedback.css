@@ -1,0 +1,27 @@
+.feedbackTable{
+    margin-top: 30px;
+}
+
+.table-positive {
+    float: left;
+    width: 50%;
+    padding: 5px;
+}
+
+.table-negative {
+    float: left;
+    width: 50%;
+    padding: 5px;
+}
+
+.pietable{
+    position: relative
+}
+
+.tablepie{
+    position: absolute;
+    top:30px;
+    right: 300px;
+    width: 200px;
+    height:100px;
+}
