@@ -8,6 +8,7 @@ const { uploadGambar, uploadApaaja } = require('../utils/multerLibrary')
 const fs = require('fs');
 const path = require("path");
 const verify = require('./verifyToken');
+const { time } = require('console');
 
 const userRef = db.ref('/users');
 
@@ -138,6 +139,9 @@ router.post('/:user_id',verify, (req,res) =>{
   let dataUser = {}
   let dataFriend = {}
 
+  const date = new Date();
+  const timeToday = date.getHours()+'-'+date.getMinutes()+'-'+date.getSeconds()
+
   try{
     userRef.once('value', (snapshot) =>{
       snapshot.forEach((data) => {
@@ -168,7 +172,8 @@ router.post('/:user_id',verify, (req,res) =>{
   
         try{
           const id_chat = userDataRef.push().key+dataUser.nameUser.replace(/ /g, "")+'-'+dataFriend.nameFriend.replace(/ /g, "")+'PC';
-  
+          const idChatRef = db.ref('/chats/'+id_chat)
+          const idChatKey = idChatRef.push().key
           //Untuk User
           userDataRef.child(id_chat).set({
             id_chat: id_chat,
@@ -183,6 +188,13 @@ router.post('/:user_id',verify, (req,res) =>{
             name: dataUser.nameUser,
             id_friend: req.params.user_id,
             pict: dataUser.pict
+          })
+
+          //untuk chatid
+          idChatRef.child(idChatKey).set({
+            timestamp: timeToday,
+            sender: dataUser.nameUser,
+            message: "Pesan Pertama"
           })
   
           res.status(200).json({

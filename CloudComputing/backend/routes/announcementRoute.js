@@ -261,12 +261,23 @@ router.post('/:user_id/announcement/chat', uploadApaaja.single('message'), (req,
 })
 
 //get all chat
-router.get('/:user_id/announcement/:div_id', (req,res) => {
-    const annChatRef = db.ref('/announcements/'+req.params.div_id+'/chat')
+router.get('/:user_id/announcement', (req,res) => {
+    const annRef = db.ref('/announcements')
+    let id = ""
     try{
-        annChatRef.once('value', snapshot =>{
-            res.status(200).send({
-                snapshot
+        annRef.once('value', snapshot =>{
+            snapshot.forEach((data) =>{
+                if(data.val().nama_divisi == req.body.divisi){
+                    id = data.key
+                }
+            })
+            const annChatRef = db.ref('/announcements/'+id+'/chat')
+            const annChatKey = annChatRef.push().key
+
+            annChatRef.once('value', snapshot => {
+                res.status(200).send({
+                    snapshot
+                })
             })
         })
     } catch(error){
