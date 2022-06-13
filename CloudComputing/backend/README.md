@@ -44,7 +44,7 @@ There is some depedencies you must install in your code editor to run RedTeam Ba
 
 - Just start our backend server with this command
   ```
-  npm install
+  nodemon app.js
   ```
 
 ## Database
