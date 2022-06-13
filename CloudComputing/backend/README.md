@@ -3,7 +3,7 @@
 This is backend and database structure for user app. 
 
 ## Backend
-  This backend user Nodejs as base and ExpressJs as framework. This backend deploy in Google Cloud Compute Engine and we reserve the public IP so it can't change if the VM down or restart.
+  This backend user Nodejs as base and ExpressJs as framework. This backend deploy in Google Cloud Compute Engine and we reserve the public IP so it can't change if the VM down or restart. We install nginx server and open proxy for public access. For secure purpose, we buy domain in niagahoster and register to cloudflare to install SSL for our endpoint compute engine
   
 There is some depedencies you must install in your code editor to run RedTeam Backend:
  - @google-cloud/storage (For access google cloud storage in backend nodejs)
