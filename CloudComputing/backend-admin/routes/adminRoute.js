@@ -35,6 +35,7 @@ router.post('/', async(req,res) =>{
                 message: "Login berhasil",
                 id: id_admin,
                 token: token,
+                username: req.body.username
             })
         });
     }catch(error){
@@ -258,6 +259,7 @@ router.post('/chat', (req,res) => {
     const today = mm + '/' + dd + '/' + yyyy;
 
     chatRef.child(chatRefKey).set({
+        sender: req.body.sender,
         message: req.body.message,
         timestamp: today
     })

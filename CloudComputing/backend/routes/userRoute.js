@@ -135,6 +135,7 @@ router.post('/:user_id',verify, (req,res) =>{
 
   //Untuk FriendUser
   var success = 0;
+  var success1 = 0;
   let friendId = ''
   let dataUser = {}
   let dataFriend = {}
@@ -143,6 +144,7 @@ router.post('/:user_id',verify, (req,res) =>{
   const timeToday = date.getHours()+'-'+date.getMinutes()+'-'+date.getSeconds()
 
   try{
+
     userRef.once('value', (snapshot) =>{
       snapshot.forEach((data) => {
         if(data.val().email === req.body.email){
@@ -162,55 +164,69 @@ router.post('/:user_id',verify, (req,res) =>{
           }
         }
       });
-      if(success == 0){
-        return res.status(400).send({
-          message:"Email yang Dicari Tidak Ada!",
-          code: 2
-        })
-      }else{
-        const userFriendRef = db.ref('/users/'+friendId+'/contact')
-  
-        try{
-          const id_chat = userDataRef.push().key+dataUser.nameUser.replace(/ /g, "")+'-'+dataFriend.nameFriend.replace(/ /g, "")+'PC';
-          const idChatRef = db.ref('/chats/'+id_chat)
-          const idChatKey = idChatRef.push().key
-          //Untuk User
-          userDataRef.child(id_chat).set({
-            id_chat: id_chat,
-            name: dataFriend.nameFriend,
-            id_friend: friendId,
-            pict: dataFriend.pict
-          })
-  
-          //Untuk FriendUser
-          userFriendRef.child(id_chat).set({
-            id_chat: id_chat,
-            name: dataUser.nameUser,
-            id_friend: req.params.user_id,
-            pict: dataUser.pict
-          })
 
-          //untuk chatid
-          idChatRef.child(idChatKey).set({
-            timestamp: timeToday,
-            sender: dataUser.nameUser,
-            message: "Pesan Pertama"
+      userDataRef.once('value',(snapshot) =>{
+        snapshot.forEach((data) =>{
+          if(data.val().id_friend === friendId){
+            success1 = 1
+          }
+        })
+
+        if(success == 0){
+          return res.status(400).send({
+            message:"Email yang Dicari Tidak Ada!",
+            code: 2
           })
+        }else if(success1 == 1){
+          return res.status(400).send({
+            message:"Friend sudah ada didaftar contact",
+            code:3
+          })
+        }else{
+          const userFriendRef = db.ref('/users/'+friendId+'/contact')
+    
+          try{
+            const id_chat = userDataRef.push().key+dataUser.nameUser.replace(/ /g, "")+'-'+dataFriend.nameFriend.replace(/ /g, "")+'PC';
+            const idChatRef = db.ref('/chats/'+id_chat)
+            const idChatKey = idChatRef.push().key
+            //Untuk User
+            userDataRef.child(id_chat).set({
+              id_chat: id_chat,
+              name: dataFriend.nameFriend,
+              id_friend: friendId,
+              pict: dataFriend.pict
+            })
+    
+            //Untuk FriendUser
+            userFriendRef.child(id_chat).set({
+              id_chat: id_chat,
+              name: dataUser.nameUser,
+              id_friend: req.params.user_id,
+              pict: dataUser.pict
+            })
   
-          res.status(200).json({
-            message: "Add Friend Success",
-            id_chat: id_chat,
-            id_friend: friendId,
-            nameFriend: dataFriend.nameFriend,
-            code: 1
-          });
-        }catch(error){
-          res.status(500).json({
-            message: "Error when insert new contact friend",
-            code: 3
-          })
+            //untuk chatid
+            idChatRef.child(idChatKey).set({
+              timestamp: timeToday,
+              sender: dataUser.nameUser,
+              message: "Pesan Pertama"
+            })
+    
+            res.status(200).json({
+              message: "Add Friend Success",
+              id_chat: id_chat,
+              id_friend: friendId,
+              nameFriend: dataFriend.nameFriend,
+              code: 1
+            });
+          }catch(error){
+            res.status(500).json({
+              message: "Error when insert new contact friend",
+              code: 4
+            })
+          }
         }
-      }
+      })
     })
   }catch(e){
     res.status(500).send({
@@ -291,7 +307,7 @@ router.delete('/:user_id', verify, (req,res) =>{
   }
 })
 
-//realtime chat PC
+//realtime chat PC for image and file only
 router.post('/:user_id/chat/:chat_id',verify, uploadApaaja.single('file'), (req,res) =>{
   const chatPCRef = db.ref('/chats/'+req.params.chat_id)
   const chatPCId = chatPCRef.push().key;
