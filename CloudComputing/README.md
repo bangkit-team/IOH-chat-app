@@ -97,7 +97,8 @@
   - 0 == Internal Server Error
   - 1 == Add Friend Success
   - 2 == Email yang Dicari Tidak Ada!
-  - 3 == Error when insert new contact friend
+  - 3 == Friend sudah ada didaftar contact
+  - 4 == Error when insert new contact friend
 
 ## Edit Profile User
 
