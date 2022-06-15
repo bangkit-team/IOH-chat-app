@@ -379,13 +379,13 @@
 
 ```
 {
-    "snapshot": {
-        "-N3i3bsFnerAxUqdzjka": {
+    "snapshot": [
+        {
             "message": "dtyyjdytjdy dyjdyjdy",
             "sender": "Contact Center",
             "timestamp": "06/04/2022"
         }
-    },
+    ],
     "code": 1
 }
 ```
