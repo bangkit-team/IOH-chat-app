@@ -365,7 +365,7 @@
 
 # Announcement API
 
-## Get Announcement by specifi division
+## Get Announcement by specific division
 - URL
   - /user/:user_id/announcement
 - Method
@@ -389,45 +389,15 @@
     "code": 1
 }
 ```
+- Message
+  - 0 == Internal Servver Error
+  - 1 == Success
 
-## Add Announcement
 
-- URL
-  - /user/:user_id/announcement
-- Method
-  - POST
-- Request header
-  - token
-  - id
-- Request body
-  - none --> utk divisinya udah dicek berdasarkan param user_id, dan kalo udah ada gk bakal buat lagi
-- Response
+# Flask ML API Endpoint
+## Translate
 
-```
-{
-    "message": "Berhasil menambahkan announcement Call Center"
-}
-```
 
-## Send Chat Announcement
-
-- URL
-  - /user/:user_id/announcement/chat
-- Method
-  - POST
-- Request header
-  - token
-  - id
-- Request body
-  - message (text/file)
-  - nama_divisi (string)
-- Response
-
-```
-{
-    "message": "Pesan berhasil terkirim"
-}
-```
 
 # Admin
 
@@ -541,5 +511,25 @@
 ```
 {
     "message": "Success Approve User",
+}
+```
+
+## Send Chat Announcement
+
+- URL
+  - /user/:user_id/announcement/chat
+- Method
+  - POST
+- Request header
+  - token
+  - id
+- Request body
+  - message (text/file)
+  - nama_divisi (string)
+- Response
+
+```
+{
+    "message": "Pesan berhasil terkirim"
 }
 ```
