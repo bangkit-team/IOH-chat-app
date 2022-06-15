@@ -70,6 +70,46 @@
 
 # User API
 
+## Get Profile User for Setting
+- URL
+  - /user/:user_id
+- Method
+  - GET
+- Request header
+  - token
+  - id
+- Response
+```
+{
+    "message": "Success get Profile User",
+    "snapshot": {
+        "about": "Available",
+        "approve": true,
+        "contact": {
+            "-N4VpC6kLmTn70uyhbQ0Galih-farouqPC": {
+                "id_chat": "-N4VpC6kLmTn70uyhbQ0Galih-farouqPC",
+                "id_friend": "-N4CxyXWfmo6ky5lFWSY",
+                "name": "farouq",
+                "pict": "https://storage.googleapis.com/bangkit_chatapp_bucket/UserPict/default_pict/F.png"
+            }
+        },
+        "divisi_kerja": "Call Center",
+        "email": "galih8.4.2001@gmail.com",
+        "name": "Galih",
+        "password": "$2b$10$dw.8EIcWwD9V71hzYRxB9.VBlVeBrQHgQ7kqJktAf8/GJ.TAa5xfS",
+        "phone_number": "353445",
+        "posisi": "admin",
+        "profile_pict": "https://storage.googleapis.com/bangkit_chatapp_bucket/UserPict/2022-5-7-1654594817330masker.png",
+        "timestamp": "06/07/2022"
+    },
+    "code": 1
+}
+```
+
+- Message Code
+  - 0 == Internal Server Error
+  - 1 == Success get Profile User
+
 ## Add new friend as PC
 
 - URL
