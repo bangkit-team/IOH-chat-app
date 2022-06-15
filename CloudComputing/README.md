@@ -150,19 +150,22 @@
   - token
   - id
 - Request body
-  - name_user (string)
   - phone_number (string)
-  - posisi (string)
-  - divisi_kerja (string)
   - about (string)
   - profile_pict (file)
 - Response
 
 ```
 {
-    "message": "Success Edit Profile User"
+    "message": "Success Edit Profile User",
+    "code": 1
 }
 ```
+- Message Code
+  - 0 == Internal Server Error
+  - 1 == Success Edit Profile User
+  - 2 == Error when update user profile
+
 
 ## Realtime Chat PC (Khusus gambar atau file)
 
