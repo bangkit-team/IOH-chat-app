@@ -70,6 +70,46 @@
 
 # User API
 
+## Get Profile User for Setting
+- URL
+  - /user/:user_id
+- Method
+  - GET
+- Request header
+  - token
+  - id
+- Response
+```
+{
+    "message": "Success get Profile User",
+    "snapshot": {
+        "about": "Available",
+        "approve": true,
+        "contact": {
+            "-N4VpC6kLmTn70uyhbQ0Galih-farouqPC": {
+                "id_chat": "-N4VpC6kLmTn70uyhbQ0Galih-farouqPC",
+                "id_friend": "-N4CxyXWfmo6ky5lFWSY",
+                "name": "farouq",
+                "pict": "https://storage.googleapis.com/bangkit_chatapp_bucket/UserPict/default_pict/F.png"
+            }
+        },
+        "divisi_kerja": "Call Center",
+        "email": "galih8.4.2001@gmail.com",
+        "name": "Galih",
+        "password": "$2b$10$dw.8EIcWwD9V71hzYRxB9.VBlVeBrQHgQ7kqJktAf8/GJ.TAa5xfS",
+        "phone_number": "353445",
+        "posisi": "admin",
+        "profile_pict": "https://storage.googleapis.com/bangkit_chatapp_bucket/UserPict/2022-5-7-1654594817330masker.png",
+        "timestamp": "06/07/2022"
+    },
+    "code": 1
+}
+```
+
+- Message Code
+  - 0 == Internal Server Error
+  - 1 == Success get Profile User
+
 ## Add new friend as PC
 
 - URL
@@ -110,19 +150,22 @@
   - token
   - id
 - Request body
-  - name_user (string)
   - phone_number (string)
-  - posisi (string)
-  - divisi_kerja (string)
   - about (string)
   - profile_pict (file)
 - Response
 
 ```
 {
-    "message": "Success Edit Profile User"
+    "message": "Success Edit Profile User",
+    "code": 1
 }
 ```
+- Message Code
+  - 0 == Internal Server Error
+  - 1 == Success Edit Profile User
+  - 2 == Error when update user profile
+
 
 ## Realtime Chat PC (Khusus gambar atau file)
 
@@ -325,44 +368,50 @@
 
 # Announcement API
 
-## Add Announcement
-
+## Get Announcement by specific division
 - URL
   - /user/:user_id/announcement
 - Method
-  - POST
+  - GET
 - Request header
   - token
   - id
 - Request body
-  - none --> utk divisinya udah dicek berdasarkan param user_id, dan kalo udah ada gk bakal buat lagi
+  - divisi (divisi dari usernya apa) biar bisa di filter 
 - Response
 
 ```
 {
-    "message": "Berhasil menambahkan announcement Call Center"
+    "snapshot": [
+        {
+            "message": "dtyyjdytjdy dyjdyjdy",
+            "sender": "Contact Center",
+            "timestamp": "06/04/2022"
+        }
+    ],
+    "code": 1
 }
 ```
+- Message
+  - 0 == Internal Servver Error
+  - 1 == Success
 
-## Send Chat Announcement
 
+# Flask ML API Endpoint
+## Translate
 - URL
-  - /user/:user_id/announcement/chat
+  - /translate
 - Method
   - POST
-- Request header
-  - token
-  - id
 - Request body
-  - message (text/file)
-  - nama_divisi (string)
+  - message (pesan yang ingin di translate)
 - Response
-
 ```
 {
-    "message": "Pesan berhasil terkirim"
+    "message": "aku cinta kamu"
 }
 ```
+
 
 # Admin
 
@@ -476,5 +525,25 @@
 ```
 {
     "message": "Success Approve User",
+}
+```
+
+## Send Chat Announcement
+
+- URL
+  - /user/:user_id/announcement/chat
+- Method
+  - POST
+- Request header
+  - token
+  - id
+- Request body
+  - message (text/file)
+  - nama_divisi (string)
+- Response
+
+```
+{
+    "message": "Pesan berhasil terkirim"
 }
 ```
