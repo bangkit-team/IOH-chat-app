@@ -396,7 +396,18 @@
 
 # Flask ML API Endpoint
 ## Translate
-
+- URL
+  - /translate
+- Method
+  - POST
+- Request body
+  - message (pesan yang ingin di translate)
+- Response
+```
+{
+    "message": "aku cinta kamu"
+}
+```
 
 
 # Admin
