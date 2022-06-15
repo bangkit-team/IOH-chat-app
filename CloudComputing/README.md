@@ -365,6 +365,31 @@
 
 # Announcement API
 
+## Get Announcement by specifi division
+- URL
+  - /user/:user_id/announcement
+- Method
+  - GET
+- Request header
+  - token
+  - id
+- Request body
+  - divisi (divisi dari usernya apa) biar bisa di filter 
+- Response
+
+```
+{
+    "snapshot": {
+        "-N3i3bsFnerAxUqdzjka": {
+            "message": "dtyyjdytjdy dyjdyjdy",
+            "sender": "Contact Center",
+            "timestamp": "06/04/2022"
+        }
+    },
+    "code": 1
+}
+```
+
 ## Add Announcement
 
 - URL
