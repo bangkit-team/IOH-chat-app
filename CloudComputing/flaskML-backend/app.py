@@ -20,21 +20,21 @@ app.config['UPLOAD_FOLDER'] = upload_folder
 model_nonchat = tf.keras.models.load_model("saved_model_nonchat")
 
 # translate class
-# saved_model_path = "saved_model_translate"
-# input_tokenizer_dir = 'json_translate/input_tokenizer.json'
-# target_tokenizer_dir = 'json_translate/target_tokenizer.json'
+saved_model_path = "saved_model_translate"
+input_tokenizer_dir = 'json_translate/input_tokenizer.json'
+target_tokenizer_dir = 'json_translate/target_tokenizer.json'
 
-# translator = Translator(
-#     saved_model_path,
-#     input_tokenizer_dir,
-#     target_tokenizer_dir,
-#     20
-# )
+translator = Translator(
+    saved_model_path,
+    input_tokenizer_dir,
+    target_tokenizer_dir,
+    20
+)
 
 # load model dari folder saved_model
 # model_feedback = tf.keras.models.load_model("saved_model_feedback")
-# feedback_predict = FeedbackPredict(
-#     "saved_model_feedback", "json_feedback/vocab.json")
+feedback_predict = FeedbackPredict(
+    "saved_model_feedback", "json_feedback/vocab.json")
 
 
 @app.route('/', methods=['GET'])
@@ -75,32 +75,32 @@ def speech():
     return "Flask server for /speech"
 
 
-# @app.route('/translate', methods=['POST'])
-# def translatetext():
-#     try:
-#         # untuk terima text
-#         data = request.json
-#         text_input = data['message']
+@app.route('/translate', methods=['POST'])
+def translatetext():
+    try:
+        # untuk terima text
+        data = request.json
+        text_input = data['message']
 
-#         translate = translator(text_input)
+        translate = translator(text_input)
 
-#         return jsonify(message=translate)
-#     except Exception:
-#         return jsonify(message="Translate Predict Error")
+        return jsonify(message=translate)
+    except Exception:
+        return jsonify(message="Translate Predict Error")
 
 
-# # get feedback from nodejs using axios and return ML result
-# @app.route('/feedback', methods=['POST'])
-# def feedback():
-#     try:
-#         data = request.json
-#         feedback = data['message']
+# get feedback from nodejs using axios and return ML result
+@app.route('/feedback', methods=['POST'])
+def feedback():
+    try:
+        data = request.json
+        feedback = data['message']
 
-#         hasil = feedback_predict(feedback)
+        hasil = feedback_predict(feedback)
 
-#         return jsonify(result=float(hasil))
-#     except Exception:
-#         return jsonify(message="Feedback Predict Error")
+        return jsonify(result=float(hasil))
+    except Exception:
+        return jsonify(message="Feedback Predict Error")
 
 
 if __name__ == "__main__":

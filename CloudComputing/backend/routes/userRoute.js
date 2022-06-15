@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router()
 const db = require('../utils/firestore')
-const {registerValidation, updateUserValidation} = require('../validate')
+const {registerValidation} = require('../validate')
 const bcrypt = require('bcrypt');
 const cstorage = require('../utils/cloudStorage')
 const { uploadGambar, uploadApaaja } = require('../utils/multerLibrary')
@@ -91,15 +91,18 @@ router.get('/:user_id', verify, (req,res)=>{
   const userRef = db.ref('/users/'+req.params.user_id)
   try{
     userRef.once('value', snapshot =>{
-      console.log(snapshot);
 
       res.status(200).send({
         message: "Success get Profile User",
-        snapshot
+        snapshot,
+        code: 1
       })
     })
   }catch(error){
-    res.status(500).send({message: "Internal Server Error"})
+    res.status(500).send({
+      message: "Internal Server Error",
+      code: 0
+    })
   }
 })
 
@@ -238,8 +241,6 @@ router.post('/:user_id',verify, (req,res) =>{
 
 // edit user
 router.patch('/:user_id',verify, uploadGambar.single('profile_pict'), (req,res) =>{
-  const {error} = updateUserValidation(req.body);
-  if(error) return res.status(400).json({message:error.details[0].message});
 
   try{
     async function uploadFile() {
@@ -255,38 +256,41 @@ router.patch('/:user_id',verify, uploadGambar.single('profile_pict'), (req,res) 
   
     //profile_pict diambil bukan dari body
     const updateUser = {
-      name: req.body.name,
       phone_number: req.body.phone_number,
-      posisi: req.body.posisi,
-      divisi_kerja: req.body.divisi_kerja,
       profile_pict: `https://storage.googleapis.com/bangkit_chatapp_bucket/UserPict/${req.file.filename}`,
       about: req.body.about
     }
   
     try{
       //delete pict lama dan update database
-      const userIdRef = db.ref('/users/'+req.params.user_id)
-      userIdRef.once('value',(snapshot)=>{
-        const pictLama = snapshot.child('profile_pict').val().replace("https://storage.googleapis.com/bangkit_chatapp_bucket/UserPict", "UserPict")
-        if(!pictLama.includes('UserPict/default_pict')){
-          async function deleteFile() {
-            await cstorage.file(pictLama).delete();
-            userRef.child(req.params.user_id).update(updateUser);
-          }
-          deleteFile().catch(console.error); 
-        }
-      })
-  
+      // const userIdRef = db.ref('/users/'+req.params.user_id)
+      // userIdRef.once('value',(snapshot)=>{
+      //   const pictLama = snapshot.child('profile_pict').val().replace("https://storage.googleapis.com/bangkit_chatapp_bucket/UserPict", "UserPict")
+      //   if(!pictLama.includes('UserPict/default_pict')){
+      //     async function deleteFile() {
+      //       await cstorage.file(pictLama).delete();
+      //       userRef.child(req.params.user_id).update(updateUser);
+      //     }
+      //     deleteFile().catch(console.error); 
+      //   }
+      // })
+      userRef.child(req.params.user_id).update(updateUser);
+
       res.status(200).send({
-        message: "Success Edit Profile User"
+        message: "Success Edit Profile User",
+        code: 1
       });
     }catch(error){
       res.status(500).send({
-        message: "Error when update user profile"
+        message: "Error when update user profile",
+        code: 2
       })
     }
   }catch(e){
-    res.status(500).send({message: "Internal Server Error"})
+    res.status(500).send({
+      message: "Internal Server Error",
+      code: 0
+    })
   }
 })
 

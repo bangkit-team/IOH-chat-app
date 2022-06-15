@@ -261,28 +261,37 @@ router.post('/:user_id/announcement/chat', uploadApaaja.single('message'), (req,
 })
 
 //get all chat
-router.get('/:user_id/announcement', (req,res) => {
+router.get('/:user_id/announcement/:divisi_kerja', (req,res) => {
     const annRef = db.ref('/announcements')
     let id = ""
+    let announce = []
     try{
         annRef.once('value', snapshot =>{
             snapshot.forEach((data) =>{
-                if(data.val().nama_divisi == req.body.divisi){
+                if(data.val().nama_divisi == req.params.divisi_kerja){
                     id = data.key
                 }
             })
             const annChatRef = db.ref('/announcements/'+id+'/chat')
-            const annChatKey = annChatRef.push().key
 
             annChatRef.once('value', snapshot => {
+                snapshot.forEach((data) =>{
+                    announce = [...announce,{
+                        message: data.val().message,
+                        sender: data.val().sender,
+                        timestamp: data.val().timestamp,
+                    }]
+                })
                 res.status(200).send({
-                    snapshot
+                    snapshot: announce,
+                    code: 1
                 })
             })
         })
     } catch(error){
         res.status(500).send({
-            message: "Gagal mendapatkan chat"
+            message: "Gagal mendapatkan chat",
+            code: 0
         })
     }
 })
