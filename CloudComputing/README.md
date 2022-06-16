@@ -1,3 +1,6 @@
+# Getting Started for Cloud Computing Resources
+
+
 # API Endpoint
 
 - CE Backend-App:
@@ -10,6 +13,26 @@
   - https://ml.mydomainappalvin.com
 
 # API List
+
+1. [Login User](#login-user)
+2. [sign up](#singup-user)
+3. [Get Profile User for Setting](#get-profile-user-for-setting)
+4. [Add new Friend as PC](#add-new-friend-as-pc)
+5. [Edit Profile User](#edit-profile-user)
+6. [Realtime Chat PC](#realtime-chat-pc-only-img)
+7. [Add New Group](#add-new-group)
+8. [Get Group Specs](#get-group-specs)
+9. [Add friend to Group](#add-friend-to-group)
+10. [Edit Group](#edit-group)
+11. [Out from group](#out-from-group)
+12. [Realtime Chat Group](#realtime-chat-group)
+13. [Add feedback](#add-feedback)
+14. [Get Announcement by specific division](#get-announcement-by-specific-division)
+15. [Translate](#translate)
+
+Admin Only
+1. [Login Website](#login-website)
+2.  
 
 ## Login User
 
@@ -167,7 +190,7 @@
   - 2 == Error when update user profile
 
 
-## Realtime Chat PC (Khusus gambar atau file)
+## Realtime Chat PC only image
 
 - URL
   - /user/:user_id/chat/:chat_id
@@ -259,7 +282,7 @@
 }
 ```
 
-## Add friend to Group (Untuk sementara cuman bisa tambah satu satu temannya)
+## Add friend to Group
 
 - URL
   - /user/:user_id/group/:group_id
@@ -426,7 +449,7 @@
 
 # Admin
 
-## Login Website (Khusus Admin)
+## Login Website
 
 - URL
   - /admin
