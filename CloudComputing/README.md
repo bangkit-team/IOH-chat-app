@@ -405,6 +405,9 @@
   - /translate
 - Method
   - POST
+- Request header
+  - token
+  - id
 - Request body
   - message (pesan yang ingin di translate),
   - divisi
