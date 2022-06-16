@@ -1,5 +1,10 @@
 # Getting Started for Cloud Computing Resources
 
+1. Backend User Getting Started: [https://github.com/bangkit-team/IOH-chat-app/tree/main/CloudComputing/backend-admin](https://github.com/bangkit-team/IOH-chat-app/tree/main/CloudComputing/backend-admin)
+2. Backend-admin Getting Started: [https://github.com/bangkit-team/IOH-chat-app/tree/main/CloudComputing/backend](https://github.com/bangkit-team/IOH-chat-app/tree/main/CloudComputing/backend)
+3. Backend ML: [https://github.com/bangkit-team/IOH-chat-app/tree/main/CloudComputing/flaskML-backend](https://github.com/bangkit-team/IOH-chat-app/tree/main/CloudComputing/flaskML-backend)
+4. Frontend Admin: [https://github.com/bangkit-team/IOH-chat-app/tree/main/CloudComputing/frontend_web/redteam-chat](https://github.com/bangkit-team/IOH-chat-app/tree/main/CloudComputing/frontend_web/redteam-chat)
+
 
 # API Endpoint
 
@@ -32,7 +37,11 @@
 
 Admin Only
 1. [Login Website](#login-website)
-2.  
+2. [Get All Users](#get-all-users)
+3. [Get All Groups](#get-all-groups)
+4. [Get Unapprove New User](#get-unapprove-new-user)
+5. [Approve New User](#approve-new-user)
+6. [Send Chat Announcement](#send-chat-announcement)
 
 ## Login User
 
