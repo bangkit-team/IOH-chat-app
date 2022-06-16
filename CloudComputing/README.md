@@ -384,9 +384,11 @@
 {
     "snapshot": [
         {
-            "message": "dtyyjdytjdy dyjdyjdy",
-            "sender": "Contact Center",
-            "timestamp": "06/04/2022"
+            "message": "testing testing",
+            "sender": "Digital",
+            "timestamp": "06/16/2022",
+            "messageTranslate": "Non",
+            "message_id": "-N4eGEPtBY8p2Rsviabq"
         }
     ],
     "code": 1
@@ -397,21 +399,27 @@
   - 1 == Success
 
 
-# Flask ML API Endpoint
+# NodeJs ML API Endpoint
 ## Translate
 - URL
   - /translate
 - Method
   - POST
 - Request body
-  - message (pesan yang ingin di translate)
+  - message (pesan yang ingin di translate),
+  - divisi
+  - id_message (ada di get announcement) --> taruk di hidden aja
 - Response
 ```
 {
-    "message": "aku cinta kamu"
+    "message": "Success Store Translate",
+    "code": 1
 }
 ```
 
+- Message
+  - 0 == Internal Servver Error
+  - 1 == Success Store Translate
 
 # Admin
 
