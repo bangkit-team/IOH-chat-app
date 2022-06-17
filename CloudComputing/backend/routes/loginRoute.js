@@ -9,7 +9,7 @@ const userRef = db.ref('/users');
 
 router.post('/',(req, res) =>{
     const {error} = loginValidation(req.body);
-    if(error) return res.status(400).send(error.details[0].message)
+    if(error) return res.status(200).send(error.details[0].message)
     
     var success = 0;
     let dataUser = {};
@@ -38,12 +38,12 @@ router.post('/',(req, res) =>{
                     dataUser
                 })
             }else if(success === 0){
-                res.status(400).send({
+                res.status(200).send({
                     message: 'Email atau Password salah',
                     code: 2
                 })
             }else if(success === -1){
-                res.status(400).send({
+                res.status(200).send({
                     message: 'Akun belum diapprove oleh Admin',
                     code: 3
                 })

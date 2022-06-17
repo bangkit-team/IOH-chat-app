@@ -3,6 +3,7 @@ const login = require('./routes/loginRoute')
 const group = require('./routes/groupRoute')
 const feedback = require('./routes/feedbackRoute')
 const announcement = require('./routes/announcementRoute')
+const translate = require('./routes/translateRoute')
 
 // var multer = require('multer');
 // var upload = multer();
@@ -43,6 +44,7 @@ app.use('/user', user)
 app.use('/login', login)
 app.use('/user',group)
 app.use('/feedback',feedback)
+app.use('/translate', translate)
 app.use('/user',announcement)
 
 app.get('/', (req, res) => {

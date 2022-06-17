@@ -280,6 +280,8 @@ router.get('/:user_id/announcement/:divisi_kerja', (req,res) => {
                         message: data.val().message,
                         sender: data.val().sender,
                         timestamp: data.val().timestamp,
+                        messageTranslate: data.val().messageTranslate,
+                        message_id: data.key
                     }]
                 })
                 res.status(200).send({

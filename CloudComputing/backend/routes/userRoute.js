@@ -14,10 +14,29 @@ const userRef = db.ref('/users');
 
 const hurufDict = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
 
+
+router.post('/test', (req,res) =>{
+  const chatRef = db.ref('/chats/-N4hFVgIfHWsryLkmGR4Galih-RichardPC/messages')
+
+  const chatRefKey = chatRef.push().key
+
+  chatRef.child(chatRefKey).set({
+    message: "galih gendut 2",
+    senderName: "Richard",
+    senderId: "-N3xX4vlsYiPGpCMKgrT",
+    timestamp: "10-10-10"
+  })
+
+  res.status(200).send({
+    message: "berhasil"
+  })
+})
+
+
 //regis API
 router.post('/',async(req,res) => {
   const {error} = registerValidation(req.body);
-  if(error) return res.status(400).json({message:error.details[0].message});
+  if(error) return res.status(200).json({message:error.details[0].message});
 
   const salt = await bcrypt.genSalt(10);
   const hashPassword = await bcrypt.hash(req.body.password, salt);
@@ -31,7 +50,7 @@ router.post('/',async(req,res) => {
         }
       })
       if(success != 0){
-        return res.status(400).json({
+        return res.status(200).json({
           message:"Email Sudah Terdaftar!",
           code: 2
         })
@@ -71,7 +90,7 @@ router.post('/',async(req,res) => {
             code: 1
           });
         }catch(error){
-          res.status(500).json({
+          res.status(200).json({
             message: "Error when store in database",
             code: 3
           })
@@ -163,7 +182,7 @@ router.post('/:user_id',verify, (req,res) =>{
           dataUser = {
             nameUser: data.val().name,
             emailUser: data.val().email,
-            pict: data.val().profile_pict
+            pict: data.val().profile_pict,
           }
         }
       });
@@ -190,8 +209,15 @@ router.post('/:user_id',verify, (req,res) =>{
     
           try{
             const id_chat = userDataRef.push().key+dataUser.nameUser.replace(/ /g, "")+'-'+dataFriend.nameFriend.replace(/ /g, "")+'PC';
-            const idChatRef = db.ref('/chats/'+id_chat)
+            const idChatRef = db.ref('/chats/'+id_chat+'/messages')
             const idChatKey = idChatRef.push().key
+
+            const lastMsgRef = db.ref('/chats')
+            lastMsgRef.child(id_chat).set({
+              lastMsg: "",
+              lastMsgTime: ""
+            })
+
             //Untuk User
             userDataRef.child(id_chat).set({
               id_chat: id_chat,
@@ -209,11 +235,12 @@ router.post('/:user_id',verify, (req,res) =>{
             })
   
             //untuk chatid
-            idChatRef.child(idChatKey).set({
-              timestamp: timeToday,
-              sender: dataUser.nameUser,
-              message: "Pesan Pertama"
-            })
+            // idChatRef.child(idChatKey).set({
+            //   timestamp: timeToday,
+            //   sender: dataUser.nameUser,
+            //   senderId: req.params.user_id,
+            //   message: "First Message"
+            // })
     
             res.status(200).json({
               message: "Add Friend Success",
@@ -356,6 +383,7 @@ router.post('/:user_id/chat/:chat_id',verify, uploadApaaja.single('file'), (req,
     res.status(500).send({message: "Internal Server Error"})
   }
 })
+
 
 
 module.exports = router

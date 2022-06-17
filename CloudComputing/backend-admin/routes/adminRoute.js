@@ -167,7 +167,7 @@ function sebarChat(divKerja,message,timestamp){
                 if(data.val().nama_divisi === 'Call Center' || data.val().nama_divisi === 'Digital' || data.val().nama_divisi === 'Customer Relation' || data.val().nama_divisi === 'VIP Services'){
                     const dataRef = db.ref('/announcements/'+data.key+'/chat/')
                     const idnya = dataRef.push().key;
-                    dataRef.child(idnya).set({message: message,timestamp:timestamp,sender:divKerja})
+                    dataRef.child(idnya).set({message: message,timestamp:timestamp,sender:divKerja, messageTranslate:"Non"})
                 }
             })
         })
@@ -177,7 +177,7 @@ function sebarChat(divKerja,message,timestamp){
                 if(data.val().nama_divisi === 'Retail Customer Experience' || data.val().nama_divisi === 'Business Process & Training' || data.val().nama_divisi === 'Service Quality & Exp Assurance' || data.val().nama_divisi === 'Customer Journey'){
                     const dataRef = db.ref('/announcements/'+data.key+'/chat/')
                     const idnya = dataRef.push().key;
-                    dataRef.child(idnya).set({message: message,timestamp:timestamp,sender:divKerja})
+                    dataRef.child(idnya).set({message: message,timestamp:timestamp,sender:divKerja, messageTranslate:"Non"})
                 }
             })
         })
@@ -187,7 +187,7 @@ function sebarChat(divKerja,message,timestamp){
                 if(data.val().nama_divisi === 'Collection & Payment' || data.val().nama_divisi === 'Billing & Administration' || data.val().nama_divisi === 'Verification & Credit Monitoring'){
                     const dataRef = db.ref('/announcements/'+data.key+'/chat/')
                     const idnya = dataRef.push().key;
-                    dataRef.child(idnya).set({message: message,timestamp:timestamp,sender:divKerja})
+                    dataRef.child(idnya).set({message: message,timestamp:timestamp,sender:divKerja, messageTranslate:"Non"})
                 }
             })
         })
@@ -197,7 +197,7 @@ function sebarChat(divKerja,message,timestamp){
                 if(data.val().nama_divisi === 'Business Planning & Project Tracking' || data.val().nama_divisi === 'Infra Support & Tech Development'){
                     const dataRef = db.ref('/announcements/'+data.key+'/chat/')
                     const idnya = dataRef.push().key;
-                    dataRef.child(idnya).set({message: message,timestamp:timestamp,sender:divKerja})
+                    dataRef.child(idnya).set({message: message,timestamp:timestamp,sender:divKerja, messageTranslate:"Non"})
                 }
             })
         })
@@ -207,7 +207,7 @@ function sebarChat(divKerja,message,timestamp){
                 if(data.val().nama_divisi === 'CX Reporting Team'){
                     const dataRef = db.ref('/announcements/'+data.key+'/chat/')
                     const idnya = dataRef.push().key;
-                    dataRef.child(idnya).set({message: message,timestamp:timestamp,sender:divKerja})
+                    dataRef.child(idnya).set({message: message,timestamp:timestamp,sender:divKerja, messageTranslate:"Non"})
                 }
             })
         })
@@ -234,7 +234,8 @@ router.post('/announcement', verify, (req,res)=>{
                     annChatRef.child(annChatId).set({
                         message: filenya,
                         timestamp: today,
-                        sender: req.body.nama_divisi
+                        sender: req.body.nama_divisi,
+                        messageTranslate: "Non"
                     })
                     sebarChat(req.body.nama_divisi,filenya,today)
         

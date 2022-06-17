@@ -46,10 +46,9 @@ router.post('/', verify, async(req,res) =>{
 
         //axios to flask ML
         const predict_feedback = await feedbackML(req.body.feedback)
-        console.log(predict_feedback.data.result)
 
         //masukin ke realtime database hasil predict
-        if(predict_feedback.data.result < 0.5){
+        if(predict_feedback.data.result < 0.8){
             const feedbackRef = db.ref('/feedbacks/negative');
             const feedbackKey = feedbackRef.push().key;
 
