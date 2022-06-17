@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1055177951009",
+    "firebase_url": "https://bangkitproject-348609-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "bangkitproject-348609",
+    "storage_bucket": "bangkitproject-348609.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1055177951009:android:73967cb8096ea56195e060",
+        "android_client_info": {
+          "package_name": "com.example.ioh"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1055177951009-7htdhl3r1rh9ob5bdnaaqhqumfeemgma.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDcOZPskkpRjdR65gHiAjVXOvmwNh31tIQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1055177951009-7htdhl3r1rh9ob5bdnaaqhqumfeemgma.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

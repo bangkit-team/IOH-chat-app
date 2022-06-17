@@ -6,8 +6,90 @@
         <entry key="..\:/Kuliah/Kotlin/Capstone/IOH-Chat-App/Android/IOH/app/src/main/res/layout/fragment_dashboard.xml" value="0.20416666666666666" />
         <entry key="..\:/Kuliah/Kotlin/Capstone/IOH-Chat-App/Android/IOH/app/src/main/res/layout/fragment_home.xml" value="0.18981481481481483" />
         <entry key="..\:/Kuliah/Kotlin/Capstone/IOH-Chat-App/Android/IOH/app/src/main/res/layout/fragment_notifications.xml" value="0.20416666666666666" />
+        <entry key="..\:/Kuliah/Kotlin/Capstone/app/src/main/res/drawable-v24/ic_round_background.xml" value="0.1" />
+        <entry key="..\:/Kuliah/Kotlin/Capstone/app/src/main/res/drawable-xxxhdpi/ic_hide_password.xml" value="0.1" />
+        <entry key="..\:/Kuliah/Kotlin/Capstone/app/src/main/res/drawable-xxxhdpi/ic_show_password.xml" value="0.1" />
+        <entry key="..\:/Kuliah/Kotlin/Capstone/app/src/main/res/drawable/custom_edttext.xml" value="0.1" />
+        <entry key="..\:/Kuliah/Kotlin/Capstone/app/src/main/res/drawable/custome_edt_active.xml" value="0.1" />
+        <entry key="..\:/Kuliah/Kotlin/Capstone/app/src/main/res/drawable/custome_edt_unactive.xml" value="0.1" />
+        <entry key="..\:/Kuliah/Kotlin/Capstone/app/src/main/res/drawable/ic_attach_file_24.xml" value="0.1" />
+        <entry key="..\:/Kuliah/Kotlin/Capstone/app/src/main/res/drawable/ic_baseline_mic_24.xml" value="0.1" />
+        <entry key="..\:/Kuliah/Kotlin/Capstone/app/src/main/res/drawable/ic_friends.xml" value="0.1" />
+        <entry key="..\:/Kuliah/Kotlin/Capstone/app/src/main/res/drawable/ic_round_background_white.xml" value="0.1" />
+        <entry key="..\:/Kuliah/Kotlin/Capstone/app/src/main/res/layout/activity_add_friend.xml" value="0.16" />
+        <entry key="..\:/Kuliah/Kotlin/Capstone/app/src/main/res/layout/activity_chat.xml" value="0.18" />
+        <entry key="..\:/Kuliah/Kotlin/Capstone/app/src/main/res/layout/activity_login.xml" value="0.20416666666666666" />
+        <entry key="..\:/Kuliah/Kotlin/Capstone/app/src/main/res/layout/activity_main.xml" value="0.20416666666666666" />
+        <entry key="..\:/Kuliah/Kotlin/Capstone/app/src/main/res/layout/activity_register.xml" value="0.21" />
+        <entry key="..\:/Kuliah/Kotlin/Capstone/app/src/main/res/layout/fragment_home.xml" value="0.32303370786516855" />
+        <entry key="..\:/Kuliah/Kotlin/Capstone/app/src/main/res/layout/fragment_notifications.xml" value="0.20416666666666666" />
+        <entry key="..\:/Kuliah/Kotlin/Capstone/app/src/main/res/layout/fragment_settings.xml" value="0.20416666666666666" />
+        <entry key="..\:/Kuliah/Kotlin/Capstone/app/src/main/res/layout/item__list_chat.xml" value="0.15" />
+        <entry key="..\:/Kuliah/Kotlin/Capstone/app/src/main/res/layout/item_list_contact.xml" value="0.20416666666666666" />
         <entry key="..\:/Kuliah/Kotlin/IOH/app/src/main/res/layout/activity_main.xml" value="0.20416666666666666" />
         <entry key="..\:/Kuliah/Kotlin/IOH/app/src/main/res/layout/fragment_dashboard.xml" value="0.25" />
+        <entry key="..\:/Programming/MD-Chat-App/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2345" />
+        <entry key="..\:/Programming/MD-Chat-App/app/src/main/res/drawable/circle_notif.xml" value="0.2345" />
+        <entry key="..\:/Programming/MD-Chat-App/app/src/main/res/drawable/circle_shimmer.xml" value="0.2345" />
+        <entry key="..\:/Programming/MD-Chat-App/app/src/main/res/drawable/custom_btn.xml" value="0.2345" />
+        <entry key="..\:/Programming/MD-Chat-App/app/src/main/res/drawable/custom_btn_red.xml" value="0.2345" />
+        <entry key="..\:/Programming/MD-Chat-App/app/src/main/res/drawable/custom_button_transparent.xml" value="0.2345" />
+        <entry key="..\:/Programming/MD-Chat-App/app/src/main/res/drawable/custom_dialog.xml" value="0.134" />
+        <entry key="..\:/Programming/MD-Chat-App/app/src/main/res/drawable/custom_edttext.xml" value="0.1525" />
+        <entry key="..\:/Programming/MD-Chat-App/app/src/main/res/drawable/custom_edttext_grey.xml" value="0.2345" />
+        <entry key="..\:/Programming/MD-Chat-App/app/src/main/res/drawable/custome_edt_active.xml" value="0.2345" />
+        <entry key="..\:/Programming/MD-Chat-App/app/src/main/res/drawable/custome_edt_unactive.xml" value="0.1525" />
+        <entry key="..\:/Programming/MD-Chat-App/app/src/main/res/drawable/dialog_background.xml" value="0.134" />
+        <entry key="..\:/Programming/MD-Chat-App/app/src/main/res/drawable/ic_account.xml" value="0.1525" />
+        <entry key="..\:/Programming/MD-Chat-App/app/src/main/res/drawable/ic_attach_file_24.xml" value="0.1805" />
+        <entry key="..\:/Programming/MD-Chat-App/app/src/main/res/drawable/ic_back.xml" value="0.2345" />
+        <entry key="..\:/Programming/MD-Chat-App/app/src/main/res/drawable/ic_chat.xml" value="0.1525" />
+        <entry key="..\:/Programming/MD-Chat-App/app/src/main/res/drawable/ic_dashboard_black_24dp.xml" value="0.1525" />
+        <entry key="..\:/Programming/MD-Chat-App/app/src/main/res/drawable/ic_decor1_background.xml" value="0.1525" />
+        <entry key="..\:/Programming/MD-Chat-App/app/src/main/res/drawable/ic_friends.xml" value="0.2345" />
+        <entry key="..\:/Programming/MD-Chat-App/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2345" />
+        <entry key="..\:/Programming/MD-Chat-App/app/src/main/res/drawable/ic_logout.xml" value="0.1805" />
+        <entry key="..\:/Programming/MD-Chat-App/app/src/main/res/drawable/ic_notifications_none_24.xml" value="0.1" />
+        <entry key="..\:/Programming/MD-Chat-App/app/src/main/res/drawable/long_logo_team_background.xml" value="0.2345" />
+        <entry key="..\:/Programming/MD-Chat-App/app/src/main/res/drawable/offline_status.xml" value="0.2345" />
+        <entry key="..\:/Programming/MD-Chat-App/app/src/main/res/drawable/online_status.xml" value="0.2345" />
+        <entry key="..\:/Programming/MD-Chat-App/app/src/main/res/drawable/receive_bubble_cha.xml" value="0.2345" />
+        <entry key="..\:/Programming/MD-Chat-App/app/src/main/res/drawable/receive_bubble_chat.xml" value="0.2345" />
+        <entry key="..\:/Programming/MD-Chat-App/app/src/main/res/drawable/rounded_shimmer.xml" value="0.2345" />
+        <entry key="..\:/Programming/MD-Chat-App/app/src/main/res/drawable/send_bubble_chat.xml" value="0.2345" />
+        <entry key="..\:/Programming/MD-Chat-App/app/src/main/res/layout-v26/item_list_chat.xml" value="0.24895833333333334" />
+        <entry key="..\:/Programming/MD-Chat-App/app/src/main/res/layout/activity_add_friend.xml" value="0.2" />
+        <entry key="..\:/Programming/MD-Chat-App/app/src/main/res/layout/activity_chat.xml" value="0.25" />
+        <entry key="..\:/Programming/MD-Chat-App/app/src/main/res/layout/activity_detail_chat.xml" value="0.264" />
+        <entry key="..\:/Programming/MD-Chat-App/app/src/main/res/layout/activity_edit_profile.xml" value="0.1" />
+        <entry key="..\:/Programming/MD-Chat-App/app/src/main/res/layout/activity_feedback.xml" value="0.2" />
+        <entry key="..\:/Programming/MD-Chat-App/app/src/main/res/layout/activity_login.xml" value="0.1" />
+        <entry key="..\:/Programming/MD-Chat-App/app/src/main/res/layout/activity_main.xml" value="0.24351851851851852" />
+        <entry key="..\:/Programming/MD-Chat-App/app/src/main/res/layout/activity_register.xml" value="0.264" />
+        <entry key="..\:/Programming/MD-Chat-App/app/src/main/res/layout/activity_splashscreen.xml" value="0.264" />
+        <entry key="..\:/Programming/MD-Chat-App/app/src/main/res/layout/announcement_shimmer.xml" value="0.25" />
+        <entry key="..\:/Programming/MD-Chat-App/app/src/main/res/layout/chat_bubble.xml" value="0.25" />
+        <entry key="..\:/Programming/MD-Chat-App/app/src/main/res/layout/contact_shimmer.xml" value="0.24895833333333334" />
+        <entry key="..\:/Programming/MD-Chat-App/app/src/main/res/layout/custom_dialog.xml" value="0.1" />
+        <entry key="..\:/Programming/MD-Chat-App/app/src/main/res/layout/feedback_dialog.xml" value="0.24895833333333334" />
+        <entry key="..\:/Programming/MD-Chat-App/app/src/main/res/layout/fragment_announcement.xml" value="0.264" />
+        <entry key="..\:/Programming/MD-Chat-App/app/src/main/res/layout/fragment_blank.xml" value="0.25" />
+        <entry key="..\:/Programming/MD-Chat-App/app/src/main/res/layout/fragment_chat.xml" value="0.2" />
+        <entry key="..\:/Programming/MD-Chat-App/app/src/main/res/layout/fragment_contact.xml" value="0.264" />
+        <entry key="..\:/Programming/MD-Chat-App/app/src/main/res/layout/fragment_dashboard.xml" value="0.25" />
+        <entry key="..\:/Programming/MD-Chat-App/app/src/main/res/layout/fragment_home.xml" value="0.25" />
+        <entry key="..\:/Programming/MD-Chat-App/app/src/main/res/layout/fragment_notifications.xml" value="0.25" />
+        <entry key="..\:/Programming/MD-Chat-App/app/src/main/res/layout/fragment_settings.xml" value="0.264" />
+        <entry key="..\:/Programming/MD-Chat-App/app/src/main/res/layout/item_list_announcement.xml" value="0.2" />
+        <entry key="..\:/Programming/MD-Chat-App/app/src/main/res/layout/item_list_chat.xml" value="0.24895833333333334" />
+        <entry key="..\:/Programming/MD-Chat-App/app/src/main/res/layout/item_list_contact.xml" value="0.264" />
+        <entry key="..\:/Programming/MD-Chat-App/app/src/main/res/layout/item_sender.xml" value="0.25" />
+        <entry key="..\:/Programming/MD-Chat-App/app/src/main/res/layout/logout_dialog.xml" value="0.2" />
+        <entry key="..\:/Programming/MD-Chat-App/app/src/main/res/layout/receive_msg.xml" value="0.2175925925925926" />
+        <entry key="..\:/Programming/MD-Chat-App/app/src/main/res/layout/recevice_bubble_chat.xml" value="0.25" />
+        <entry key="..\:/Programming/MD-Chat-App/app/src/main/res/layout/send_msg.xml" value="0.2" />
+        <entry key="..\:/Programming/MD-Chat-App/app/src/main/res/menu/bottom_nav_menu.xml" value="0.25" />
+        <entry key="..\:/Programming/MD-Chat-App/app/src/main/res/mipmap-anydpi-v26/ic_decor1.xml" value="0.1525" />
       </map>
     </option>
   </component>
