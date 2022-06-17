@@ -10,14 +10,14 @@ from translate_class import Translator
 from feedback_class import FeedbackPredict
 
 # set folder
-upload_folder = 'img/'
-ALLOWED_EXTENSIONS = set(['jpg', 'jpeg', 'png'])
+#upload_folder = 'img/'
+#ALLOWED_EXTENSIONS = set(['jpg', 'jpeg', 'png'])
 
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = upload_folder
+#app.config['UPLOAD_FOLDER'] = upload_folder
 
 # non chat model
-model_nonchat = tf.keras.models.load_model("saved_model_nonchat")
+#model_nonchat = tf.keras.models.load_model("saved_model_nonchat")
 
 # translate class
 saved_model_path = "saved_model_translate"
@@ -43,34 +43,31 @@ def home():
 
 
 # sebelum dikirim atau dimasukkan ke firebase realtime database, dicek dulu di ML
-@app.route('/nonchat', methods=['POST'])
-def nonchat():
-    try:
-        # untuk terima gambar
-        file = request.files['image']
-        filename = secure_filename(file.filename)
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+# @app.route('/nonchat', methods=['POST'])
+# def nonchat():
+    # untuk terima gambar
+    #file = request.files['image']
+    #filename = secure_filename(file.filename)
+    #file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
-        path = os.path.join("img/", filename)
-        img = tf.keras.preprocessing.image.load_img(
-            path, color_mode="rgb", target_size=(224, 224))
-        x = tf.keras.preprocessing.image.img_to_array(img)
-        x /= 255
-        x = np.expand_dims(x, axis=0)
-        images = np.vstack([x])
+    #path = os.path.join("img/", filename)
+    # img = tf.keras.preprocessing.image.load_img(
+    # path, color_mode="rgb", target_size=(224, 224))
+    #x = tf.keras.preprocessing.image.img_to_array(img)
+    #x /= 255
+    #x = np.expand_dims(x, axis=0)
+    #images = np.vstack([x])
 
-        # lebih dari 0.5 = non chat
-        # kurang dari 0.5 = chat
-        # output string
-        hasil = model_nonchat.predict(images)
-        hasil = str(hasil[0][0])
+    # lebih dari 0.5 = non chat
+    # kurang dari 0.5 = chat
+    # output string
+    #hasil = model_nonchat.predict(images)
+    #hasil = str(hasil[0][0])
 
-        # delete the image
-        os.remove(path)
+    # delete the image
+    # os.remove(path)
 
-        return jsonify(message=hasil)
-    except Exception:
-        return jsonify(message="Nonchat Predict Error")
+    # return jsonify(message=hasil)
 
 
 @app.route('/speech', methods=['POST'])

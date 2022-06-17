@@ -2,7 +2,7 @@ import React,{useState,useEffect} from 'react';
 import authHeader from '../../context/authHeader';
 import "./home.css";
 import database from '../../utils/firebase';
-import { ref, onValue } from "firebase/database";
+import { ref, onValue} from "firebase/database";
 
 import user from "../../user.jpg";
 import group from "../../group.jpg";
@@ -10,15 +10,21 @@ import approve from "../../approval.png";
 import announcement from "../../announcement.png";
 import feedback from "../../feedback.png";
 
+import axios from "../../api/axios";
+
+const API_URL = "/admin/chat"
 
 const Home = () => {
     const logout = () =>{
         localStorage.removeItem("token");
-        localStorage.removeItem("_id");
+        localStorage.removeItem("id");
         window.location.href = "/";
     }
 
+    const username = JSON.parse(localStorage.getItem("username"))
+
     const [data, setData] = useState([]);
+    const [chat, setChat] = useState([]);
 
     const handleReadChat = async (e) => {
         e.preventDefault();
@@ -31,28 +37,55 @@ const Home = () => {
                         id: data.key,
                         message: data.val().message,
                         timestamp: data.val().timestamp,
+                        sender: data.val().sender
                     }]
                 })
                 setData(chat);
-                console.log(data);
             })
         }catch(error){
             localStorage.removeItem("token");
-            localStorage.removeItem("_id");
+            localStorage.removeItem("id");
+            window.location.href = "/";
+        }
+    }
+
+    const handleSendChat = async (e) =>{
+        e.preventDefault()
+        try{
+            await axios({
+                method: 'post',
+                url: API_URL,
+                headers: authHeader(),
+                data: {
+                    sender: username,
+                    message: chat,
+                }
+            })
+            setChat('');
+        }catch(error){
+            localStorage.removeItem("token");
+            localStorage.removeItem("id");
             window.location.href = "/";
         }
     }
 
     const chatCard = data.map((data) =>{
-        return (
-            <div>
-                
-                <ul>
-                    <li className="list-group-item">{data.message}</li>
-                    <li className="list-group-item">{data.timestamp}</li>
-                </ul>
-            </div>
-        )
+        if(username === data.sender){
+            return (
+                <div className='userChat'>
+                    <p>{data.message} - {data.timestamp}</p>
+                </div>
+            )
+        }else{
+            return (
+                <div className='otherChat'>
+                    <ul>
+                        <h6>{data.sender}</h6>
+                        <p>{data.timestamp} - {data.message} </p>
+                    </ul>
+                </div>
+            )
+        }
     })
 
     if(authHeader().token === undefined){
@@ -64,12 +97,12 @@ const Home = () => {
         <div className="header-user container">
             <div className="logout">
                 <button onClick={logout}>
-                            Logout
+                    Logout
                 </button>
             </div>
             <h1>IoH - Chat App</h1>
             <form onSubmit={handleReadChat}>
-                <button className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Chat</button>
+                <button className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-backdrop="static" data-keyboard="false">Chat</button>
             </form>
         </div>
         <div className="container-home">
@@ -135,7 +168,7 @@ const Home = () => {
             </div>
         </div>
         <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div className="modal-dialog">
+            <div className="modal-dialog modal-dialog-scrollable" role="document">
                 <div className="modal-content">
                     <div className="modal-header">
                         <h5 className="modal-title" id="exampleModalLabel">Chat</h5>
@@ -145,8 +178,10 @@ const Home = () => {
                         {chatCard}
                     </div>
                     <div className="modal-footer">
-                        <input type="text" className="form-control" id="chatMessage" placeholder="type the message..."/>
-                        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Send</button>
+                        <form onSubmit={handleSendChat}>
+                            <input type="text" className="form-control" onChange={(e) => setChat(e.target.value)} value={chat} id="chat" placeholder="type the message..."/>
+                            <button type="submit" className="btn btn-secondary">Send</button>
+                        </form>
                     </div>
                 </div>
             </div>

@@ -1,3 +1,11 @@
+# Getting Started for Cloud Computing Resources
+
+1. Backend User Getting Started: [https://github.com/bangkit-team/IOH-chat-app/tree/main/CloudComputing/backend-admin](https://github.com/bangkit-team/IOH-chat-app/tree/main/CloudComputing/backend-admin)
+2. Backend-admin Getting Started: [https://github.com/bangkit-team/IOH-chat-app/tree/main/CloudComputing/backend](https://github.com/bangkit-team/IOH-chat-app/tree/main/CloudComputing/backend)
+3. Backend ML: [https://github.com/bangkit-team/IOH-chat-app/tree/main/CloudComputing/flaskML-backend](https://github.com/bangkit-team/IOH-chat-app/tree/main/CloudComputing/flaskML-backend)
+4. Frontend Admin: [https://github.com/bangkit-team/IOH-chat-app/tree/main/CloudComputing/frontend_web/redteam-chat](https://github.com/bangkit-team/IOH-chat-app/tree/main/CloudComputing/frontend_web/redteam-chat)
+
+
 # API Endpoint
 
 - CE Backend-App:
@@ -10,6 +18,30 @@
   - https://ml.mydomainappalvin.com
 
 # API List
+
+1. [Login User](#login-user)
+2. [sign up](#singup-user)
+3. [Get Profile User for Setting](#get-profile-user-for-setting)
+4. [Add new Friend as PC](#add-new-friend-as-pc)
+5. [Edit Profile User](#edit-profile-user)
+6. [Realtime Chat PC](#realtime-chat-pc-only-img)
+7. [Add New Group](#add-new-group)
+8. [Get Group Specs](#get-group-specs)
+9. [Add friend to Group](#add-friend-to-group)
+10. [Edit Group](#edit-group)
+11. [Out from group](#out-from-group)
+12. [Realtime Chat Group](#realtime-chat-group)
+13. [Add feedback](#add-feedback)
+14. [Get Announcement by specific division](#get-announcement-by-specific-division)
+15. [Translate](#translate)
+
+Admin Only
+1. [Login Website](#login-website)
+2. [Get All Users](#get-all-users)
+3. [Get All Groups](#get-all-groups)
+4. [Get Unapprove New User](#get-unapprove-new-user)
+5. [Approve New User](#approve-new-user)
+6. [Send Chat Announcement](#send-chat-announcement)
 
 ## Login User
 
@@ -70,6 +102,46 @@
 
 # User API
 
+## Get Profile User for Setting
+- URL
+  - /user/:user_id
+- Method
+  - GET
+- Request header
+  - token
+  - id
+- Response
+```
+{
+    "message": "Success get Profile User",
+    "snapshot": {
+        "about": "Available",
+        "approve": true,
+        "contact": {
+            "-N4VpC6kLmTn70uyhbQ0Galih-farouqPC": {
+                "id_chat": "-N4VpC6kLmTn70uyhbQ0Galih-farouqPC",
+                "id_friend": "-N4CxyXWfmo6ky5lFWSY",
+                "name": "farouq",
+                "pict": "https://storage.googleapis.com/bangkit_chatapp_bucket/UserPict/default_pict/F.png"
+            }
+        },
+        "divisi_kerja": "Call Center",
+        "email": "galih8.4.2001@gmail.com",
+        "name": "Galih",
+        "password": "$2b$10$dw.8EIcWwD9V71hzYRxB9.VBlVeBrQHgQ7kqJktAf8/GJ.TAa5xfS",
+        "phone_number": "353445",
+        "posisi": "admin",
+        "profile_pict": "https://storage.googleapis.com/bangkit_chatapp_bucket/UserPict/2022-5-7-1654594817330masker.png",
+        "timestamp": "06/07/2022"
+    },
+    "code": 1
+}
+```
+
+- Message Code
+  - 0 == Internal Server Error
+  - 1 == Success get Profile User
+
 ## Add new friend as PC
 
 - URL
@@ -97,7 +169,8 @@
   - 0 == Internal Server Error
   - 1 == Add Friend Success
   - 2 == Email yang Dicari Tidak Ada!
-  - 3 == Error when insert new contact friend
+  - 3 == Friend sudah ada didaftar contact
+  - 4 == Error when insert new contact friend
 
 ## Edit Profile User
 
@@ -109,21 +182,24 @@
   - token
   - id
 - Request body
-  - name_user (string)
   - phone_number (string)
-  - posisi (string)
-  - divisi_kerja (string)
   - about (string)
   - profile_pict (file)
 - Response
 
 ```
 {
-    "message": "Success Edit Profile User"
+    "message": "Success Edit Profile User",
+    "code": 1
 }
 ```
+- Message Code
+  - 0 == Internal Server Error
+  - 1 == Success Edit Profile User
+  - 2 == Error when update user profile
 
-## Realtime Chat PC (Khusus gambar atau file)
+
+## Realtime Chat PC only image
 
 - URL
   - /user/:user_id/chat/:chat_id
@@ -215,7 +291,7 @@
 }
 ```
 
-## Add friend to Group (Untuk sementara cuman bisa tambah satu satu temannya)
+## Add friend to Group
 
 - URL
   - /user/:user_id/group/:group_id
@@ -324,48 +400,65 @@
 
 # Announcement API
 
-## Add Announcement
-
+## Get Announcement by specific division
 - URL
   - /user/:user_id/announcement
 - Method
-  - POST
+  - GET
 - Request header
   - token
   - id
 - Request body
-  - none --> utk divisinya udah dicek berdasarkan param user_id, dan kalo udah ada gk bakal buat lagi
+  - divisi (divisi dari usernya apa) biar bisa di filter 
 - Response
 
 ```
 {
-    "message": "Berhasil menambahkan announcement Call Center"
+    "snapshot": [
+        {
+            "message": "testing testing",
+            "sender": "Digital",
+            "timestamp": "06/16/2022",
+            "messageTranslate": "Non",
+            "message_id": "-N4eGEPtBY8p2Rsviabq"
+        }
+    ],
+    "code": 1
 }
 ```
+- Message
+  - 0 == Internal Servver Error
+  - 1 == Success
 
-## Send Chat Announcement
 
+# NodeJs ML API Endpoint
+## Translate
 - URL
-  - /user/:user_id/announcement/chat
+  - /translate
 - Method
   - POST
 - Request header
   - token
   - id
 - Request body
-  - message (text/file)
-  - nama_divisi (string)
+  - message (pesan yang ingin di translate),
+  - divisi
+  - id_message (ada di get announcement) --> taruk di hidden aja
 - Response
-
 ```
 {
-    "message": "Pesan berhasil terkirim"
+    "message": "Success Store Translate",
+    "code": 1
 }
 ```
 
+- Message
+  - 0 == Internal Servver Error
+  - 1 == Success Store Translate
+
 # Admin
 
-## Login Website (Khusus Admin)
+## Login Website
 
 - URL
   - /admin
@@ -475,5 +568,25 @@
 ```
 {
     "message": "Success Approve User",
+}
+```
+
+## Send Chat Announcement
+
+- URL
+  - /user/:user_id/announcement/chat
+- Method
+  - POST
+- Request header
+  - token
+  - id
+- Request body
+  - message (text/file)
+  - nama_divisi (string)
+- Response
+
+```
+{
+    "message": "Pesan berhasil terkirim"
 }
 ```

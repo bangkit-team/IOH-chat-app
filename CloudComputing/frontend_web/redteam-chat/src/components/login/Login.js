@@ -36,6 +36,7 @@ const Login = () => {
             if(response?.data?.token){
                 localStorage.setItem("token", JSON.stringify(response.data.token))
                 localStorage.setItem("id", JSON.stringify(response.data.id))
+                localStorage.setItem("username", JSON.stringify(response.data.username))
             }
             setUser('');
             setPwd('');

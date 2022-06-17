@@ -1,0 +1,49 @@
+# Redteam Backend For IoH Users App
+
+This is backend and database structure for admin only. the purpose of this backend to make some service for FE. So admin can monitor user and group, also approve and make announcement, and monitor the feedback. Why we separate backend-admin and backend for user. First because we want to try make microservices server and also to make easy to maintain the code. Second because the multer in backend we use is disk storage. 
+
+## Backend-admin
+  This backend-admin user Nodejs as base and ExpressJs as framework. This backend-admin deploy in Google Cloud App Engine with already provide SSL. 
+  
+There is some depedencies you must install in your code editor to run RedTeam Backend:
+ - bcrypt (to hash our password)
+ - cors (make FE or maybe Kotlin can easily get API from BE without credentials problem)
+ - dotenv (to make .env file for secret variabel)
+ - express (framework for Nodejs)
+ - firebase-admin (for access firebase realtime database)
+ - joi (for validate input from user or device)
+ - jsonwebtoken (for authorization and authentication)
+ - nodemailer (for connect to gmail purpose)
+ - nodemon (for easy to run our code in localhost)
+
+## Get Started Backend (NodeJs)
+- Install NodeJs and NPM (if you don't have)
+  - Check in your terminal or command prompt
+    ```
+    node -v
+    npm -v
+    ```
+- Initialize folder as NPM project
+  ```
+  npm init
+  ```
+  - this code will make package.json
+- Install all depedencies above
+  - You can use this command to install the package
+    ```
+    npm install express
+    ```
+  - Try to install all package in the list above. You can also use this command to install all package in package.json
+    ```
+    npm install
+    ```
+- Make .env file for secret code
+  - We don't know must to publis the .env file or no. Maybe we just wait for the confirmation
+
+- Just start our backend server with this command
+  ```
+  nodemon app.js
+  ```
+
+## Database
+  for the database we use firebase realtime database, because we need realtime communication and we think for the chat app it proper to use noSQL. Firebase realtime database also can connect to GCP billing. We just read realtime database documentation in firebase official documentation to learn how to read, write and make structure of the database
